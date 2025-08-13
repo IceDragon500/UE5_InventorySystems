@@ -10,9 +10,9 @@
 
 ✅4. Custom Character Mesh 自定义角色网格体
 
-5. Creating a Plugin 创建插件
+✅5. Creating a Plugin 创建插件
 
-6. Inventory Player Controller 库存玩家控制器
+✅6. Inventory Player Controller 库存玩家控制器
 
 7. Primary Interact Action 主要交互动作
 
