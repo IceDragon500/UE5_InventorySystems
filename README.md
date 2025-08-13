@@ -1,14 +1,14 @@
 # UE5_Inventory
  自学路径
-第1节 介绍 (Introduction)
+### 第1节 介绍 (Introduction)
 
-1. Welcome to the Course! 欢迎来到本课程！
+✅1. Welcome to the Course! 欢迎来到本课程！
 
-2. 1 - Section 1 Intro 第1节介绍
+✅2. 1 - Section 1 Intro 第1节介绍
 
-3. Project Creation and Assets 项目创建与资产导入
+✅3. Project Creation and Assets 项目创建与资产导入
 
-4. Custom Character Mesh 自定义角色网格体
+✅4. Custom Character Mesh 自定义角色网格体
 
 5. Creating a Plugin 创建插件
 
@@ -27,7 +27,7 @@
 12. Highlight Material 高亮材质
 
 
-第2节 库存HUD (Inventory HUD)
+### 第2节 库存HUD (Inventory HUD)
 
 13. Section 2 Intro 第2节介绍
 
@@ -44,7 +44,7 @@
 19. Grid Slots 网格槽位
 
 
-第3节 库存数据 (Inventory Data)
+### 第3节 库存数据 (Inventory Data)
 
 20. Section 3 Intro 第3节介绍
 
@@ -65,7 +65,7 @@
 28. On Item Added 物品添加事件
 
 
-第4节 物品片段 (Item Fragments)
+### 第4节 物品片段 (Item Fragments)
 
 29. Section 4 Intro 第4节介绍
 
@@ -94,7 +94,7 @@
 41. Updating Grid Slots 更新网格槽位
 
 
-第5节 寻找归属之地 (Searching for a Place to Belong)
+### 第5节 寻找归属之地 (Searching for a Place to Belong)
 
 42. Has Room For Item - The Plan 判断是否有空间存放物品 - 计划
 
@@ -131,7 +131,7 @@
 58. Testing our Algorithm 测试我们的算法
 
 
-第6节 添加堆叠 (Adding Stacks)
+### 第6节 添加堆叠 (Adding Stacks)
 
 59. Total Stack Count 总堆叠数量
 
@@ -142,7 +142,7 @@
 62. Add Stacks 添加堆叠
 
 
-第7节 拾取 (Pick Up)
+### 第7节 拾取 (Pick Up)
 
 63. Section 7 Intro 第7节介绍
 
@@ -159,7 +159,7 @@
 69. Remove Item from Grid 从网格中移除物品
 
 
-第8节 悬停物品 (Hover Item)
+### 第8节 悬停物品 (Hover Item)
 
 70. Section 8 Intro 第8节介绍
 
@@ -190,7 +190,7 @@
 83. Change Hover Type 更改悬停类型
 
 
-第9节 放置 (Put Down)
+### 第9节 放置 (Put Down)
 
 84. Section 9 Intro 第9节介绍
 
@@ -217,7 +217,7 @@
 95. Slot is Full 槽位已满
 
 
-第10节 弹出菜单 (Pop Up Menu)
+### 第10节 弹出菜单 (Pop Up Menu)
 
 96. Section 10 Intro 第10节介绍
 
@@ -240,7 +240,7 @@
 105. On Pop Up Menu Split 弹出菜单拆分事件
 
 
-第11节 丢弃物品 (Dropping Items)
+### 第11节 丢弃物品 (Dropping Items)
 
 106. Section 11 Intro 第11节介绍
 
@@ -257,8 +257,7 @@
 112. Dropping Items Manually 手动丢弃物品
 
 
-
-第12节 消耗物品 (Consuming Items)
+### 第12节 消耗物品 (Consuming Items)
 
 113. Section 12 Intro 第12节介绍
 
@@ -269,8 +268,7 @@
 116. Consumable Fragments 可消耗物品片段
 
 
-
-第13节 物品描述 (Item Description)
+### 第13节 物品描述 (Item Description)
 
 117. Section 13 Intro 第13节介绍
 
@@ -283,8 +281,7 @@
 121. Set Item Description Size and Position 设置物品描述大小和位置
 
 
-
-第14节 组合模式 (The Composite Pattern)
+### 第14节 组合模式 (The Composite Pattern)
 
 122. The Composite Pattern 组合模式
 
@@ -304,7 +301,7 @@
 
 
 
-第15节 装备物品 (Equipping Items)
+### 第15节 装备物品 (Equipping Items)
 
 130. Section 15 Intro 第15节介绍
 
@@ -351,8 +348,7 @@
 151. Edge Case - Switching Categories 边界情况 - 切换类别
 
 
-
-第16节 装备组件 (Equipment Component)
+### 第16节 装备组件 (Equipment Component)
 
 152. Equipment Component 装备组件
 

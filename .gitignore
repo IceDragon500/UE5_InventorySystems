@@ -10,8 +10,8 @@ Content/Collections
 Content/Developers
 Intermediate/*
 Platforms/*
-Plugins/MultiplayerSessions/Binaries/*
-Plugins/MultiplayerSessions/Intermediate/*
-Plugins/MultiplayerSessions/Resources/*
+Plugins/Inventory/Binaries/*
+Plugins/Inventory/Intermediate/*
+Plugins/Inventory/Resources/*
 Saved/*
 DerivedDataCache/*
