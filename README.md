@@ -14,7 +14,7 @@
 
 ✅6. Inventory Player Controller 库存玩家控制器
 
-7. Primary Interact Action 主要交互动作
+✅7. Primary Interact Action 主要交互动作
 
 8. The HUD Widget HUD 控件
 

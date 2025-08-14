@@ -6,6 +6,10 @@
 #include "GameFramework/PlayerController.h"
 #include "Inv_PlayerController.generated.h"
 
+class UInputAction;
+class UInputMappingContext;
+
+
 /**
  * 
  */
@@ -17,6 +21,15 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
 	
 private:
+
+	void PrimaryInteract();
+
+	UPROPERTY(EditDefaultsOnly, Category="属性设置|Inventory")
+	TArray<TObjectPtr<UInputMappingContext>> DefaultIMCs;
+
+	UPROPERTY(EditDefaultsOnly, Category="属性设置|Inventory")
+	TObjectPtr<UInputAction> PrimaryInteractAction;
 };
