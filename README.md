@@ -29,9 +29,9 @@
 
 ### 第2节 库存HUD (Inventory HUD)
 
-13. Section 2 Intro 第2节介绍
+✅13. Section 2 Intro 第2节介绍
 
-14. Inventory Component 库存组件
+✅14. Inventory Component 库存组件
 
 15. Toggle Inventory 切换库存界面
 
