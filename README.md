@@ -18,7 +18,7 @@
 
 ✅8. The HUD Widget HUD 控件
 
-9. Item Trace Channel 物品追踪通道
+✅9. Item Trace Channel 物品追踪通道
 
 10. Tracing for Items 追踪物品
 
