@@ -24,7 +24,7 @@
 
 ✅11. Pickup Message 拾取信息
 
-12. Highlight Material 高亮材质
+✅12. Highlight Material 高亮材质
 
 
 ### 第2节 库存HUD (Inventory HUD)
