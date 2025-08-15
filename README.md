@@ -20,7 +20,7 @@
 
 ✅9. Item Trace Channel 物品追踪通道
 
-10. Tracing for Items 追踪物品
+✅10. Tracing for Items 追踪物品
 
 11. Pickup Message 拾取信息
 
