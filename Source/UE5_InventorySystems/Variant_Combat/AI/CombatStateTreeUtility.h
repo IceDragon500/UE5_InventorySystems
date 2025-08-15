@@ -193,12 +193,12 @@ struct FStateTreeFaceLocationInstanceData
 	GENERATED_BODY()
 
 	/** AI Controller that will determine the focused location */
-	UPROPERTY(EditAnywhere, Category = Context)
+	UPROPERTY(EditAnywhere, Category = "Context")
 	TObjectPtr<AAIController> Controller;
 
 	/** Location that will be faced towards */
-	UPROPERTY(EditAnywhere, Category = Parameter)
-	FVector FaceLocation;
+	UPROPERTY(EditAnywhere, Category = "Parameter")
+	FVector FaceLocation = FVector::ZeroVector;
 };
 
 /**
@@ -283,11 +283,11 @@ struct FStateTreeGetPlayerInfoInstanceData
 
 	/** Last known location for the target */
 	UPROPERTY(VisibleAnywhere)
-	FVector TargetPlayerLocation;
+	FVector TargetPlayerLocation = FVector::ZeroVector;
 
 	/** Distance to the target */
 	UPROPERTY(VisibleAnywhere)
-	float DistanceToTarget;
+	float DistanceToTarget = 0.f;
 };
 
 /**

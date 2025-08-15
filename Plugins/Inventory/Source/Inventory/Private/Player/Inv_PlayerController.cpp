@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "Inventory.h"
+#include "Items/Components/Inv_ItemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/HUD/Inv_HUDWidget.h"
 
@@ -77,11 +78,11 @@ void AInv_PlayerController::TraceForItem()
 
 	FVector TraceStart;
 	FVector Forward;
-	FVector TraceEnd;
+	
 
 	if (!UGameplayStatics::DeprojectScreenToWorld(this, ViewPortCenter, TraceStart, Forward)) return;
 
-	TraceEnd = TraceStart + Forward * TranceLength;
+	FVector TraceEnd = TraceStart + Forward * TranceLength;
 
 	FHitResult HitResult;
 
@@ -90,11 +91,19 @@ void AInv_PlayerController::TraceForItem()
 	LastActor = ThisActor;
 	ThisActor = HitResult.GetActor();
 
+	if (!ThisActor.IsValid())
+	{
+		if (IsValid(HUDWidget)) HUDWidget->HidePickupMessage();
+	}
+
 	if (ThisActor == LastActor) return;
 
 	if (ThisActor.IsValid())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("检测到新道具了"));
+		UInv_ItemComponent* ItemComponent = ThisActor->FindComponentByClass<UInv_ItemComponent>();
+		if (!IsValid(ItemComponent)) return;
+
+		if (IsValid(HUDWidget)) HUDWidget->ShowPickupMessage(ItemComponent->GetPickupMessage());
 	}
 
 	if (LastActor.IsValid())

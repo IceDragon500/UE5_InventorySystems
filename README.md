@@ -22,7 +22,7 @@
 
 ✅10. Tracing for Items 追踪物品
 
-11. Pickup Message 拾取信息
+✅11. Pickup Message 拾取信息
 
 12. Highlight Material 高亮材质
 
