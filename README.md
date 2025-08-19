@@ -35,7 +35,7 @@
 
 ✅15. Toggle Inventory 切换库存界面
 
-16. Close Button 关闭按钮
+✅16. Close Button 关闭按钮
 
 17. Inventory Grid 库存网格
 
