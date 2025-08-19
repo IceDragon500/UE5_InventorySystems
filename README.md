@@ -37,7 +37,7 @@
 
 ✅16. Close Button 关闭按钮
 
-17. Inventory Grid 库存网格
+✅17. Inventory Grid 库存网格
 
 18. Switcher Buttons 切换器按钮
 

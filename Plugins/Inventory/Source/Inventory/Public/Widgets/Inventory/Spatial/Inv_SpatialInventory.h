@@ -6,6 +6,8 @@
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 #include "Inv_SpatialInventory.generated.h"
 
+class UWidgetSwitcher;
+class UInv_InventoryGrid;
 /**
  * 
  */
@@ -18,5 +20,15 @@ public:
 protected:
 
 private:
+	TObjectPtr<UWidgetSwitcher> Switcher;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UInv_InventoryGrid> Grid_Equippable;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UInv_InventoryGrid> Grid_Consumable;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UInv_InventoryGrid> Grid_Craftable;
 	
 };
