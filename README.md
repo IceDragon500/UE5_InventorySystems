@@ -39,7 +39,7 @@
 
 ✅17. Inventory Grid 库存网格
 
-18. Switcher Buttons 切换器按钮
+✅18. Switcher Buttons 切换器按钮
 
 19. Grid Slots 网格槽位
 
