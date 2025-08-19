@@ -20,6 +20,9 @@ public:
 
 	UInv_InventoryComponent();
 
+	//切换库存菜单
+	void ToggleInventoryMenu();
+
 
 protected:
 
@@ -36,6 +39,10 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UInv_InventoryBase> InventoryMenu;
+
+	bool bInventoryMenuOpen = false;
+	void OpenInventoryMenu();
+	void CloseInventoryMenu();
 	
 	
 };

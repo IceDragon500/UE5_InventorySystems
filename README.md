@@ -33,7 +33,7 @@
 
 ✅14. Inventory Component 库存组件
 
-15. Toggle Inventory 切换库存界面
+✅15. Toggle Inventory 切换库存界面
 
 16. Close Button 关闭按钮
 

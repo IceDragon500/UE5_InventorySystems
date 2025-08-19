@@ -3,11 +3,14 @@
 
 #include "Player/Inv_PlayerController.h"
 
+#include <ThirdParty/SPIRV-Reflect/SPIRV-Reflect/spirv_reflect.h>
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "Inventory.h"
 #include "Interaction/Inv_Highlightable.h"
+#include "InventoryManagement/Components/Inv_InventoryComponent.h"
 #include "Items/Components/Inv_ItemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/HUD/Inv_HUDWidget.h"
@@ -22,6 +25,12 @@ void AInv_PlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	TraceForItem();
+}
+
+void AInv_PlayerController::ToggleInventoryMenu()
+{
+	if (!InventoryComponent.IsValid()) return;
+	InventoryComponent->ToggleInventoryMenu();
 }
 
 void AInv_PlayerController::BeginPlay()
@@ -39,6 +48,7 @@ void AInv_PlayerController::BeginPlay()
 		}
 
 	}
+	InventoryComponent = FindComponentByClass<UInv_InventoryComponent>();
 
 	CreateHUDWidget();
 }
@@ -50,6 +60,7 @@ void AInv_PlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(PrimaryInteractAction, ETriggerEvent::Started, this, &AInv_PlayerController::PrimaryInteract);
+	EnhancedInputComponent->BindAction(ToggleInventoryAction, ETriggerEvent::Started, this, &AInv_PlayerController::ToggleInventoryMenu);
 	
 }
 
