@@ -41,7 +41,7 @@
 
 ✅18. Switcher Buttons 切换器按钮
 
-19. Grid Slots 网格槽位
+✅19. Grid Slots 网格槽位
 
 
 ### 第3节 库存数据 (Inventory Data)
