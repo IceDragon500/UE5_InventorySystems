@@ -46,9 +46,9 @@
 
 ### 第3节 库存数据 (Inventory Data)
 
-20. Section 3 Intro 第3节介绍
+✅20. Section 3 Intro 第3节介绍
 
-21. Fast Array Serializer 快速数组序列化器
+✅21. Fast Array Serializer 快速数组序列化器
 
 22. Fast Array Functions 快速数组函数
 
