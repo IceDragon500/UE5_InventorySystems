@@ -7,6 +7,7 @@
 #include "Net/Serialization/FastArraySerializer.h"
 #include "Inv_FastArray.generated.h"
 
+class UInv_ItemComponent;
 class UInv_InventoryComponent;
 class UInv_InventoryItem;
 
@@ -23,6 +24,7 @@ public:
 	FInv_InventoryEntry() {}
 
 private:
+	friend struct FInv_InventoryFastArray;
 	friend UInv_InventoryComponent;
 
 	UPROPERTY()
@@ -44,18 +46,30 @@ public:
 
 	TArray<UInv_InventoryItem*> GetAllItems() const;
 	
-	//FFastArraySerializer contract
+	//-------FFastArraySerializer contract-------
+	
+	/**
+	 * 预复制移除
+	 * @param RemovedIndices 
+	 * @param FinalSize 
+	 */
 	void PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize);
+	
+	/**
+	 * 复制后添加
+	 * @param AddedIndices 
+	 * @param FinalSize 
+	 */
 	void PostReplicatedAdd(const TArrayView<int32> AddedIndices, int32 FinalSize);
 	
-	//End FFastArraySerializer contract
+	//-------End FFastArraySerializer contract-------
 
 	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
 	{
 		return FastArrayDeltaSerialize<FInv_InventoryEntry, FInv_InventoryFastArray>(Entries, DeltaParams, *this);
 	}
 
-	UInv_InventoryItem* AddItem(UInv_InventoryComponent* InItemComponent);
+	UInv_InventoryItem* AddItem(UInv_ItemComponent* InItemComponent);
 	UInv_InventoryItem* AddItem(UInv_InventoryItem* InItem);
 	void RemoveItem(UInv_InventoryItem* InItem);
 

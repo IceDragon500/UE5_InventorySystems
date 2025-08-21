@@ -50,7 +50,7 @@
 
 ✅21. Fast Array Serializer 快速数组序列化器
 
-22. Fast Array Functions 快速数组函数
+✅22. Fast Array Functions 快速数组函数
 
 23. No Room in Inventory 库存空间不足
 

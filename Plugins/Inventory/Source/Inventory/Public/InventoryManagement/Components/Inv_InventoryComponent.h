@@ -5,8 +5,12 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Inv_InventoryComponent.generated.h"
-
 class UInv_InventoryBase;
+class UInv_InventoryItem;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FinventoryItemChange, UInv_InventoryItem*, Item);
+
+
 /**
  * 能支持多种类型的库存系统
  * 并且于所属玩家控制器PlayerController相关联
@@ -23,6 +27,8 @@ public:
 	//切换库存菜单
 	void ToggleInventoryMenu();
 
+	FinventoryItemChange OnItemAdded;
+	FinventoryItemChange OnItemRemoved;
 
 protected:
 
