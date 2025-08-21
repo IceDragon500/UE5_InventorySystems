@@ -52,7 +52,7 @@
 
 ✅22. Fast Array Functions 快速数组函数
 
-23. No Room in Inventory 库存空间不足
+✅23. No Room in Inventory 库存空间不足
 
 24. Has Room for Item 是否有空间存放物品
 

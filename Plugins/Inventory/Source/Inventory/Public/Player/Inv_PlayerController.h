@@ -32,7 +32,7 @@ protected:
 	
 private:
 
-	//
+	//主要交互逻辑
 	void PrimaryInteract();
 
 	//创建屏幕上显示的内容

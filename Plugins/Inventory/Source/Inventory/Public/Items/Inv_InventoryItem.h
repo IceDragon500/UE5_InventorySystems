@@ -7,7 +7,8 @@
 #include "Inv_InventoryItem.generated.h"
 
 /**
- * 代表了一个道具
+ * 作为道具的父类
+ * 每一个道具分类，都可以从这里进行继承
  */
 UCLASS()
 class INVENTORY_API UInv_InventoryItem : public UObject
