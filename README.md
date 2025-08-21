@@ -54,7 +54,7 @@
 
 ✅23. No Room in Inventory 库存空间不足
 
-24. Has Room for Item 是否有空间存放物品
+✅24. Has Room for Item 是否有空间存放物品
 
 25. Add Item RPCs 添加物品的RPC（远程过程调用）
 
