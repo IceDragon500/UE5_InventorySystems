@@ -58,7 +58,7 @@
 
 ✅25. Add Item RPCs 添加物品的RPC（远程过程调用）
 
-26. Item Manifest 物品清单
+✅26. Item Manifest 物品清单
 
 27. Item Type Tags 物品类型标签
 

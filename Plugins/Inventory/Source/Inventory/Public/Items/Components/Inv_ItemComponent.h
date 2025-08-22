@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Items/Manifest/Inv_ItemManifest.h"
 #include "Inv_ItemComponent.generated.h"
 
 /**
@@ -22,7 +23,10 @@ public:
 	UInv_ItemComponent();
 
 	FString GetPickupMessage() const { return PickupMessage; }
-	
+
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+	FInv_ItemManifest GetItemManifest() const { return ItemManifest; }
 
 protected:
 
@@ -31,5 +35,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FString PickupMessage {TEXT("默认信息")};
+
+	//物品清单
+	UPROPERTY(Replicated, EditAnywhere, Category="属性设置")
+	FInv_ItemManifest ItemManifest;
 	
 };

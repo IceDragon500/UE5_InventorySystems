@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "InventoryManagement/FastArray/Inv_FastArray.h"
 #include "Inv_InventoryComponent.generated.h"
 class UInv_ItemComponent;
 class UInv_InventoryBase;
@@ -27,6 +28,8 @@ class INVENTORY_API UInv_InventoryComponent : public UActorComponent
 public:
 
 	UInv_InventoryComponent();
+
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/**
 	 * 尝试进行道具的添加
@@ -58,6 +61,8 @@ public:
 	//切换库存菜单
 	void ToggleInventoryMenu();
 
+	void AddRepSubObj(UObject* SubObj);
+
 	FinventoryItemChange OnItemAdded;//在道具被添加的时候进行一个广播
 	FinventoryItemChange OnItemRemoved;//在道具被删除的时候进行一个广播
 	FNoRoomInInventory NoRoomInInventory;//添加道具失败的时候进行一个广播
@@ -71,6 +76,9 @@ private:
 
 	//构造库存
 	void ConstructInventory();
+
+	UPROPERTY(Replicated)
+	FInv_InventoryFastArray InventoryList;
 
 	UPROPERTY(EditAnywhere, Category="Inventory")
 	TSubclassOf<UInv_InventoryBase> InventoryMenuClass;
