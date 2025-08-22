@@ -3,6 +3,7 @@
 #pragma once
 #include "Types/Inv_GridTypes.h"
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "StructUtils/InstancedStruct.h"
 #include "Inv_ItemManifest.generated.h"
 
@@ -25,10 +26,22 @@ struct INVENTORY_API FInv_ItemManifest
 	 */
 	UInv_InventoryItem* Manifest(UObject* NewOuter);
 
+	/**
+	 * 获取物品的类型Tag
+	 * @return 
+	 */
+	FGameplayTag GetItemTag() const { return ItemTypeTag; }
+
 private:
 
 	//道具类型
-	UPROPERTY(EditAnywhere, Category="Inventory")
+	UPROPERTY(EditAnywhere, Category="属性设置")
 	EInv_ItemCategory ItemCategory{EInv_ItemCategory::None};
+
+	//物品的类型Tag
+	UPROPERTY(editAnywhere, Category="属性设置", meta=(Categories="GameItems")) //添加一个 UPROPERTY(meta = (Categories = "GameItems")) 来筛选编辑器下拉菜单中的标签，使其仅显示以 GameItems 开头的标签
+	FGameplayTag ItemTypeTag;
+
+	
 	
 };

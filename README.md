@@ -60,7 +60,7 @@
 
 ✅26. Item Manifest 物品清单
 
-27. Item Type Tags 物品类型标签
+✅27. Item Type Tags 物品类型标签
 
 28. On Item Added 物品添加事件
 
