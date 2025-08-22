@@ -56,7 +56,7 @@
 
 ✅24. Has Room for Item 是否有空间存放物品
 
-25. Add Item RPCs 添加物品的RPC（远程过程调用）
+✅25. Add Item RPCs 添加物品的RPC（远程过程调用）
 
 26. Item Manifest 物品清单
 

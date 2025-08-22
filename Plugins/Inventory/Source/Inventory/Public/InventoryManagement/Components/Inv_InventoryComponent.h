@@ -36,6 +36,25 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="Inventory")
 	void TryAddItem(UInv_ItemComponent* ItemComponent);
 
+	/**
+	 * 从服务器端，添加一个新道具到物品栏
+	 * @param ItemComponent 被添加道具的ItemComponent
+	 * @param StackCount 添加的数量
+	 */
+	UFUNCTION(Server, Reliable)
+	void Server_AddNewItem(UInv_ItemComponent* ItemComponent, int32 StackCount);
+
+	/**
+	 * 从服务器端，添加一个已存在的道具到物品栏
+	 * 如果道具已存在，则增加改物品的堆叠数量
+	 * Remainder 表示我们已经完全拾取的，因为无法容纳所有队列而不摧毁它
+	 * @param ItemComponent 被添加道具的ItemComponent
+	 * @param StackCount 添加的数量
+	 * @param Remainder 有多少这种物品没有空间存放
+	 */
+	UFUNCTION(Server, Reliable)
+	void Server_AddStacksToItem(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder);
+
 	//切换库存菜单
 	void ToggleInventoryMenu();
 
