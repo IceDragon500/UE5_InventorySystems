@@ -12,6 +12,11 @@ void UInv_InventoryItem::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	DOREPLIFETIME(ThisClass, ItemManifest);
 }
 
+bool UInv_InventoryItem::IsSupportedForNetworking() const
+{
+	return true;
+}
+
 void UInv_InventoryItem::SetItemManifest(const FInv_ItemManifest& Manifest)
 {
 	ItemManifest = FInstancedStruct::Make<FInv_ItemManifest>(Manifest);

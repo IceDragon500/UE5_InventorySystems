@@ -16,7 +16,11 @@ class INVENTORY_API UInv_InventoryStatics : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-
+	/**
+	 * 通过传入的PlayerController来获取绑定在上面的InventoryComponent
+	 * @param PlayerController 传入的PlayerController
+	 * @return 绑定在上面的InventoryComponent
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	static UInv_InventoryComponent* GetInventoryComponent(const APlayerController* PlayerController);
 };

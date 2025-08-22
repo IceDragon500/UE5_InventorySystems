@@ -7,7 +7,7 @@
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 
 
-UInv_InventoryComponent::UInv_InventoryComponent()
+UInv_InventoryComponent::UInv_InventoryComponent() : InventoryList(this)
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	SetIsReplicatedByDefault(true);
@@ -67,6 +67,17 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount)
 {
 	UInv_InventoryItem* NewItem = InventoryList.AddEntry(ItemComponent);
+
+	//NM_ListenServer 作为服务器的客户端
+	//NM_Standalone 单机玩家
+	// 上面这两中情况 将视为他自己就拥有权限 这种情况下 不会进行数组复制，因为没有客户端需要复制
+	
+	if (GetOwner()->GetNetMode() == NM_ListenServer || GetOwner()->GetNetMode() == NM_Standalone)
+	{
+		//如果是以上两种情况，添加物品的时候广播这个物品
+		//否则我们将让物品复制添加处理广播此物品
+		OnItemAdded.Broadcast(NewItem);
+	}
 
 	//TODO: Tell the item component ot destroy its owning actor
 }

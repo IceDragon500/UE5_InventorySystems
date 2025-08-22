@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Items/Inv_InventoryItem.h"
 #include "Types/Inv_GridTypes.h"
 #include "Inv_InventoryGrid.generated.h"
 
+class UInv_InventoryComponent;
 class UCanvasPanel;
 class UInv_GridSlot;
+
 /**
  * InventoryGrid 道具格子
  *
@@ -25,13 +28,19 @@ class INVENTORY_API UInv_InventoryGrid : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	
 	virtual void NativeOnInitialized() override;
 	
 	EInv_ItemCategory GetItemCategory() const { return ItemCategory; }
 
+	UFUNCTION()
+	void AddItem(UInv_InventoryItem* Item);
+
 protected:
 
 private:
+
+	TWeakObjectPtr<UInv_InventoryComponent> InventoryComponent;
 
 	//构造道具格子
 	void ConstructGrid();
@@ -57,4 +66,11 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	float TileSize { 20.f };//单个格子的大小 - 边长
+
+	/**
+	 * 检查添加的物品类别是否与此物品栏的物品类别匹配
+	 * @param Item 被添加的物品
+	 * @return 
+	 */
+	bool MatchesCategory(const UInv_InventoryItem* Item) const;
 };

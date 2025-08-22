@@ -62,7 +62,7 @@
 
 ✅27. Item Type Tags 物品类型标签
 
-28. On Item Added 物品添加事件
+✅28. On Item Added 物品添加事件
 
 
 ### 第4节 物品片段 (Item Fragments)
