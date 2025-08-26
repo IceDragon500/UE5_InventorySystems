@@ -67,9 +67,9 @@
 
 ### 第4节 物品片段 (Item Fragments)
 
-29. Section 4 Intro 第4节介绍
+✅29. Section 4 Intro 第4节介绍
 
-30. Item Fragment 物品片段
+✅30. Item Fragment 物品片段
 
 31. Image Fragment 图像片段
 

@@ -8,6 +8,7 @@
 #include "Inv_ItemManifest.generated.h"
 
 
+struct FInv_ItemFragment;
 /**
  * 创建库存物品所需的所有信息的一个清单（Manifest）
  */
@@ -34,6 +35,13 @@ struct INVENTORY_API FInv_ItemManifest
 
 private:
 
+	UPROPERTY(EditAnywhere, Category="属性设置", meta=(ExcludeBaseStruct="GameItems"))//这是一个实例化的结构体，我们可以使用一个名为 ExcludeBaseStruct 的元数据说明符
+	TArray<TInstancedStruct<FInv_ItemFragment>> Fragments;
+
+	//ExcludeBaseStruct的作用
+	//在细节面板中，我们将能够手动向其添加物品片段，但排除基础结构会阻止我们添加基础结构
+	//物品片段在蓝图中只能将物品片段的子项添加到此片段数组中
+	
 	//道具类型
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	EInv_ItemCategory ItemCategory{EInv_ItemCategory::None};
