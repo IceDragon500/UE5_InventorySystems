@@ -39,7 +39,6 @@ public:
 	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_ItemComponent* ItemComponent);
 
 	
-
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
 
@@ -54,6 +53,9 @@ private:
 	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* Item);
 
 	FInv_SlotAvailabilityResult HasRoomForItem(const FInv_ItemManifest& ItemManifest);
+
+	//接收我们的槽位可用性结果以及物品本身，然后由它来处理后续事宜（Indices : index的复数）
+	void AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem);
 
 	//构造道具格子
 	void ConstructGrid();

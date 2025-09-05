@@ -75,7 +75,7 @@
 
 ✅32. Inventory Grid Check 库存网格检查
 
-33. Add Item To Indices 添加物品到索引位置
+✅33. Add Item To Indices 添加物品到索引位置
 
 34. Get Fragment Utilities 获取片段工具函数
 

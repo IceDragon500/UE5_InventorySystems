@@ -36,6 +36,15 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 {
 	FInv_SlotAvailabilityResult Result;
 	Result.TotalRoomToFill = 1;
+
+	FInv_SlotAvailability SlotAvailability;
+	SlotAvailability.AmountToFill = 1;
+	SlotAvailability.Index = 0;
+
+	Result.SlotAvailabilities.Add(MoveTemp(SlotAvailability));
+
+	//MoveTemp会将引用强制转换为右值引用。这是UE的std::move的等效函数
+	//除了当传递右值或const对象时它不会编译，因为我们更希望MoveTemp没有作用时被告知。
 	
 	return Result;
 }
@@ -49,6 +58,16 @@ void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
 	FInv_SlotAvailabilityResult Result = HasRoomForItem(Item);
 
 	//TODO : 接下来的任务是创建一个用于显示物品图标的控件，并将其添加到网格的正确位置
+	AddItemToIndices(Result, Item);
+}
+
+void UInv_InventoryGrid::AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem)
+{
+	//TODO
+	//设定获取网格片段的功能，以便了解物品占据多少个网格空间
+	//获取图像片段，因为我们要向网格中添加一个小部件，所以需要知道这个特定物品将使用什么纹理或图标
+	//创建一个控件添加到网格中
+	//需要将这个新创建的小部件存储在一个数组或某种容器中，以便在丢弃物品、消耗物品、销毁物品或进行任何此类操作时能够移除它
 }
 
 void UInv_InventoryGrid::ConstructGrid()
