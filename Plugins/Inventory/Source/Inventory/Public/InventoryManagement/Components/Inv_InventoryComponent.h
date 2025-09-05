@@ -19,6 +19,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNoRoomInInventory);
  * 支持道具的各种操作
  * 支持界面上相关的功能，例如不同类型道具的界面切换
  * 与所属玩家控制器PlayerController进行关联
+ * void TryAddItem() 尝试添加物品
+ * void Server_AddNewItem() 从服务器端，添加一个新道具到物品栏
+ * void Server_AddStacksToItem 从服务器端，添加一个已存在的道具到物品栏
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
 class INVENTORY_API UInv_InventoryComponent : public UActorComponent
@@ -61,6 +64,7 @@ public:
 	//切换库存菜单
 	void ToggleInventoryMenu();
 
+	//注册用于网络复制的子对象
 	void AddRepSubObj(UObject* SubObj);
 
 	FinventoryItemChange OnItemAdded;//在道具被添加的时候进行一个广播
@@ -74,7 +78,7 @@ protected:
 private:
 	TWeakObjectPtr<APlayerController> OwningController;
 
-	//构造库存
+	//个用于初始化库存UI和基础设置
 	void ConstructInventory();
 
 	UPROPERTY(Replicated)
@@ -87,8 +91,8 @@ private:
 	TObjectPtr<UInv_InventoryBase> InventoryMenu;
 
 	bool bInventoryMenuOpen = false;
-	void OpenInventoryMenu();
-	void CloseInventoryMenu();
+	void OpenInventoryMenu();//显示道具菜单
+	void CloseInventoryMenu();//关闭道具菜单
 	
 	
 };

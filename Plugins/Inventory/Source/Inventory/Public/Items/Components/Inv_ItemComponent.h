@@ -12,6 +12,10 @@
  * 所有的物品都有一个包含所有属性的物品组件
  * 将该物品变成可拾取并添加到我们的库存中的物品
  * 我们可以将这个组件添加到任意Actor上，使该Actor成为我们可以追踪、击中并拾取的对象
+ *
+ * 这里 我们使用FInv_ItemManifest的结构体来设置道具的各种属性
+ * 我们将道具的各种属性拆分成类似词条的东西，教程这里叫做片段Fragment
+ * 每一个道具都可以使用不同的Fragment来达成不同的效果
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
 class INVENTORY_API UInv_ItemComponent : public UActorComponent
@@ -36,7 +40,7 @@ private:
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FString PickupMessage {TEXT("默认信息")};
 
-	//物品清单
+	//使用FInv_ItemManifest的结构体来设置道具的各种属性
 	UPROPERTY(Replicated, EditAnywhere, Category="属性设置")
 	FInv_ItemManifest ItemManifest;
 	

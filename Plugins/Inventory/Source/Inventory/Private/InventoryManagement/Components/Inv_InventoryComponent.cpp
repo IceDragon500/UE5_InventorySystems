@@ -41,7 +41,7 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 	 * 2、如果物品尚未存在于物品栏中，这时候我们就需要新建一个物品并将其添加到物品栏中
 	 */
 
-	if (Result.Item.IsValid() && Result.bStackable)
+	if (Result.Item.IsValid() && Result.bStackable)//如果已经有这个道具并且这个道具是可以被堆叠的
 	{
 		// Result.Item.IsValid() 这意味着库存中已经存在这种类型的物品
 		// Result.bStackable 表示物品是可以被堆叠的
@@ -52,7 +52,7 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 		Server_AddStacksToItem(ItemComponent, Result.TotalRoomToFill, Result.Remainder);
 		
 	}
-	else if (Result.TotalRoomToFill > 0)
+	else if (Result.TotalRoomToFill > 0) //检查有剩余空间
 	{
 		//否则我们需要判断是否有剩余空间来存放这个尚未存在的物品
 		//这个项目类型不在库存中，创建一个新的并更新所有相关的插槽
@@ -100,11 +100,21 @@ void UInv_InventoryComponent::ToggleInventoryMenu()
 
 void UInv_InventoryComponent::AddRepSubObj(UObject* SubObj)
 {
+	/**
+	 * IsUsingRegisteredSubObjectList()
+	 * 检查此组件是否被配置为使用“注册子对象列表”的方式进行复制。这取决于组件创建时设置的 bReplicateUsingRegisteredSubObjectList 标志（在你的构造函数中它被设为 true）
+	 *
+	 * IsReadyForReplication()
+	 * 检查此组件是否已经初始化完毕，准备好进行复制。
+	 *
+	 * AddReplicatedSubObject
+	 * 将一个子对象（SubObject）显式地注册到其父组件的复制系统中，以确保该子对象能够随其父组件一起进行网络复制。
+	 * 
+	 */
 	if (IsUsingRegisteredSubObjectList() && IsReadyForReplication() && IsValid(SubObj))
 	{
 		AddReplicatedSubObject(SubObj);
 	}
-	
 }
 
 
@@ -113,19 +123,22 @@ void UInv_InventoryComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	ConstructInventory();
-
-
-	
 }
 
 void UInv_InventoryComponent::ConstructInventory()
 {
+	//获取并验证所有者 (Owner Acquisition and Validation)
 	OwningController = Cast<APlayerController>(GetOwner());
 	checkf(OwningController.IsValid(), TEXT("玩家控制器转换失败"))
+
+	//本地控制检查 (Local Control Check)
 	if (!OwningController->IsLocalController()) return;
 
+	//创建用户界面控件 (User Interface Widget Creation)
 	InventoryMenu = CreateWidget<UInv_InventoryBase>(OwningController.Get(), InventoryMenuClass);
 	InventoryMenu->AddToViewport();
+
+	//初始化UI状态 (Initial UI State Setup)
 	CloseInventoryMenu();
 }
 

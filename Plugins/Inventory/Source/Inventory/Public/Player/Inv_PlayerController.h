@@ -33,6 +33,7 @@ protected:
 private:
 
 	//主要交互逻辑
+	//触发拾取道具的动作
 	void PrimaryInteract();
 
 	//创建屏幕上显示的内容
@@ -46,8 +47,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="属性设置|Inventory")
 	TArray<TObjectPtr<UInputMappingContext>> DefaultIMCs;
 
+	//主要交互动作
+	//触发拾取道具的动作，绑定E键
 	UPROPERTY(EditDefaultsOnly, Category="属性设置|Inventory")
 	TObjectPtr<UInputAction> PrimaryInteractAction;
+
+	//切换交互动作
+	//触发打开关闭道具栏的动作，绑定I键
 	UPROPERTY(EditDefaultsOnly, Category="属性设置|Inventory")
 	TObjectPtr<UInputAction> ToggleInventoryAction;
 

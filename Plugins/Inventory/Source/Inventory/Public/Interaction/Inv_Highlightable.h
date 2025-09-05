@@ -13,7 +13,7 @@ class UInv_Highlightable : public UInterface
 };
 
 /**
- * 
+ * 实现一个打开物品高亮和关闭的接口
  */
 class INVENTORY_API IInv_Highlightable
 {

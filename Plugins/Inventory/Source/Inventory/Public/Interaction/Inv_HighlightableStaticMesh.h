@@ -8,7 +8,7 @@
 #include "Inv_HighlightableStaticMesh.generated.h"
 
 /**
- * 
+ * 继承自默认的StaticMesh类，用于实现网格体的高亮功能
  */
 UCLASS()
 class INVENTORY_API UInv_HighlightableStaticMesh : public UStaticMeshComponent, public IInv_Highlightable

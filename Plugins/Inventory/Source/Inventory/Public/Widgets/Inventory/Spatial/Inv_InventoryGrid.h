@@ -46,7 +46,7 @@ private:
 	void ConstructGrid();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="Inventory")
-	EInv_ItemCategory ItemCategory;
+	EInv_ItemCategory ItemCategory {EInv_ItemCategory::Equippable};
 
 	//道具格子数组
 	UPROPERTY()

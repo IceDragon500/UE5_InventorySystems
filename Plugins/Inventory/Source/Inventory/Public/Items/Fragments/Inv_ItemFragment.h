@@ -9,13 +9,17 @@
 /**
  * 物品片段
  * 基础结构体
- * 我们将从这个基础结构体派生出更具体的物品片段
+ *
+ * 我们将道具的每个属性理解为“片段”Fragment
+ *
+ * 例如，道具名称，道具堆叠数量，道具占用格子的大小，道具价值，道具重量，道具描述，道具伤害，道具属性之类的，我们将其拆分成一个个的Fragment
+ *
+ * 对于不同的道具我们可以随意的灵活进行组合
  *
  * 希望每个物品片段都是可识别的
- * 希望每个物品片段都是可识别的
+ * 
  * 希望将物品片段类型定义为gameplaytag
  */
-
 USTRUCT(BlueprintType)
 struct FInv_ItemFragment
 {
@@ -32,7 +36,7 @@ struct FInv_ItemFragment
 	virtual ~FInv_ItemFragment() {}
 
 	
-	//---特殊成员函数---
+	//---End 特殊成员函数---
 	
 	//如果这个结构类型的子类被多态地销毁
 	//也就是说，通过父类类型的指针，那么父类的析构函数将被调用，并且所有继承链中的析构函数都会依次执行
@@ -43,12 +47,19 @@ struct FInv_ItemFragment
 	
 private:
 
+	//用来给道具赋予片段属性的字段，使用GameplayTag来进行区分
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FGameplayTag FragmentTag = FGameplayTag::EmptyTag;
 	
 };
 
-
+/**
+ * 继承自FInv_ItemFragment
+ *
+ * GridSize 道具在道具栏中占用多少格子
+ *
+ * GridPadding 边距
+ */
 USTRUCT(BlueprintType)
 struct FInv_GridFragment : public FInv_ItemFragment
 {
@@ -69,6 +80,28 @@ private:
 	//边距
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	float GridPadding{ 0.f };
+	
+};
+
+/**
+ * 道具的图标属性片段
+ */
+USTRUCT(BlueprintType)
+struct FInv_ImageFragment : public FInv_ItemFragment
+{
+	GENERATED_BODY()
+
+	UTexture2D* GetIcon() const { return IconTexture; }
+
+private:
+
+	//图标的贴图纹理
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TObjectPtr<UTexture2D> IconTexture{nullptr};
+
+	//图标的大小
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FVector2D IconDimensions{44.f, 44.f};
 	
 };
 

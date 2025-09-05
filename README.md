@@ -71,7 +71,7 @@
 
 ✅30. Item Fragment 物品片段
 
-31. Image Fragment 图像片段
+✅31. Image Fragment 图像片段
 
 32. Inventory Grid Check 库存网格检查
 

@@ -35,7 +35,8 @@ struct INVENTORY_API FInv_ItemManifest
 
 private:
 
-	UPROPERTY(EditAnywhere, Category="属性设置", meta=(ExcludeBaseStruct="GameItems"))//这是一个实例化的结构体，我们可以使用一个名为 ExcludeBaseStruct 的元数据说明符
+	//用来保存道具的各种“词条”Fragment
+	UPROPERTY(EditAnywhere, Category="属性设置", meta=(ExcludeBaseStruct="GameItems"))  //这是一个实例化的结构体，我们可以使用一个名为 ExcludeBaseStruct 的元数据说明符
 	TArray<TInstancedStruct<FInv_ItemFragment>> Fragments;
 
 	//ExcludeBaseStruct的作用
@@ -48,7 +49,7 @@ private:
 
 	//物品的类型Tag
 	UPROPERTY(editAnywhere, Category="属性设置", meta=(Categories="GameItems")) //添加一个 UPROPERTY(meta = (Categories = "GameItems")) 来筛选编辑器下拉菜单中的标签，使其仅显示以 GameItems 开头的标签
-	FGameplayTag ItemTypeTag;
+	FGameplayTag ItemTypeTag {FGameplayTag()};
 
 	
 	
