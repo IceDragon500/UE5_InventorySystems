@@ -20,6 +20,11 @@ public:
 	
 	virtual void NativeOnInitialized() override;
 
+	/**
+	 * 有存放物品的空间
+	 * @param ItemComponent 传入正在被拾取的道具ItemComponent 
+	 * @return 返回一个FInv_SlotAvailabilityResult的拾取结果
+	 */
 	virtual FInv_SlotAvailabilityResult HasRoomForItem(UInv_ItemComponent* ItemComponent) const;
 
 protected:

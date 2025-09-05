@@ -2,9 +2,13 @@
 
 
 #include "Widgets/Inventory/Spatial/Inv_SpatialInventory.h"
+
+#include "Inventory.h"
 #include "Widgets/Inventory/Spatial/Inv_InventoryGrid.h"
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
+#include "InventoryManagement/Utils/Inv_InventoryStatics.h"
+#include "Items/Components/Inv_ItemComponent.h"
 
 
 void UInv_SpatialInventory::NativeOnInitialized()
@@ -25,10 +29,20 @@ void UInv_SpatialInventory::NativeOnInitialized()
 
 FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const
 {
-	FInv_SlotAvailabilityResult Result;
-	Result.TotalRoomToFill = 1;
-	
-	return Result;
+	//获取到拾取的道具是什么类型的
+	//然后通过类型找到对应的道具栏，看是否有空位
+	switch (UInv_InventoryStatics::GetItemCategoryFromItemComp(ItemComponent))
+	{
+		case EInv_ItemCategory::Equippable:
+			return Grid_Equippable->HasRoomForItem(ItemComponent);
+		case EInv_ItemCategory::Consumable:
+			return Grid_Consumable->HasRoomForItem(ItemComponent);
+		case EInv_ItemCategory::Craftable:
+			return Grid_Craftable->HasRoomForItem(ItemComponent);
+		default:
+			UE_LOG(LogInventory, Error, TEXT("ItemComponent没有一个有效的ItemCategory"));
+			return FInv_SlotAvailabilityResult();
+	}
 }
 
 void UInv_SpatialInventory::ShowEquippable()

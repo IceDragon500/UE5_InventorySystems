@@ -8,6 +8,7 @@
 #include "Components/CanvasPanelSlot.h"
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
+#include "Items/Components/Inv_ItemComponent.h"
 #include "Widgets/Inventory/GridSlots/Inv_GridSlot.h"
 #include "Widgets/Utils/Inv_WidgetUtils.h"
 
@@ -21,12 +22,33 @@ void UInv_InventoryGrid::NativeOnInitialized()
 	InventoryComponent->OnItemAdded.AddDynamic(this, &UInv_InventoryGrid::AddItem);
 }
 
+FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const UInv_ItemComponent* ItemComponent)
+{
+	return HasRoomForItem(ItemComponent->GetItemManifest());
+}
+
+FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const UInv_InventoryItem* Item)
+{
+	return HasRoomForItem(Item->GetItemManifest());
+}
+
+FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemManifest& ItemManifest)
+{
+	FInv_SlotAvailabilityResult Result;
+	Result.TotalRoomToFill = 1;
+	
+	return Result;
+}
+
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
 {
-	if (!MatchesCategory(Item))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("InventoryGrid::AddItem 成功"));
-	}
+	if (!MatchesCategory(Item)) return;
+
+	//UE_LOG(LogTemp, Warning, TEXT("InventoryGrid::AddItem 成功"));
+
+	FInv_SlotAvailabilityResult Result = HasRoomForItem(Item);
+
+	//TODO : 接下来的任务是创建一个用于显示物品图标的控件，并将其添加到网格的正确位置
 }
 
 void UInv_InventoryGrid::ConstructGrid()
@@ -49,10 +71,8 @@ void UInv_InventoryGrid::ConstructGrid()
 			GridCPS->SetPosition(TilePosition * TileSize);
 
 			GridSlots.Add(GridSlot);
-
 		}
 	}
-	
 }
 
 bool UInv_InventoryGrid::MatchesCategory(const UInv_InventoryItem* Item) const

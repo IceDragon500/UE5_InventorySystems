@@ -8,6 +8,7 @@
 #include "Types/Inv_GridTypes.h"
 #include "Inv_InventoryGrid.generated.h"
 
+class UInv_ItemComponent;
 class UInv_InventoryComponent;
 class UCanvasPanel;
 class UInv_GridSlot;
@@ -30,11 +31,18 @@ class INVENTORY_API UInv_InventoryGrid : public UUserWidget
 public:
 	
 	virtual void NativeOnInitialized() override;
-	
+
+	//获取道具栏的类型
 	EInv_ItemCategory GetItemCategory() const { return ItemCategory; }
+
+	//通过传入道具的item component来判断道具栏是否还有空间
+	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_ItemComponent* ItemComponent);
+
+	
 
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
+
 
 protected:
 
@@ -42,9 +50,15 @@ private:
 
 	TWeakObjectPtr<UInv_InventoryComponent> InventoryComponent;
 
+	//通过传入道具的item来判断道具栏是否还有空间
+	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* Item);
+
+	FInv_SlotAvailabilityResult HasRoomForItem(const FInv_ItemManifest& ItemManifest);
+
 	//构造道具格子
 	void ConstructGrid();
 
+	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="Inventory")
 	EInv_ItemCategory ItemCategory {EInv_ItemCategory::Equippable};
 

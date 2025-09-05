@@ -66,6 +66,7 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 
 void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount)
 {
+	//创建一个新的库存道具
 	UInv_InventoryItem* NewItem = InventoryList.AddEntry(ItemComponent);
 
 	//NM_ListenServer 作为服务器的客户端

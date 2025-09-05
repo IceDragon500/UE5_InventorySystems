@@ -73,7 +73,7 @@
 
 ✅31. Image Fragment 图像片段
 
-32. Inventory Grid Check 库存网格检查
+✅32. Inventory Grid Check 库存网格检查
 
 33. Add Item To Indices 添加物品到索引位置
 
