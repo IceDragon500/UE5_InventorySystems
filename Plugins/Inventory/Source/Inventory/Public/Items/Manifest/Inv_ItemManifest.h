@@ -33,6 +33,9 @@ struct INVENTORY_API FInv_ItemManifest
 	 */
 	FGameplayTag GetItemTag() const { return ItemTypeTag; }
 
+	template<typename T> requires std::derived_from<T, FInv_ItemFragment>
+	const T* GetFragmentOfTypeWithTag(const FGameplayTag& FragmentTag) const ;
+
 private:
 
 	//用来保存道具的各种“词条”Fragment
@@ -50,7 +53,20 @@ private:
 	//物品的类型Tag
 	UPROPERTY(editAnywhere, Category="属性设置", meta=(Categories="GameItems")) //添加一个 UPROPERTY(meta = (Categories = "GameItems")) 来筛选编辑器下拉菜单中的标签，使其仅显示以 GameItems 开头的标签
 	FGameplayTag ItemTypeTag {FGameplayTag()};
-
-	
 	
 };
+
+
+template<typename T> requires std::derived_from<T, FInv_ItemFragment> //requires : 现在这个函数要求 T 必须基于 item fragment 34讲
+const T* FInv_ItemManifest::GetFragmentOfTypeWithTag(const FGameplayTag& FragmentTag) const
+{
+	for (const TInstancedStruct<FInv_ItemFragment>& Fragment : Fragments)
+	{
+		if (const T* FragmentPtr = Fragment.GetPtr<T>())
+		{
+			if (!FragmentPtr->GetFragmentTag().MatchesTagExact(FragmentTag)) continue;
+			return FragmentPtr;
+		}
+	}
+	return nullptr;
+}

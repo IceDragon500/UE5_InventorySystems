@@ -77,7 +77,7 @@
 
 ✅33. Add Item To Indices 添加物品到索引位置
 
-34. Get Fragment Utilities 获取片段工具函数
+✅34. Get Fragment Utilities 获取片段工具函数
 
 35. Slotted Item 槽位物品（UI元素）
 
