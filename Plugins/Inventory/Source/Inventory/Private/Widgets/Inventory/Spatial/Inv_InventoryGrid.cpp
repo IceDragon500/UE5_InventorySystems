@@ -12,6 +12,7 @@
 #include "Items/Fragments/Inv_FragmentTags.h"
 #include "Items/Fragments/Inv_ItemFragment.h"
 #include "Widgets/Inventory/GridSlots/Inv_GridSlot.h"
+#include "Widgets/Inventory/SlottedItems/Inv_SlottedItems.h"
 #include "Widgets/Utils/Inv_WidgetUtils.h"
 
 void UInv_InventoryGrid::NativeOnInitialized()
@@ -65,17 +66,44 @@ void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
 
 void UInv_InventoryGrid::AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem)
 {
-	//TODO
+
+	for (const auto& Available : Result.SlotAvailabilities)
+	{
+		AddItemAtIndex(NewItem, Available.Index, Result.bStackable, Available.AmountToFill);
+	}
+	
+}
+
+void UInv_InventoryGrid::AddItemAtIndex(UInv_InventoryItem* Item, const int32 Index, const bool bStackable, const int32 StackAmount)
+{
 	//设定获取网格片段的功能，以便了解物品占据多少个网格空间
-	const FInv_GridFragment* GridFragment = GetFragment<FInv_GridFragment>(NewItem, FragmentTags::GridFragment);
+	const FInv_GridFragment* GridFragment = GetFragment<FInv_GridFragment>(Item, FragmentTags::GridFragment);
 	//获取图像片段，因为我们要向网格中添加一个小部件，所以需要知道这个特定物品将使用什么纹理或图标
-	const FInv_ImageFragment* ImageFragment = GetFragment<FInv_ImageFragment>(NewItem, FragmentTags::IconFragment);
+	const FInv_ImageFragment* ImageFragment = GetFragment<FInv_ImageFragment>(Item, FragmentTags::IconFragment);
 	if (!GridFragment || !ImageFragment) return;
 
+	UInv_SlottedItems* SlottedItem = CreateSlottedItem(Item, bStackable, StackAmount, GridFragment, ImageFragment, Index);
+
+	//将槽位物品添加到画布面板上
+
 	
-	
-	//创建一个控件添加到网格中
 	//需要将这个新创建的小部件存储在一个数组或某种容器中，以便在丢弃物品、消耗物品、销毁物品或进行任何此类操作时能够移除它
+
+	
+}
+
+UInv_SlottedItems* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable,
+	const int32 StackAmount, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index)
+{
+	UInv_SlottedItems* SlottedItems = CreateWidget<UInv_SlottedItems>(GetOwningPlayer(), SlottedItemsClass);
+	SlottedItems->SetInventoryItem(Item);
+	
+	SetSlottedItemImage(SlottedItems, GridFragment, ImageFragment);
+
+	//创建一个控件添加到网格中
+	SlottedItems->SetGridIndex(Index);
+
+	return SlottedItems;
 }
 
 void UInv_InventoryGrid::ConstructGrid()
@@ -105,4 +133,20 @@ void UInv_InventoryGrid::ConstructGrid()
 bool UInv_InventoryGrid::MatchesCategory(const UInv_InventoryItem* Item) const
 {
 	return Item->GetItemManifest().GetItemCategory() == ItemCategory;
+}
+
+FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment)
+{
+	const float IconTileWidth = TileSize - GridFragment->GetGridPadding() * 2;
+	return GridFragment->GetGridSize() * IconTileWidth;
+}
+
+void UInv_InventoryGrid::SetSlottedItemImage(UInv_SlottedItems* SlottedItem, const FInv_GridFragment* GridFragment,
+	const FInv_ImageFragment* ImageFragment)
+{
+	FSlateBrush Brush;
+	Brush.SetResourceObject(ImageFragment->GetIcon());
+	Brush.DrawAs = ESlateBrushDrawType::Image;
+	Brush.ImageSize = GetDrawSize(GridFragment);
+	SlottedItem->SetImageBrush(Brush);
 }

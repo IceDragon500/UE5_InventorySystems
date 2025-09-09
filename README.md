@@ -79,7 +79,7 @@
 
 ✅34. Get Fragment Utilities 获取片段工具函数
 
-35. Slotted Item 槽位物品（UI元素）
+✅35. Slotted Item 槽位物品（UI元素）
 
 36. Add Slotted Item to Canvas 添加槽位物品到画布
 

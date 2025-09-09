@@ -5,9 +5,12 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Items/Inv_InventoryItem.h"
+#include "Items/Fragments/Inv_ItemFragment.h"
 #include "Types/Inv_GridTypes.h"
 #include "Inv_InventoryGrid.generated.h"
 
+struct FInv_GridFragment;
+class UInv_SlottedItems;
 class UInv_ItemComponent;
 class UInv_InventoryComponent;
 class UCanvasPanel;
@@ -49,6 +52,9 @@ private:
 
 	TWeakObjectPtr<UInv_InventoryComponent> InventoryComponent;
 
+	//构造道具格子
+	void ConstructGrid();
+
 	//通过传入道具的item来判断道具栏是否还有空间
 	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* Item);
 
@@ -56,9 +62,21 @@ private:
 
 	//接收我们的槽位可用性结果以及物品本身，然后由它来处理后续事宜（Indices : index的复数）
 	void AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem);
+	
+	/**
+	 * 检查添加的物品类别是否与此物品栏的物品类别匹配
+	 * @param Item 被添加的物品
+	 * @return
+	 */
+	bool MatchesCategory(const UInv_InventoryItem* Item) const;
 
-	//构造道具格子
-	void ConstructGrid();
+	FVector2D GetDrawSize(const FInv_GridFragment* GridFragment);
+
+	void SetSlottedItemImage(UInv_SlottedItems* SlottedItem, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment);
+
+	void AddItemAtIndex(UInv_InventoryItem* Item, const int32 Index, const bool bStackable, const int32 StackAmount);
+
+	UInv_SlottedItems* CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable, const int32 StackAmount, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index);
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="Inventory")
@@ -74,6 +92,10 @@ private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UCanvasPanel> CanvasPanel;
 
+	//设置生成道具的UserWidget类
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UInv_SlottedItems> SlottedItemsClass;
+
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	int32 Rows { 1 };//行
 
@@ -83,10 +105,5 @@ private:
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	float TileSize { 20.f };//单个格子的大小 - 边长
 
-	/**
-	 * 检查添加的物品类别是否与此物品栏的物品类别匹配
-	 * @param Item 被添加的物品
-	 * @return 
-	 */
-	bool MatchesCategory(const UInv_InventoryItem* Item) const;
+
 };
