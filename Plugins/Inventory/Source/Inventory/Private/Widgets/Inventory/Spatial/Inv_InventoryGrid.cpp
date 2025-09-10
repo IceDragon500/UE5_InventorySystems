@@ -12,7 +12,7 @@
 #include "Items/Fragments/Inv_FragmentTags.h"
 #include "Items/Fragments/Inv_ItemFragment.h"
 #include "Widgets/Inventory/GridSlots/Inv_GridSlot.h"
-#include "Widgets/Inventory/SlottedItems/Inv_SlottedItems.h"
+#include "Widgets/Inventory/SlottedItems/Inv_SlottedItem.h"
 #include "Widgets/Utils/Inv_WidgetUtils.h"
 
 void UInv_InventoryGrid::NativeOnInitialized()
@@ -82,20 +82,21 @@ void UInv_InventoryGrid::AddItemAtIndex(UInv_InventoryItem* Item, const int32 In
 	const FInv_ImageFragment* ImageFragment = GetFragment<FInv_ImageFragment>(Item, FragmentTags::IconFragment);
 	if (!GridFragment || !ImageFragment) return;
 
-	UInv_SlottedItems* SlottedItem = CreateSlottedItem(Item, bStackable, StackAmount, GridFragment, ImageFragment, Index);
+	UInv_SlottedItem* SlottedItem = CreateSlottedItem(Item, bStackable, StackAmount, GridFragment, ImageFragment, Index);
 
 	//将槽位物品添加到画布面板上
+	AddSlottedItemToCanvas(Index, GridFragment, SlottedItem);
 
 	
 	//需要将这个新创建的小部件存储在一个数组或某种容器中，以便在丢弃物品、消耗物品、销毁物品或进行任何此类操作时能够移除它
-
+	SlottedItemMap.Add(Index, SlottedItem);
 	
 }
 
-UInv_SlottedItems* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable,
+UInv_SlottedItem* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable,
 	const int32 StackAmount, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index)
 {
-	UInv_SlottedItems* SlottedItems = CreateWidget<UInv_SlottedItems>(GetOwningPlayer(), SlottedItemsClass);
+	UInv_SlottedItem* SlottedItems = CreateWidget<UInv_SlottedItem>(GetOwningPlayer(), SlottedItemsClass);
 	SlottedItems->SetInventoryItem(Item);
 	
 	SetSlottedItemImage(SlottedItems, GridFragment, ImageFragment);
@@ -104,6 +105,26 @@ UInv_SlottedItems* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Ite
 	SlottedItems->SetGridIndex(Index);
 
 	return SlottedItems;
+}
+
+void UInv_InventoryGrid::AddSlottedItemToCanvas(const int32 Index, const FInv_GridFragment* GridFragment,
+	UInv_SlottedItem* SlottedItem) const
+{
+	CanvasPanel->AddChild(SlottedItem);
+	UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(SlottedItem);
+	CanvasSlot->SetSize(GetDrawSize(GridFragment));
+	const FVector2D DrawPos = UInv_WidgetUtils::GetPositionFromIndex(Index, Columns) * TileSize;
+	const FVector2D DrawPosWithPadding = DrawPos + FVector2D(GridFragment->GetGridPadding());
+
+	CanvasSlot->SetPosition(DrawPosWithPadding);
+	
+	
+}
+
+FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment) const
+{
+	const float IconTileWidth = TileSize - GridFragment->GetGridPadding() * 2;
+	return GridFragment->GetGridSize() * IconTileWidth;
 }
 
 void UInv_InventoryGrid::ConstructGrid()
@@ -135,13 +156,7 @@ bool UInv_InventoryGrid::MatchesCategory(const UInv_InventoryItem* Item) const
 	return Item->GetItemManifest().GetItemCategory() == ItemCategory;
 }
 
-FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment)
-{
-	const float IconTileWidth = TileSize - GridFragment->GetGridPadding() * 2;
-	return GridFragment->GetGridSize() * IconTileWidth;
-}
-
-void UInv_InventoryGrid::SetSlottedItemImage(UInv_SlottedItems* SlottedItem, const FInv_GridFragment* GridFragment,
+void UInv_InventoryGrid::SetSlottedItemImage(UInv_SlottedItem* SlottedItem, const FInv_GridFragment* GridFragment,
 	const FInv_ImageFragment* ImageFragment)
 {
 	FSlateBrush Brush;

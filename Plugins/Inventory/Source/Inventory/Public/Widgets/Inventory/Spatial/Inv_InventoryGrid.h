@@ -10,7 +10,7 @@
 #include "Inv_InventoryGrid.generated.h"
 
 struct FInv_GridFragment;
-class UInv_SlottedItems;
+class UInv_SlottedItem;
 class UInv_ItemComponent;
 class UInv_InventoryComponent;
 class UCanvasPanel;
@@ -70,16 +70,18 @@ private:
 	 */
 	bool MatchesCategory(const UInv_InventoryItem* Item) const;
 
-	FVector2D GetDrawSize(const FInv_GridFragment* GridFragment);
+	FVector2D GetDrawSize(const FInv_GridFragment* GridFragment) const;
 
-	void SetSlottedItemImage(UInv_SlottedItems* SlottedItem, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment);
+	void SetSlottedItemImage(UInv_SlottedItem* SlottedItem, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment);
 
 	void AddItemAtIndex(UInv_InventoryItem* Item, const int32 Index, const bool bStackable, const int32 StackAmount);
 
-	UInv_SlottedItems* CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable, const int32 StackAmount, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index);
+	UInv_SlottedItem* CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable, const int32 StackAmount, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index);
+
+	void AddSlottedItemToCanvas(const int32 Index, const FInv_GridFragment* GridFragment, UInv_SlottedItem* SlottedItem) const;
 
 	//道具栏的类型
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="Inventory")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
 	EInv_ItemCategory ItemCategory {EInv_ItemCategory::Equippable};
 
 	//道具格子数组
@@ -94,13 +96,17 @@ private:
 
 	//设置生成道具的UserWidget类
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	TSubclassOf<UInv_SlottedItems> SlottedItemsClass;
+	TSubclassOf<UInv_SlottedItem> SlottedItemsClass;
+
+	//建立网格数组的索引和实机的槽位物品之间的映射关系
+	UPROPERTY()
+	TMap<int32, TObjectPtr<UInv_SlottedItem>> SlottedItemMap;
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	int32 Rows { 1 };//行
+	int32 Rows { 1 };//道具栏的行 从上到下有多少行
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	int32 Columns { 1 };//列
+	int32 Columns { 1 };//道具栏的列 从左到右有多少列
 	
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	float TileSize { 20.f };//单个格子的大小 - 边长

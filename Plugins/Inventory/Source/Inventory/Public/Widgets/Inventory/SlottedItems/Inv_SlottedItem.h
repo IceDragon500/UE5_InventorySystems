@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Items/Inv_InventoryItem.h"
-#include "Inv_SlottedItems.generated.h"
+#include "Inv_SlottedItem.generated.h"
 
 class UImage;
 /**
@@ -13,7 +13,7 @@ class UImage;
  * 图标
  */
 UCLASS()
-class INVENTORY_API UInv_SlottedItems : public UUserWidget
+class INVENTORY_API UInv_SlottedItem : public UUserWidget
 {
 	GENERATED_BODY()
 
