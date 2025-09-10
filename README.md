@@ -83,7 +83,7 @@
 
 ✅36. Add Slotted Item to Canvas 添加槽位物品到画布
 
-37. Grid Slot Textures 网格槽位纹理
+✅37. Grid Slot Textures 网格槽位纹理
 
 38. For Each 2D 二维循环遍历
 

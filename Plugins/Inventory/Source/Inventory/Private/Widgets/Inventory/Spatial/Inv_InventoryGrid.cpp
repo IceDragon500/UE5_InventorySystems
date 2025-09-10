@@ -70,6 +70,7 @@ void UInv_InventoryGrid::AddItemToIndices(const FInv_SlotAvailabilityResult& Res
 	for (const auto& Available : Result.SlotAvailabilities)
 	{
 		AddItemAtIndex(NewItem, Available.Index, Result.bStackable, Available.AmountToFill);
+		UpdateGridSlots(NewItem, Available.Index);
 	}
 	
 }
@@ -118,6 +119,15 @@ void UInv_InventoryGrid::AddSlottedItemToCanvas(const int32 Index, const FInv_Gr
 
 	CanvasSlot->SetPosition(DrawPosWithPadding);
 	
+	
+}
+
+void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int32 Index)
+{
+	check(GridSlots.IsValidIndex(Index));
+
+	UInv_GridSlot* GridSlot = GridSlots[Index];
+	GridSlot->SetOccupiedTexture();
 	
 }
 
