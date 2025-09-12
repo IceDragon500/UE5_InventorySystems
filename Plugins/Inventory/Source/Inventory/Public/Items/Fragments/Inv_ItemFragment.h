@@ -7,9 +7,8 @@
 #include "Inv_ItemFragment.generated.h"
 
 /**
- * 物品片段
- * 基础结构体
- *
+ * 物品片段的基类
+ * 
  * 我们将道具的每个属性理解为“片段”Fragment
  *
  * 例如，道具名称，道具堆叠数量，道具占用格子的大小，道具价值，道具重量，道具描述，道具伤害，道具属性之类的，我们将其拆分成一个个的Fragment
@@ -54,7 +53,7 @@ private:
 };
 
 /**
- * 继承自FInv_ItemFragment
+ * 道具片段：占用格子相关的信息
  *
  * GridSize 道具在道具栏中占用多少格子
  *
@@ -84,7 +83,7 @@ private:
 };
 
 /**
- * 道具的图标属性片段
+ * 属性片段：道具图标
  */
 USTRUCT(BlueprintType)
 struct FInv_ImageFragment : public FInv_ItemFragment
@@ -102,6 +101,27 @@ private:
 	//图标的大小
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FVector2D IconDimensions{44.f, 44.f};
+	
+};
+
+/**
+ * 属性片段：道具数量
+ */
+USTRUCT(BlueprintType)
+struct FInv_StackableFragment : public FInv_ItemFragment
+{
+	GENERATED_BODY()
+
+	int32 GetMaxStackSize() const { return MaxStackSize; }
+	int32 GetStackCount() const { return StackCount; }
+
+private:
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	int32 MaxStackSize{1};//最大堆叠数量
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	int32 StackCount{1};//当前堆叠数量
 	
 };
 

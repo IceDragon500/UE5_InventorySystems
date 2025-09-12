@@ -12,5 +12,6 @@ namespace FragmentTags
 {
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GridFragment) //网格片段
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(IconFragment) //道具图标片段
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(StackableFragment) //道具堆叠数量片段
 
 }
