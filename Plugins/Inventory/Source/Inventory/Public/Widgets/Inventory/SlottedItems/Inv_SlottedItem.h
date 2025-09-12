@@ -7,6 +7,7 @@
 #include "Items/Inv_InventoryItem.h"
 #include "Inv_SlottedItem.generated.h"
 
+class UTextBlock;
 class UImage;
 /**
  * 插槽物品：在UserWidget上的表示
@@ -29,10 +30,12 @@ public:
 	void SetGridDiemsions(const FIntPoint& InDimensions) { GridDimensions = InDimensions; }
 	FIntPoint GetGridDimensions() const { return GridDimensions; }
 
-	void SetInventoryItem(UInv_InventoryItem* Item) { InventoryItem = Item; }
+	void SetInventoryItem(UInv_InventoryItem* Item);
 	UInv_InventoryItem* GetInventoryItem() const { return InventoryItem.Get(); }
 
 	void SetImageBrush(const FSlateBrush& Brush) const;
+
+	void UpdateStackCount(int32 InCount);
 
 protected:
 
@@ -40,6 +43,9 @@ private:
 
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UImage> Image_Icon;
+
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UTextBlock> Text_StackCount;
 
 	//道具在背包中的Index序号
 	int32 GridIndex{0};

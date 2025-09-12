@@ -89,7 +89,7 @@
 
 ✅39. Stackable Fragment 可堆叠片段
 
-40. Stack Count 堆叠数量
+✅40. Stack Count 堆叠数量
 
 41. Updating Grid Slots 更新网格槽位
 
