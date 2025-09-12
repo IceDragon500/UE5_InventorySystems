@@ -85,7 +85,7 @@
 
 ✅37. Grid Slot Textures 网格槽位纹理
 
-38. For Each 2D 二维循环遍历
+✅38. For Each 2D 二维循环遍历
 
 39. Stackable Fragment 可堆叠片段
 
