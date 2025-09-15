@@ -36,6 +36,18 @@ public:
 	EInv_GridSlotState GetSlotState() const { return GridSlotState; }
 	void SetSlotState(EInv_GridSlotState NewState) { GridSlotState = NewState; }
 
+	TWeakObjectPtr<UInv_InventoryItem> GetInventoryItem() const { return InventoryItem; }
+	void SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item);
+
+	void SetUpperLeftIndex(int32 Index) { UpperLeftIndex = Index; }
+	int32 GetUpperLeftIndex() const { return UpperLeftIndex; }
+
+	void SetStackCount(int32 Count) { StackCount = Count; }
+	int32 GetStackCount() const { return StackCount; }
+
+	void SetAvailable(bool bAble) { bAvailable = bAble; }
+	bool GetAvailable() const { return bAvailable; }
+
 	void SetUnoccupiedTexture();
 	void SetOccupiedTexture();
 	void SetSelectedTexture();
@@ -45,7 +57,11 @@ protected:
 
 private:
 	
-	int32 TileIndex {0};
+	int32 TileIndex {0};//单个格子的索引Index
+	int32 StackCount{0};//单个格子的堆叠数量
+	int32 UpperLeftIndex{INDEX_NONE};//任何给定物品的左上角索引
+	TWeakObjectPtr<UInv_InventoryItem> InventoryItem;//这个格子指向的具体道具的弱指针
+	bool bAvailable{false};//是否可用
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Image_GridSlot;

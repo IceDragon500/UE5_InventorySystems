@@ -91,7 +91,7 @@
 
 ✅40. Stack Count 堆叠数量
 
-41. Updating Grid Slots 更新网格槽位
+✅41. Updating Grid Slots 更新网格槽位
 
 
 ### 第5节 寻找归属之地 (Searching for a Place to Belong)

@@ -5,6 +5,11 @@
 
 #include "Components/Image.h"
 
+void UInv_GridSlot::SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item)
+{
+	InventoryItem = Item;
+}
+
 void UInv_GridSlot::SetUnoccupiedTexture()
 {
 	GridSlotState = EInv_GridSlotState::Unoccupied;
