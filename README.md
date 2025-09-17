@@ -96,9 +96,9 @@
 
 ### 第5节 寻找归属之地 (Searching for a Place to Belong)
 
-42. Has Room For Item - The Plan 判断是否有空间存放物品 - 计划
+✅42. Has Room For Item - The Plan 判断是否有空间存放物品 - 计划
 
-43. Is the Item Stackable 物品是否可堆叠
+✅43. Is the Item Stackable 物品是否可堆叠
 
 44. How Many Stacks to Add 需要添加多少堆叠
 

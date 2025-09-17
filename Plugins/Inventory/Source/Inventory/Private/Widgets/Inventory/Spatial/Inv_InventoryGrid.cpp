@@ -37,7 +37,9 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const UInv_Invent
 
 FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemManifest& ItemManifest)
 {
+	/* 42讲注释掉了这些内容
 	FInv_SlotAvailabilityResult Result;
+	
 	Result.TotalRoomToFill = 7;
 	Result.bStackable = true;
 
@@ -53,6 +55,35 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 
 	//MoveTemp会将引用强制转换为右值引用。这是UE的std::move的等效函数
 	//除了当传递右值或const对象时它不会编译，因为我们更希望MoveTemp没有作用时被告知。
+	*/
+
+	FInv_SlotAvailabilityResult Result;
+
+	//确定该物品是否可堆叠
+	//如果那里有一个物品且不可堆叠，那么这个索引就不可用
+	//如果那里有一个物品且可堆叠，那么我们必须检查该物品是否与我们尝试放置的物品是什么
+	const FInv_StackableFragment* StackableFragment = ItemManifest.GetFragmentOfType<FInv_StackableFragment>();
+	Result.bStackable = StackableFragment != nullptr;
+
+	//如果它是可堆叠的，我们需要确定要添加多少个堆叠
+	//如果拾取的数量超过了堆叠的数量，我们就必须遍历库存中的每个网格槽位进行检查
+	//但在最坏的情况下，我们不得不检查每一个槽位
+
+	//对于每个网格槽位，我们都需要执行一些操作 For each Grid Slot:
+		//如果没有更多需要填充的，就提前跳出，或者简单地说提前退出循环
+		//这个索引是否已被占用
+		//如果这是一个有效的槽位，物品能否放得下,是在检查那些网格尺寸，即物品占用了多少个方格 它是否超出了网格的边界
+		//这个索引位置有空位吗 是否有其他物品挡在路上
+		//检查其他任何重要条件 ForEach2D 遍历一个二维范围内的方格(例如一个披风占据了2x3 6个格子，我们需要再进行一个循环来遍历这6个格子是否可用)
+			//索引是否已被声明
+			//拥有有效物品
+			//如果存在有效物品，我们可以问这个物品是否与我们试图添加的物品类型相同
+			//如果是的话，这是可堆叠的物品吗
+			//如果可堆叠的槽位已经达到最大尺寸，或者我应该说已经达到最大堆叠尺寸，那么它是否处于最大容量
+		//要填充多少
+		//更新数量 剩余待填充
+	
+	//当我们遍历完每个槽位后，剩余的数量是多少
 	
 	return Result;
 }
