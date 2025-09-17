@@ -68,6 +68,8 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 	//如果它是可堆叠的，我们需要确定要添加多少个堆叠
 	//如果拾取的数量超过了堆叠的数量，我们就必须遍历库存中的每个网格槽位进行检查
 	//但在最坏的情况下，我们不得不检查每一个槽位
+	const int32 MaxStackSize = StackableFragment ? StackableFragment->GetMaxStackSize() : 1;
+	int32 AmountTolFill = StackableFragment ? StackableFragment->GetStackCount() : 1;
 
 	//对于每个网格槽位，我们都需要执行一些操作 For each Grid Slot:
 		//如果没有更多需要填充的，就提前跳出，或者简单地说提前退出循环

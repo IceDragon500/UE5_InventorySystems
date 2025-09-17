@@ -100,7 +100,7 @@
 
 ✅43. Is the Item Stackable 物品是否可堆叠
 
-44. How Many Stacks to Add 需要添加多少堆叠
+✅44. How Many Stacks to Add 需要添加多少堆叠
 
 45. Exiting the Loop Early 提前退出循环
 
