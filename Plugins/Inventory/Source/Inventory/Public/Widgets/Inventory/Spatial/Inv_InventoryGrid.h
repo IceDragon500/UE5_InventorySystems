@@ -7,6 +7,7 @@
 #include "Items/Inv_InventoryItem.h"
 #include "Items/Fragments/Inv_ItemFragment.h"
 #include "Types/Inv_GridTypes.h"
+#include "Widgets/Inventory/GridSlots/Inv_GridSlot.h"
 #include "Inv_InventoryGrid.generated.h"
 
 struct FInv_GridFragment;
@@ -83,6 +84,10 @@ private:
 	void UpdateGridSlots(UInv_InventoryItem* NewItem, const int32 Index, bool bStackableItem, const int32 StackAmount);
 
 	bool IsIndexClaimed(TSet<int32>& CheckedIndices, const int32 Index) const;
+
+	bool HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions);
+
+	FIntPoint GetItemDimensions(const FInv_ItemManifest& ItemManifest) const;
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
