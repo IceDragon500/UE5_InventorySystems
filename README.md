@@ -108,7 +108,7 @@
 
 ✅47. Has Room at Index 在索引位置是否有空间
 
-48. Check Slot Constraints 检查槽位约束
+✅48. Check Slot Constraints 检查槽位约束
 
 49. Is Index Claimed...Again 索引位置是否已被占用...再次检查
 

@@ -85,19 +85,16 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 		if (IsIndexClaimed(CheckedIndices, GirdSlot->GetTileIndex())) continue;
 
 		//如果这是一个有效的槽位，物品能否放得下,是在检查那些网格尺寸，即物品占用了多少个方格 它是否超出了网格的边界
-		
-		if (!HasRoomAtIndex(GirdSlot, GetItemDimensions(ItemManifest)))
+		TSet<int32> TentativelyClaimed; //可能被占用的索引
+		if (!HasRoomAtIndex(GirdSlot, GetItemDimensions(ItemManifest), CheckedIndices, TentativelyClaimed))
 		{
 			continue;
 		}
+
+		CheckedIndices.Append(TentativelyClaimed);
 		
-		//这个索引位置有空位吗 是否有其他物品挡在路上
-		//检查其他任何重要条件 ForEach2D 遍历一个二维范围内的方格(例如一个披风占据了2x3 6个格子，我们需要再进行一个循环来遍历这6个格子是否可用)
-			//索引是否已被声明
-			//拥有有效物品
-			//如果存在有效物品，我们可以问这个物品是否与我们试图添加的物品类型相同
-			//如果是的话，这是可堆叠的物品吗
-			//如果可堆叠的槽位已经达到最大尺寸，或者我应该说已经达到最大堆叠尺寸，那么它是否处于最大容量
+		
+		
 		//要填充多少
 		//更新数量 剩余待填充
 	}
@@ -211,13 +208,22 @@ bool UInv_InventoryGrid::IsIndexClaimed(TSet<int32>& CheckedIndices, const int32
 	return CheckedIndices.Contains(Index);
 }
 
-bool UInv_InventoryGrid::HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions)
+bool UInv_InventoryGrid::HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions, const TSet<int32>& CheckedIndices, TSet<int32>& OutTentativelyClaimed)
 {
+	//这个索引位置有空位吗 是否有其他物品挡在路上
+	
 	bool bHasRoomAtIndex = true;
 
-	UInv_InventoryStatics::ForEach2D(GridSlots, GridSlot->GetTileIndex(), Dimensions, Columns, []()
+	UInv_InventoryStatics::ForEach2D(GridSlots, GridSlot->GetTileIndex(), Dimensions, Columns, [&](const UInv_GridSlot* SubGridSlot)
 	{
-		
+		if (CheckSlotConstraints(SubGridSlot))
+		{
+			OutTentativelyClaimed.Add(SubGridSlot->GetTileIndex());
+		}
+		else
+		{
+			bHasRoomAtIndex = false;
+		}
 	});
 
 
@@ -229,6 +235,17 @@ FIntPoint UInv_InventoryGrid::GetItemDimensions(const FInv_ItemManifest& ItemMan
 {
 	const FInv_GridFragment* GridFragment = ItemManifest.GetFragmentOfType<FInv_GridFragment>();
 	return  GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
+}
+
+bool UInv_InventoryGrid::CheckSlotConstraints(const UInv_GridSlot* SubGridSlot) const
+{
+	//检查其他任何重要条件 ForEach2D 遍历一个二维范围内的方格(例如一个披风占据了2x3 6个格子，我们需要再进行一个循环来遍历这6个格子是否可用)
+			//索引是否已被声明
+			//拥有有效物品
+			//如果存在有效物品，我们可以问这个物品是否与我们试图添加的物品类型相同
+			//如果是的话，这是可堆叠的物品吗
+			//如果可堆叠的槽位已经达到最大尺寸，或者我应该说已经达到最大堆叠尺寸，那么它是否处于最大容量
+	return false;
 }
 
 FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment) const

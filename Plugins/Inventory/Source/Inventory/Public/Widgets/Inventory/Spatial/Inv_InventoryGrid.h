@@ -85,9 +85,11 @@ private:
 
 	bool IsIndexClaimed(TSet<int32>& CheckedIndices, const int32 Index) const;
 
-	bool HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions);
+	bool HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions, const TSet<int32>& CheckedIndices, TSet<int32>& OutTentativelyClaimed);
 
 	FIntPoint GetItemDimensions(const FInv_ItemManifest& ItemManifest) const;
+
+	bool CheckSlotConstraints(const UInv_GridSlot* SubGridSlot) const;
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
