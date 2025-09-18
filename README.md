@@ -102,9 +102,9 @@
 
 ✅44. How Many Stacks to Add 需要添加多少堆叠
 
-45. Exiting the Loop Early 提前退出循环
+✅45. Exiting the Loop Early 提前退出循环
 
-46. Is Index Claimed 索引位置是否已被占用
+✅46. Is Index Claimed 索引位置是否已被占用
 
 47. Has Room at Index 在索引位置是否有空间
 

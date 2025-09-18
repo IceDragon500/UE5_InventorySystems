@@ -71,9 +71,18 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 	const int32 MaxStackSize = StackableFragment ? StackableFragment->GetMaxStackSize() : 1;
 	int32 AmountTolFill = StackableFragment ? StackableFragment->GetStackCount() : 1;
 
+
+	TSet<int32> CheckedIndices;
+	
 	//对于每个网格槽位，我们都需要执行一些操作 For each Grid Slot:
+	for (const auto& GirdSlot : GridSlots)
+	{
 		//如果没有更多需要填充的，就提前跳出，或者简单地说提前退出循环
+		if (AmountTolFill == 0) break;
+		
 		//这个索引是否已被占用
+		if (IsIndexClaimed(CheckedIndices, GirdSlot->GetTileIndex())) continue;
+
 		//如果这是一个有效的槽位，物品能否放得下,是在检查那些网格尺寸，即物品占用了多少个方格 它是否超出了网格的边界
 		//这个索引位置有空位吗 是否有其他物品挡在路上
 		//检查其他任何重要条件 ForEach2D 遍历一个二维范围内的方格(例如一个披风占据了2x3 6个格子，我们需要再进行一个循环来遍历这6个格子是否可用)
@@ -84,6 +93,7 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 			//如果可堆叠的槽位已经达到最大尺寸，或者我应该说已经达到最大堆叠尺寸，那么它是否处于最大容量
 		//要填充多少
 		//更新数量 剩余待填充
+	}
 	
 	//当我们遍历完每个槽位后，剩余的数量是多少
 	
@@ -187,6 +197,11 @@ void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int3
 	});
 	
 	
+}
+
+bool UInv_InventoryGrid::IsIndexClaimed(TSet<int32>& CheckedIndices, const int32 Index) const
+{
+	return CheckedIndices.Contains(Index);
 }
 
 FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment) const
