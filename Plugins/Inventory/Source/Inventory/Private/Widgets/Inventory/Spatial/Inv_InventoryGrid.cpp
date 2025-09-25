@@ -2,9 +2,7 @@
 
 
 #include "Widgets/Inventory/Spatial/Inv_InventoryGrid.h"
-
 #include "Blueprint/WidgetLayoutLibrary.h"
-#include "Commandlets/GatherTextCommandlet.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
@@ -74,33 +72,36 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 
 
 	TSet<int32> CheckedIndices;
-	
+
 	//对于每个网格槽位，我们都需要执行一些操作 For each Grid Slot:
 	for (const auto& GirdSlot : GridSlots)
 	{
 		//如果没有更多需要填充的，就提前跳出，或者简单地说提前退出循环
 		if (AmountTolFill == 0) break;
-		
+
 		//这个索引是否已被占用
 		if (IsIndexClaimed(CheckedIndices, GirdSlot->GetTileIndex())) continue;
 
+		//要判断物品是否在网格边界内
+		if (!IsInGridBounds(GirdSlot->GetTileIndex(), GetItemDimensions(ItemManifest))) continue;
+
 		//如果这是一个有效的槽位，物品能否放得下,是在检查那些网格尺寸，即物品占用了多少个方格 它是否超出了网格的边界
 		TSet<int32> TentativelyClaimed; //可能被占用的索引
-		if (!HasRoomAtIndex(GirdSlot, GetItemDimensions(ItemManifest), CheckedIndices, TentativelyClaimed))
+		if (!HasRoomAtIndex(GirdSlot, GetItemDimensions(ItemManifest), CheckedIndices, TentativelyClaimed,
+		                    ItemManifest.GetItemTag(), MaxStackSize))
 		{
 			continue;
 		}
 
 		CheckedIndices.Append(TentativelyClaimed);
-		
-		
-		
+
+
 		//要填充多少
 		//更新数量 剩余待填充
 	}
-	
+
 	//当我们遍历完每个槽位后，剩余的数量是多少
-	
+
 	return Result;
 }
 
@@ -118,16 +119,15 @@ void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
 
 void UInv_InventoryGrid::AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem)
 {
-
 	for (const auto& Available : Result.SlotAvailabilities)
 	{
 		AddItemAtIndex(NewItem, Available.Index, Result.bStackable, Available.AmountToFill);
 		UpdateGridSlots(NewItem, Available.Index, Result.bStackable, Available.AmountToFill);
 	}
-	
 }
 
-void UInv_InventoryGrid::AddItemAtIndex(UInv_InventoryItem* Item, const int32 Index, const bool bStackable, const int32 StackAmount)
+void UInv_InventoryGrid::AddItemAtIndex(UInv_InventoryItem* Item, const int32 Index, const bool bStackable,
+                                        const int32 StackAmount)
 {
 	//设定获取网格片段的功能，以便了解物品占据多少个网格空间
 	const FInv_GridFragment* GridFragment = GetFragment<FInv_GridFragment>(Item, FragmentTags::GridFragment);
@@ -135,23 +135,24 @@ void UInv_InventoryGrid::AddItemAtIndex(UInv_InventoryItem* Item, const int32 In
 	const FInv_ImageFragment* ImageFragment = GetFragment<FInv_ImageFragment>(Item, FragmentTags::IconFragment);
 	if (!GridFragment || !ImageFragment) return;
 
-	UInv_SlottedItem* SlottedItem = CreateSlottedItem(Item, bStackable, StackAmount, GridFragment, ImageFragment, Index);
+	UInv_SlottedItem* SlottedItem =
+		CreateSlottedItem(Item, bStackable, StackAmount, GridFragment, ImageFragment, Index);
 
 	//将槽位物品添加到画布面板上
 	AddSlottedItemToCanvas(Index, GridFragment, SlottedItem);
 
-	
+
 	//需要将这个新创建的小部件存储在一个数组或某种容器中，以便在丢弃物品、消耗物品、销毁物品或进行任何此类操作时能够移除它
 	SlottedItemMap.Add(Index, SlottedItem);
-	
 }
 
 UInv_SlottedItem* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable,
-	const int32 StackAmount, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index)
+                                                        const int32 StackAmount, const FInv_GridFragment* GridFragment,
+                                                        const FInv_ImageFragment* ImageFragment, const int32 Index)
 {
 	UInv_SlottedItem* SlottedItems = CreateWidget<UInv_SlottedItem>(GetOwningPlayer(), SlottedItemsClass);
 	SlottedItems->SetInventoryItem(Item);
-	
+
 	SetSlottedItemImage(SlottedItems, GridFragment, ImageFragment);
 
 	//创建一个控件添加到网格中
@@ -165,7 +166,7 @@ UInv_SlottedItem* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Item
 }
 
 void UInv_InventoryGrid::AddSlottedItemToCanvas(const int32 Index, const FInv_GridFragment* GridFragment,
-	UInv_SlottedItem* SlottedItem) const
+                                                UInv_SlottedItem* SlottedItem) const
 {
 	CanvasPanel->AddChild(SlottedItem);
 	UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(SlottedItem);
@@ -174,11 +175,10 @@ void UInv_InventoryGrid::AddSlottedItemToCanvas(const int32 Index, const FInv_Gr
 	const FVector2D DrawPosWithPadding = DrawPos + FVector2D(GridFragment->GetGridPadding());
 
 	CanvasSlot->SetPosition(DrawPosWithPadding);
-	
-	
 }
 
-void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int32 Index, bool bStackableItem, const int32 StackAmount)
+void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int32 Index, bool bStackableItem,
+                                         const int32 StackAmount)
 {
 	check(GridSlots.IsValidIndex(Index));
 
@@ -190,7 +190,7 @@ void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int3
 	const FInv_GridFragment* GridFragment = GetFragment<FInv_GridFragment>(NewItem, FragmentTags::GridFragment);
 	if (!GridFragment) return;
 
-	const FIntPoint Dimensions = GridFragment ? GridFragment->GetGridSize() : FIntPoint(1,1);
+	const FIntPoint Dimensions = GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
 
 	UInv_InventoryStatics::ForEach2D(GridSlots, Index, Dimensions, Columns, [&](UInv_GridSlot* GridSlot)
 	{
@@ -199,53 +199,100 @@ void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int3
 		GridSlot->SetOccupiedTexture();
 		GridSlot->SetAvailable(false);
 	});
-	
-	
 }
 
-bool UInv_InventoryGrid::IsIndexClaimed(TSet<int32>& CheckedIndices, const int32 Index) const
+bool UInv_InventoryGrid::IsIndexClaimed(const TSet<int32>& CheckedIndices, const int32 Index) const
 {
 	return CheckedIndices.Contains(Index);
 }
 
-bool UInv_InventoryGrid::HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions, const TSet<int32>& CheckedIndices, TSet<int32>& OutTentativelyClaimed)
+bool UInv_InventoryGrid::HasRoomAtIndex(const UInv_GridSlot* GridSlot, const FIntPoint& Dimensions,
+                                        const TSet<int32>& CheckedIndices, TSet<int32>& OutTentativelyClaimed,
+                                        const FGameplayTag& ItemType, const int32 MaxStackSize)
 {
 	//这个索引位置有空位吗 是否有其他物品挡在路上
-	
+
 	bool bHasRoomAtIndex = true;
 
-	UInv_InventoryStatics::ForEach2D(GridSlots, GridSlot->GetTileIndex(), Dimensions, Columns, [&](const UInv_GridSlot* SubGridSlot)
-	{
-		if (CheckSlotConstraints(SubGridSlot))
-		{
-			OutTentativelyClaimed.Add(SubGridSlot->GetTileIndex());
-		}
-		else
-		{
-			bHasRoomAtIndex = false;
-		}
-	});
+	UInv_InventoryStatics::ForEach2D(GridSlots, GridSlot->GetTileIndex(), Dimensions, Columns,
+	                                 [&](const UInv_GridSlot* SubGridSlot)
+	                                 {
+		                                 if (CheckSlotConstraints(GridSlot, SubGridSlot, CheckedIndices,
+		                                                          OutTentativelyClaimed, ItemType, MaxStackSize))
+		                                 {
+			                                 OutTentativelyClaimed.Add(SubGridSlot->GetTileIndex());
+		                                 }
+		                                 else
+		                                 {
+			                                 bHasRoomAtIndex = false;
+		                                 }
+	                                 });
 
 
-	
 	return bHasRoomAtIndex;
+}
+
+bool UInv_InventoryGrid::CheckSlotConstraints(const UInv_GridSlot* GridSlot, const UInv_GridSlot* SubGridSlot,
+                                              const TSet<int32>& CheckedIndices, TSet<int32>& OutTentativelyClaimed,
+                                              const FGameplayTag& ItemType, const int32 MaxStackSize) const
+{
+	//检查其他任何重要条件 ForEach2D 遍历一个二维范围内的方格(例如一个披风占据了2x3 6个格子，我们需要再进行一个循环来遍历这6个格子是否可用)
+
+	//索引是否已被声明
+	if (IsIndexClaimed(CheckedIndices, SubGridSlot->GetTileIndex())) return false;
+
+	//拥有有效物品
+	if (!HasValidItem(SubGridSlot))
+	{
+		OutTentativelyClaimed.Add(SubGridSlot->GetTileIndex());
+		return true;
+	}
+
+	//这个网格槽位是否是左上角的槽位
+	if (!IsUpperLeftSlot(GridSlot, SubGridSlot)) return false;
+
+	//如果是的话，这是可堆叠的物品吗
+	const UInv_InventoryItem* SubItem = SubGridSlot->GetInventoryItem().Get();
+	if (!SubItem->IsStackable()) return false;
+
+	//如果存在有效物品，我们可以问这个物品是否与我们试图添加的物品类型相同
+	if (!DoesItemTypeMatch(SubItem, ItemType)) return false;
+
+	//如果可堆叠的槽位已经达到最大尺寸，或者我应该说已经达到最大堆叠尺寸，那么它是否处于最大容量
+	if (GridSlot->GetStackCount() >= MaxStackSize) return false;
+
+
+	return true;
 }
 
 FIntPoint UInv_InventoryGrid::GetItemDimensions(const FInv_ItemManifest& ItemManifest) const
 {
 	const FInv_GridFragment* GridFragment = ItemManifest.GetFragmentOfType<FInv_GridFragment>();
-	return  GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
+	return GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
 }
 
-bool UInv_InventoryGrid::CheckSlotConstraints(const UInv_GridSlot* SubGridSlot) const
+bool UInv_InventoryGrid::HasValidItem(const UInv_GridSlot* GridSlot) const
 {
-	//检查其他任何重要条件 ForEach2D 遍历一个二维范围内的方格(例如一个披风占据了2x3 6个格子，我们需要再进行一个循环来遍历这6个格子是否可用)
-			//索引是否已被声明
-			//拥有有效物品
-			//如果存在有效物品，我们可以问这个物品是否与我们试图添加的物品类型相同
-			//如果是的话，这是可堆叠的物品吗
-			//如果可堆叠的槽位已经达到最大尺寸，或者我应该说已经达到最大堆叠尺寸，那么它是否处于最大容量
-	return false;
+	return GridSlot->GetInventoryItem().IsValid();
+}
+
+bool UInv_InventoryGrid::IsUpperLeftSlot(const UInv_GridSlot* GridSlot, const UInv_GridSlot* SubGridSlot) const
+{
+	return SubGridSlot->GetUpperLeftIndex() == GridSlot->GetUpperLeftIndex();
+}
+
+bool UInv_InventoryGrid::DoesItemTypeMatch(const UInv_InventoryItem* SubItem, const FGameplayTag& ItemType) const
+{
+	return SubItem->GetItemManifest().GetItemTag().MatchesTagExact(ItemType);
+}
+
+bool UInv_InventoryGrid::IsInGridBounds(const int32 StartIndex, const FIntPoint& ItemDimensions) const
+{
+	if (StartIndex <0 || StartIndex >= GridSlots.Num()) return false;
+	const int32 EndColum = (StartIndex % Columns) + ItemDimensions.X;
+	const int32 EndRow = (StartIndex / Columns) + ItemDimensions.Y;
+
+	return EndColum <= Columns && EndRow <= Rows;
 }
 
 FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment) const
@@ -284,7 +331,7 @@ bool UInv_InventoryGrid::MatchesCategory(const UInv_InventoryItem* Item) const
 }
 
 void UInv_InventoryGrid::SetSlottedItemImage(UInv_SlottedItem* SlottedItem, const FInv_GridFragment* GridFragment,
-	const FInv_ImageFragment* ImageFragment)
+                                             const FInv_ImageFragment* ImageFragment)
 {
 	FSlateBrush Brush;
 	Brush.SetResourceObject(ImageFragment->GetIcon());

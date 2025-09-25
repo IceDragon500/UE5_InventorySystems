@@ -3,6 +3,7 @@
 
 #include "Items/Inv_InventoryItem.h"
 
+#include "Items/Fragments/Inv_ItemFragment.h"
 #include "Net/UnrealNetwork.h"
 
 void UInv_InventoryItem::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -20,4 +21,10 @@ bool UInv_InventoryItem::IsSupportedForNetworking() const
 void UInv_InventoryItem::SetItemManifest(const FInv_ItemManifest& Manifest)
 {
 	ItemManifest = FInstancedStruct::Make<FInv_ItemManifest>(Manifest);
+}
+
+bool UInv_InventoryItem::IsStackable() const
+{
+	const FInv_StackableFragment* Stackable = GetItemManifest().GetFragmentOfType<FInv_StackableFragment>();
+	return Stackable != nullptr;
 }

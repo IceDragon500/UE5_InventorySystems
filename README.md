@@ -110,19 +110,19 @@
 
 ✅48. Check Slot Constraints 检查槽位约束
 
-49. Is Index Claimed...Again 索引位置是否已被占用...再次检查
+✅49. Is Index Claimed...Again 索引位置是否已被占用...再次检查
 
-50. Is Upper Left Grid Slot 是否为左上角网格槽位
+✅50. Is Upper Left Grid Slot 是否为左上角网格槽位
 
-51. Is Stackable 是否可堆叠
+✅51. Is Stackable 是否可堆叠
 
-52. Does Item Type Match 物品类型是否匹配
+✅52. Does Item Type Match 物品类型是否匹配
 
-53. Is Slot at Max Capacity 槽位是否已达最大容量
+✅53. Is Slot at Max Capacity 槽位是否已达最大容量
 
-54. Is In Grid Bounds 是否在网格边界内
+✅54. Is In Grid Bounds 是否在网格边界内
 
-55. Determine Fill Amount for Slot 确定槽位填充量
+✅55. Determine Fill Amount for Slot 确定槽位填充量
 
 56. Filling in the Results 填充结果
 
