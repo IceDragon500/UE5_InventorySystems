@@ -128,7 +128,7 @@
 
 ✅57. Find First Item by Type 按类型查找首个物品
 
-58. Testing our Algorithm 测试我们的算法
+✅58. Testing our Algorithm 测试我们的算法
 
 
 ### 第6节 添加堆叠 (Adding Stacks)
