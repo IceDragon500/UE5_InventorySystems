@@ -232,6 +232,10 @@ private:
 	
 	bool IsInGridBounds(const int32 StartIndex, const FIntPoint& ItemDimensions) const;
 
+	int32 DetermineFillAmountForSlot(const bool bStackable, const int32 MaxStackSize, const int32 AmountToFill, const UInv_GridSlot* GirdSlot) const;
+
+	int32 GetStackAmount(const UInv_GridSlot* GridSlot) const;
+
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")

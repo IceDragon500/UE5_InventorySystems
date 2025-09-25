@@ -36,26 +36,6 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const UInv_Invent
 
 FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemManifest& ItemManifest)
 {
-	/* 42讲注释掉了这些内容
-	FInv_SlotAvailabilityResult Result;
-	
-	Result.TotalRoomToFill = 7;
-	Result.bStackable = true;
-
-	FInv_SlotAvailability SlotAvailability;
-	SlotAvailability.AmountToFill = 2;
-	SlotAvailability.Index = 0;
-	Result.SlotAvailabilities.Add(MoveTemp(SlotAvailability));
-
-	FInv_SlotAvailability SlotAvailability2;
-	SlotAvailability2.AmountToFill = 5;
-	SlotAvailability2.Index = 1;
-	Result.SlotAvailabilities.Add(MoveTemp(SlotAvailability2));
-
-	//MoveTemp会将引用强制转换为右值引用。这是UE的std::move的等效函数
-	//除了当传递右值或const对象时它不会编译，因为我们更希望MoveTemp没有作用时被告知。
-	*/
-
 	FInv_SlotAvailabilityResult Result;
 
 	//确定该物品是否可堆叠
@@ -74,20 +54,20 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 	TSet<int32> CheckedIndices;
 
 	//对于每个网格槽位，我们都需要执行一些操作 For each Grid Slot:
-	for (const auto& GirdSlot : GridSlots)
+	for (const auto& GridSlot : GridSlots)
 	{
 		//如果没有更多需要填充的，就提前跳出，或者简单地说提前退出循环
 		if (AmountTolFill == 0) break;
 
 		//这个索引是否已被占用
-		if (IsIndexClaimed(CheckedIndices, GirdSlot->GetTileIndex())) continue;
+		if (IsIndexClaimed(CheckedIndices, GridSlot->GetTileIndex())) continue;
 
 		//要判断物品是否在网格边界内
-		if (!IsInGridBounds(GirdSlot->GetTileIndex(), GetItemDimensions(ItemManifest))) continue;
+		if (!IsInGridBounds(GridSlot->GetTileIndex(), GetItemDimensions(ItemManifest))) continue;
 
 		//如果这是一个有效的槽位，物品能否放得下,是在检查那些网格尺寸，即物品占用了多少个方格 它是否超出了网格的边界
 		TSet<int32> TentativelyClaimed; //可能被占用的索引
-		if (!HasRoomAtIndex(GirdSlot, GetItemDimensions(ItemManifest), CheckedIndices, TentativelyClaimed,
+		if (!HasRoomAtIndex(GridSlot, GetItemDimensions(ItemManifest), CheckedIndices, TentativelyClaimed,
 		                    ItemManifest.GetItemTag(), MaxStackSize))
 		{
 			continue;
@@ -97,6 +77,9 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 
 
 		//要填充多少
+		const int32 AmountToFillInSlot = DetermineFillAmountForSlot(Result.bStackable, MaxStackSize, AmountTolFill, GridSlot);
+		if (AmountToFillInSlot == 0) continue;
+		
 		//更新数量 剩余待填充
 	}
 
@@ -293,6 +276,31 @@ bool UInv_InventoryGrid::IsInGridBounds(const int32 StartIndex, const FIntPoint&
 	const int32 EndRow = (StartIndex / Columns) + ItemDimensions.Y;
 
 	return EndColum <= Columns && EndRow <= Rows;
+}
+
+int32 UInv_InventoryGrid::DetermineFillAmountForSlot(const bool bStackable, const int32 MaxStackSize,
+	const int32 AmountToFill, const UInv_GridSlot* GirdSlot) const
+{
+	//计算槽位中的剩余空间
+	const int32 RoomInSlot = MaxStackSize - GetStackAmount(GirdSlot);
+	
+	//如果是可堆叠的，我们需要最小值在填充数量AmountToFill和槽位剩余空间 RooInSlot之间
+	return bStackable ? FMath::Min(AmountToFill, RoomInSlot) : 1;
+}
+
+int32 UInv_InventoryGrid::GetStackAmount(const UInv_GridSlot* GridSlot) const
+{
+	int32 CurrentSlotStackCount = GridSlot->GetStackCount();
+
+	//如果我们所在的槽位不存放堆叠数量,就必须获取实际的堆叠数量
+	//如果我们所在的槽位不存放堆叠数量，那就意味着我们并非左上角
+	if (const int32 UpperLeftIndex = GridSlot->GetUpperLeftIndex() ; UpperLeftIndex!= INDEX_NONE)
+	{
+		UInv_GridSlot* UpperLeftGridSlot = GridSlots[UpperLeftIndex];
+		CurrentSlotStackCount = UpperLeftGridSlot->GetStackCount();
+	}
+	
+	return CurrentSlotStackCount;
 }
 
 FVector2D UInv_InventoryGrid::GetDrawSize(const FInv_GridFragment* GridFragment) const

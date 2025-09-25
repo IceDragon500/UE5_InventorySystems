@@ -30,28 +30,28 @@ class INVENTORY_API UInv_GridSlot : public UUserWidget
 
 public:
 
-	void SetTileIndex(int32 Index) { TileIndex = Index; }
-	int32 GetTileIndex() const { return TileIndex; }
+	void SetTileIndex(int32 Index) { TileIndex = Index; } //单个格子的索引Index
+	int32 GetTileIndex() const { return TileIndex; } //单个格子的索引Index
 
-	EInv_GridSlotState GetSlotState() const { return GridSlotState; }
-	void SetSlotState(EInv_GridSlotState NewState) { GridSlotState = NewState; }
+	void SetStackCount(int32 Count) { StackCount = Count; }//单个格子的堆叠数量
+	int32 GetStackCount() const { return StackCount; }//单个格子的堆叠数量
 
-	TWeakObjectPtr<UInv_InventoryItem> GetInventoryItem() const { return InventoryItem; }
-	void SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item);
+	void SetUpperLeftIndex(int32 Index) { UpperLeftIndex = Index; }//任何给定物品的左上角索引
+	int32 GetUpperLeftIndex() const { return UpperLeftIndex; }//任何给定物品的左上角索引
 
-	void SetUpperLeftIndex(int32 Index) { UpperLeftIndex = Index; }
-	int32 GetUpperLeftIndex() const { return UpperLeftIndex; }
+	TWeakObjectPtr<UInv_InventoryItem> GetInventoryItem() const { return InventoryItem; }//这个格子指向的具体道具的弱指针
+	void SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item);//这个格子指向的具体道具的弱指针
 
-	void SetStackCount(int32 Count) { StackCount = Count; }
-	int32 GetStackCount() const { return StackCount; }
+	void SetAvailable(bool bAble) { bAvailable = bAble; }//是否可用
+	bool GetAvailable() const { return bAvailable; }//是否可用
 
-	void SetAvailable(bool bAble) { bAvailable = bAble; }
-	bool GetAvailable() const { return bAvailable; }
-
-	void SetUnoccupiedTexture();
-	void SetOccupiedTexture();
-	void SetSelectedTexture();
-	void SetGrayedOutTexture();
+	EInv_GridSlotState GetSlotState() const { return GridSlotState; }//当前网格的状态
+	void SetSlotState(EInv_GridSlotState NewState) { GridSlotState = NewState; }//当前网格的状态
+	
+	void SetUnoccupiedTexture();//显示为默认的图片
+	void SetOccupiedTexture();//显示为已占用的背景图片
+	void SetSelectedTexture();//显示为已选中的背景图片
+	void SetGrayedOutTexture();//显示为灰色的背景图片
 
 protected:
 
@@ -77,9 +77,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FSlateBrush Brush_GrayedOut;//显示为灰色的背景图片
-
-	//当前网格的状态
-	EInv_GridSlotState GridSlotState{EInv_GridSlotState::Unoccupied};
+	
+	EInv_GridSlotState GridSlotState{EInv_GridSlotState::Unoccupied};//当前网格的状态
 
 
 };
