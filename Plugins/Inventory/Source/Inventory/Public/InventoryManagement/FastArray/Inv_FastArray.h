@@ -7,6 +7,7 @@
 #include "Net/Serialization/FastArraySerializer.h"
 #include "Inv_FastArray.generated.h"
 
+struct FGameplayTag;
 class UInv_ItemComponent;
 class UInv_InventoryComponent;
 class UInv_InventoryItem;
@@ -72,6 +73,7 @@ public:
 	UInv_InventoryItem* AddEntry(UInv_ItemComponent* InItemComponent);
 	UInv_InventoryItem* AddEntry(UInv_InventoryItem* InItem);
 	void RemoveItem(UInv_InventoryItem* InItem);
+	UInv_InventoryItem* FindFirstItemByType(const FGameplayTag& ItemType);
 
 private:
 

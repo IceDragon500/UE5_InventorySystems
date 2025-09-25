@@ -126,7 +126,7 @@
 
 ✅56. Filling in the Results 填充结果
 
-57. Find First Item by Type 按类型查找首个物品
+✅57. Find First Item by Type 按类型查找首个物品
 
 58. Testing our Algorithm 测试我们的算法
 

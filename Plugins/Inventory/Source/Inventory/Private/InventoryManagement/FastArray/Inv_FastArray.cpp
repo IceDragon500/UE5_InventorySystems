@@ -81,6 +81,16 @@ UInv_InventoryItem* FInv_InventoryFastArray::AddEntry(UInv_InventoryItem* InItem
 	
 }
 
+UInv_InventoryItem* FInv_InventoryFastArray::FindFirstItemByType(const FGameplayTag& ItemType)
+{
+	auto* FoundItem =Entries.FindByPredicate([ItemType = ItemType](const FInv_InventoryEntry& Entry)
+	{
+		return IsValid(Entry.Item) && Entry.Item->GetItemManifest().GetItemTag().MatchesTagExact(ItemType);
+	});
+
+	return FoundItem ? FoundItem->Item : nullptr;
+}
+
 void FInv_InventoryFastArray::RemoveItem(UInv_InventoryItem* InItem)
 {
 	for (auto EntryItem = Entries.CreateIterator(); EntryItem; ++EntryItem)

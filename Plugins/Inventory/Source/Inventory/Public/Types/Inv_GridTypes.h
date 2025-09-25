@@ -23,64 +23,98 @@ enum class EInv_ItemCategory : uint8
 	None, //无
 };
 
+
 /**
  * 单个道具格子可用性
  * 
- * 包含信息如下：
- * 
- * 当前这个道具格子的Index
- * 
- * 当前这个道具格子可以填充多少道具，例如 当前这个道具格子放了一个可以堆叠10个的道具，那这里就是10
- * 
- * 当前这个道具格子是否有道具，如果有，我们只需要增加这个道具的堆叠数量就可以，如果没有，则需要创建一个这个道具的Widget显示在界面上
- * 
+ * 包含单个背包格子的可用性信息，用于描述该格子是否可以放置道具、
+ * 可以放置多少数量的道具以及该格子当前是否已有道具等信息
  */
 USTRUCT()
 struct FInv_SlotAvailability
 {
 	GENERATED_BODY()
 
+	/**
+	 * 默认构造函数
+	 */
 	FInv_SlotAvailability() {};
+	
+	/**
+	 * 带参数构造函数
+	 * 
+	 * @param ItemIndex 格子索引
+	 * @param Room 可填充的道具数量
+	 * @param bHasItem 该格子是否已有道具
+	 */
 	FInv_SlotAvailability(int32 ItemIndex, int32 Room, bool bHasItem) : Index(ItemIndex), AmountToFill(Room), bItemAtIndex(bHasItem) {};
 
-	int32 Index{INDEX_NONE};//当前这个道具格子的Index
-	int32 AmountToFill{0};//当前这个道具格子可以填充多少道具
-	bool bItemAtIndex{false};//当前这个道具格子是否有道具
+	/**
+	 * 当前道具格子的索引
+	 * 用于标识背包中具体是哪一个格子
+	 */
+	int32 Index{INDEX_NONE};
+	
+	/**
+	 * 当前道具格子可以填充的道具数量
+	 * 例如：格子中已有一个可堆叠10个的道具，当前有3个，则此值为7
+	 */
+	int32 AmountToFill{0};
+	
+	/**
+	 * 当前道具格子是否已有道具
+	 * true表示格子中已有道具（可堆叠情况），false表示格子为空
+	 */
+	bool bItemAtIndex{false};
 	
 };
 
-
 /**
- * 槽位可用性结果
- * 包含信息如下：
+ * 道具槽位可用性结果
  * 
- * 当前正在添加进背包的道具指针 TWeakObjectPtr<UInv_InventoryItem> Item
- * 
- * 当前正在添加的这个道具是否可以堆叠 bool bStackable{false};
- * 
- * 如果是可以堆叠的 那我们需要这个这个道具多少个一组 可以堆叠多少个 int32 TotalRoomToFill{0};
- * 
- * 如果是可以堆叠的，并且背包空间不足，我们需要知道还余下多少个放不进背包int32 Remainder{0}
- * 
- * 我们的槽位可用性结果应该包含这些的一个 T 数组
- * 
+ * 用于存储尝试向背包添加道具时的槽位可用性分析结果，
+ * 包含道具信息、堆叠能力、可用空间以及剩余无法放置的数量等信息
  */
 USTRUCT()
 struct FInv_SlotAvailabilityResult
 {
 	GENERATED_BODY()
 	
+	/**
+	 * 默认构造函数
+	 */
 	FInv_SlotAvailabilityResult() {};
 
-	TWeakObjectPtr<UInv_InventoryItem> Item;//当前正在添加进背包的道具指针
+	/**
+	 * 当前正在添加进背包的道具指针
+	 * 用于引用需要添加到背包中的具体道具对象
+	 */
+	TWeakObjectPtr<UInv_InventoryItem> Item;
 
-	bool bStackable{false};//当前正在添加的这个道具是否可以堆叠
+	/**
+	 * 当前正在添加的这个道具是否可以堆叠
+	 * true表示可以堆叠，false表示不可堆叠
+	 */
+	bool bStackable{false};
 
-	int32 TotalRoomToFill{0}; //可以堆叠的数量
+	/**
+	 * 可以堆叠的数量
+	 * 表示当前道具在各个可用槽位中总共可以放置的数量
+	 */
+	int32 TotalRoomToFill{0}; 
 
-	int32 Remainder{0}; //还余下多少个放不进背包
+	/**
+	 * 还余下多少个放不进背包
+	 * 当尝试添加的道具数量超过可用空间时，此值表示无法放置的剩余数量
+	 */
+	int32 Remainder{0}; 
 
-	TArray<FInv_SlotAvailability> SlotAvailabilities;//我们的槽位可用性结果应该包含这些的一个数组
+	/**
+	 * 槽位可用性数组
+	 * 包含所有可用槽位的详细信息，每个元素描述一个槽位的索引、可填充数量和是否有道具等信息
+	 */
+	TArray<FInv_SlotAvailability> SlotAvailabilities;
 	
 	
 };
+

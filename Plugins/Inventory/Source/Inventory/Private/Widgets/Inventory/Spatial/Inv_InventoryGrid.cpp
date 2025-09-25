@@ -73,18 +73,30 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 			continue;
 		}
 
-		CheckedIndices.Append(TentativelyClaimed);
-
-
 		//要填充多少
 		const int32 AmountToFillInSlot = DetermineFillAmountForSlot(Result.bStackable, MaxStackSize, AmountTolFill, GridSlot);
 		if (AmountToFillInSlot == 0) continue;
+
+		CheckedIndices.Append(TentativelyClaimed);
 		
 		//更新数量 剩余待填充
+		Result.TotalRoomToFill += AmountToFillInSlot;
+		Result.SlotAvailabilities.Emplace(
+			FInv_SlotAvailability{
+				HasValidItem(GridSlot) ? GridSlot->GetUpperLeftIndex() : GridSlot->GetTileIndex(),
+				Result.bStackable ? AmountTolFill : 0,
+				HasValidItem(GridSlot) 
+			}
+			);
+		
+		AmountTolFill -= AmountToFillInSlot;
+
+		//当我们遍历完每个槽位后，剩余的数量是多少
+		Result.Remainder = AmountTolFill;
+		
+		if (AmountTolFill == 0) return Result;
 	}
-
-	//当我们遍历完每个槽位后，剩余的数量是多少
-
+	
 	return Result;
 }
 
