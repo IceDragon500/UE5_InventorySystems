@@ -10,6 +10,7 @@
 #include "Widgets/Inventory/GridSlots/Inv_GridSlot.h"
 #include "Inv_InventoryGrid.generated.h"
 
+
 struct FInv_GridFragment;
 class UInv_SlottedItem;
 class UInv_ItemComponent;
@@ -235,6 +236,9 @@ private:
 	int32 DetermineFillAmountForSlot(const bool bStackable, const int32 MaxStackSize, const int32 AmountToFill, const UInv_GridSlot* GirdSlot) const;
 
 	int32 GetStackAmount(const UInv_GridSlot* GridSlot) const;
+
+	UFUNCTION()
+	void AddStacks(const FInv_SlotAvailabilityResult& Result);
 
 
 	//道具栏的类型

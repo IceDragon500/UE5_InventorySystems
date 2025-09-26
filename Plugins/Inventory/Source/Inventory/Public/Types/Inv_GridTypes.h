@@ -27,8 +27,10 @@ enum class EInv_ItemCategory : uint8
 /**
  * 单个道具格子可用性
  * 
- * 包含单个背包格子的可用性信息，用于描述该格子是否可以放置道具、
- * 可以放置多少数量的道具以及该格子当前是否已有道具等信息
+ * 包含单个背包格子的可用性信息:
+ * Index当前道具格子的索引
+ * AmountToFill当前道具格子可以填充的道具数量
+ * bItemAtIndex当前道具格子是否已有道具
  */
 USTRUCT()
 struct FInv_SlotAvailability

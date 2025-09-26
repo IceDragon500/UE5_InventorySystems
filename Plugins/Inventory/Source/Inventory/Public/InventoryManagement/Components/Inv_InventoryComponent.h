@@ -6,12 +6,15 @@
 #include "Components/ActorComponent.h"
 #include "InventoryManagement/FastArray/Inv_FastArray.h"
 #include "Inv_InventoryComponent.generated.h"
+
+struct FInv_SlotAvailabilityResult;
 class UInv_ItemComponent;
 class UInv_InventoryBase;
 class UInv_InventoryItem;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FinventoryItemChange, UInv_InventoryItem*, Item);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNoRoomInInventory);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStackChange, const FInv_SlotAvailabilityResult&, Result);
 
 
 /**
@@ -70,6 +73,7 @@ public:
 	FinventoryItemChange OnItemAdded;//在道具被添加的时候进行一个广播
 	FinventoryItemChange OnItemRemoved;//在道具被删除的时候进行一个广播
 	FNoRoomInInventory NoRoomInInventory;//添加道具失败的时候进行一个广播
+	FStackChange OnStackChange;//背包中道具堆叠数量改变的时候进行一个广播，让界面那边知道需要更新数据
 
 protected:
 

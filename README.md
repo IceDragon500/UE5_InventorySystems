@@ -137,14 +137,14 @@
 
 ✅60. On Picked Up 拾取事件
 
-61. On Stack Change 堆叠数量变更事件
+✅61. On Stack Change 堆叠数量变更事件
 
-62. Add Stacks 添加堆叠
+✅62. Add Stacks 添加堆叠
 
 
 ### 第7节 拾取 (Pick Up)
 
-63. Section 7 Intro 第7节介绍
+✅63. Section 7 Intro 第7节介绍
 
 64. Hover Item 悬停物品（UI元素）
 
