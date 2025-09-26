@@ -68,7 +68,7 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 		//如果这是一个有效的槽位，物品能否放得下,是在检查那些网格尺寸，即物品占用了多少个方格 它是否超出了网格的边界
 		TSet<int32> TentativelyClaimed; //可能被占用的索引
 		if (!HasRoomAtIndex(GridSlot, GetItemDimensions(ItemManifest), CheckedIndices, TentativelyClaimed,
-		                    ItemManifest.GetItemTag(), MaxStackSize))
+		                    ItemManifest.GetItemTypeTag(), MaxStackSize))
 		{
 			continue;
 		}
@@ -278,7 +278,7 @@ bool UInv_InventoryGrid::IsUpperLeftSlot(const UInv_GridSlot* GridSlot, const UI
 
 bool UInv_InventoryGrid::DoesItemTypeMatch(const UInv_InventoryItem* SubItem, const FGameplayTag& ItemType) const
 {
-	return SubItem->GetItemManifest().GetItemTag().MatchesTagExact(ItemType);
+	return SubItem->GetItemManifest().GetItemTypeTag().MatchesTagExact(ItemType);
 }
 
 bool UInv_InventoryGrid::IsInGridBounds(const int32 StartIndex, const FIntPoint& ItemDimensions) const

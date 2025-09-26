@@ -2,8 +2,9 @@
 
 
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
-
+#include "Items/Inv_InventoryItem.h"
 #include "Items/Components/Inv_ItemComponent.h"
+#include "Items/Fragments/Inv_ItemFragment.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 
@@ -28,7 +29,7 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 {
 	FInv_SlotAvailabilityResult Result = InventoryMenu->HasRoomForItem(ItemComponent);
 
-	UInv_InventoryItem* FoundItem = InventoryList.FindFirstItemByType(ItemComponent->GetItemManifest().GetItemTag());
+	UInv_InventoryItem* FoundItem = InventoryList.FindFirstItemByType(ItemComponent->GetItemManifest().GetItemTypeTag());
 	Result.Item = FoundItem;
 
 	if (Result.TotalRoomToFill == 0)
@@ -72,6 +73,7 @@ void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponen
 {
 	//创建一个新的库存道具
 	UInv_InventoryItem* NewItem = InventoryList.AddEntry(ItemComponent);
+	NewItem->SetTotalStackCount(StackCount);
 
 	//NM_ListenServer 作为服务器的客户端
 	//NM_Standalone 单机玩家
@@ -84,11 +86,34 @@ void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponen
 		OnItemAdded.Broadcast(NewItem);
 	}
 
-	//TODO: Tell the item component ot destroy its owning actor
+	//TODO: 让物品组件销毁其所属的 Actor
+	ItemComponent->PickedUp();
 }
 
 void UInv_InventoryComponent::Server_AddStacksToItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder)
 {
+	//首先获取要添加物品的类型标签
+	const FGameplayTag& ItemType = IsValid(ItemComponent) ? ItemComponent->GetItemManifest().GetItemTypeTag() : FGameplayTag::EmptyTag;
+
+	//在库存中查找相同类型的物品
+	UInv_InventoryItem* Item = InventoryList.FindFirstItemByType(ItemType);
+
+	//如果找到有效物品，则增加其堆叠计数
+	if (!IsValid(Item)) return;
+	
+	Item->SetTotalStackCount(Item->GetTotalStackCount() + StackCount);
+
+	//TODO: 如果余数为零则销毁该物品
+	if (Remainder == 0)
+	{
+		ItemComponent->PickedUp();
+	}
+	else if (FInv_StackableFragment* StackableFragment = ItemComponent->GetItemManifest().GetFragmentOfTypeMutable<FInv_StackableFragment>())//否则的话,更新地面上那个物品拾取物的堆叠数量
+	{
+		StackableFragment->SetStackCount(Remainder);
+	}
+	
+	
 }
 
 void UInv_InventoryComponent::ToggleInventoryMenu()

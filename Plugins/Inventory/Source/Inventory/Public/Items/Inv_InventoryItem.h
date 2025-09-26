@@ -29,12 +29,18 @@ public:
 
 	bool IsStackable() const;
 
+	int32 GetTotalStackCount() const { return TotalStackCount; }
+	void SetTotalStackCount(int32 Count) { TotalStackCount = Count; }
+
 protected:
 	
 private:
 
 	UPROPERTY(VisibleAnywhere, meta=(BaseStruct = "/Script/Inventory.Inv_ItemManifest"), Replicated)//如果我们想通过指定基础结构来限制它，就必须使用元说明符来实现 这里不需要带F
 	FInstancedStruct ItemManifest;
+
+	UPROPERTY(Replicated)
+	int32 TotalStackCount{0};
 	
 };
 

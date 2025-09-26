@@ -11,6 +11,7 @@ void UInv_InventoryItem::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	UObject::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ThisClass, ItemManifest);
+	DOREPLIFETIME(ThisClass, TotalStackCount);
 }
 
 bool UInv_InventoryItem::IsSupportedForNetworking() const

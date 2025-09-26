@@ -32,7 +32,15 @@ public:
 
 	FInv_ItemManifest GetItemManifest() const { return ItemManifest; }
 
+	//处理物品被拾取时发生的情况
+	void PickedUp();
+
 protected:
+
+	//在蓝图上实现一些在拾取是，可以额外发生的事情
+	//然后再C++中调用这个方法
+	UFUNCTION(BlueprintImplementableEvent, Category="属性设置")
+	void OnPickedUp();
 
 
 private:

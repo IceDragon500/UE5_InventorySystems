@@ -85,7 +85,7 @@ UInv_InventoryItem* FInv_InventoryFastArray::FindFirstItemByType(const FGameplay
 {
 	auto* FoundItem =Entries.FindByPredicate([ItemType = ItemType](const FInv_InventoryEntry& Entry)
 	{
-		return IsValid(Entry.Item) && Entry.Item->GetItemManifest().GetItemTag().MatchesTagExact(ItemType);
+		return IsValid(Entry.Item) && Entry.Item->GetItemManifest().GetItemTypeTag().MatchesTagExact(ItemType);
 	});
 
 	return FoundItem ? FoundItem->Item : nullptr;

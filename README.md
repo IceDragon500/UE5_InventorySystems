@@ -133,9 +133,9 @@
 
 ### 第6节 添加堆叠 (Adding Stacks)
 
-59. Total Stack Count 总堆叠数量
+✅59. Total Stack Count 总堆叠数量
 
-60. On Picked Up 拾取事件
+✅60. On Picked Up 拾取事件
 
 61. On Stack Change 堆叠数量变更事件
 

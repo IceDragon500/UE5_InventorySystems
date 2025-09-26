@@ -31,13 +31,16 @@ struct INVENTORY_API FInv_ItemManifest
 	 * 获取物品的类型Tag
 	 * @return 
 	 */
-	FGameplayTag GetItemTag() const { return ItemTypeTag; }
+	FGameplayTag GetItemTypeTag() const { return ItemTypeTag; }
 
 	template<typename T> requires std::derived_from<T, FInv_ItemFragment>
-	const T* GetFragmentOfTypeWithTag(const FGameplayTag& FragmentTag) const ;
+	const T* GetFragmentOfTypeWithTag(const FGameplayTag& FragmentTag) const;
 
 	template<typename T> requires std::derived_from<T, FInv_ItemFragment>
-	const T* GetFragmentOfType() const ;
+	const T* GetFragmentOfType() const;
+
+	template<typename T> requires std::derived_from<T, FInv_ItemFragment>
+	T* GetFragmentOfTypeMutable();
 
 private:
 
@@ -80,6 +83,19 @@ const T* FInv_ItemManifest::GetFragmentOfType() const
 	for (const TInstancedStruct<FInv_ItemFragment>& Fragment : Fragments)
 	{
 		if (const T* FragmentPtr = Fragment.GetPtr<T>())
+		{
+			return FragmentPtr;
+		}
+	}
+	return nullptr;
+}
+
+template <typename T> requires std::derived_from<T, FInv_ItemFragment>
+T* FInv_ItemManifest::GetFragmentOfTypeMutable()
+{
+	for (TInstancedStruct<FInv_ItemFragment>& Fragment : Fragments)
+	{
+		if (T* FragmentPtr = Fragment.GetMutablePtr<T>())
 		{
 			return FragmentPtr;
 		}
