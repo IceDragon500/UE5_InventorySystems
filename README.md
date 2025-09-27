@@ -146,7 +146,7 @@
 
 ✅63. Section 7 Intro 第7节介绍
 
-64. Hover Item 悬停物品（UI元素）
+✅64. Hover Item 悬停物品（UI元素）
 
 65. Slotted Item Clicked 槽位物品被点击
 
