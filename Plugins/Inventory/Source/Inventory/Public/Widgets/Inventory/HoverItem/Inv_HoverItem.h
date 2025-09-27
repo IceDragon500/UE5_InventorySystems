@@ -30,8 +30,8 @@ public:
 	bool IsStackable() const { return bIsStackable; }
 	void SetIsStackable(bool bStacks);
 	
-	int32 GetPreviousGirdIndex() const { return PreviousGirdIndex; }
-	void SetPreviousGridIndex(int32 Index) { PreviousGirdIndex = Index;}
+	int32 GetPreviousGridIndex() const { return PreviousGridIndex; }
+	void SetPreviousGridIndex(int32 Index) { PreviousGridIndex = Index;}
 	
 	FIntPoint GetGridDimensions() const { return GridDimensions; }
 	void SetGridDimensions(const FIntPoint& Dimensions) { GridDimensions = Dimensions;}
@@ -44,13 +44,13 @@ protected:
 	
 private:
 
-	UPROPERTY(meta=(BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Image_Icon; //跟随鼠标移动的图片资源
 
-	UPROPERTY(meta=(BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Text_StackCount;//如果堆叠的道具，则显示数量
 
-	int32 PreviousGirdIndex{0};//被点起来的道具，所在的网格索引
+	int32 PreviousGridIndex{0};//被点起来的道具，所在的网格索引
 
 	FIntPoint GridDimensions{1,1};//被点起来的道具，自身的网格尺寸
 

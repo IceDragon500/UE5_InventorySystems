@@ -150,9 +150,9 @@
 
 ✅65. Slotted Item Clicked 槽位物品被点击
 
-66. Pointer Events 指针事件
+✅66. Pointer Events 指针事件
 
-67. Assign Hover Item 分配悬停物品
+✅67. Assign Hover Item 分配悬停物品
 
 68. Hover Item Stack Count 悬停物品堆叠数量
 

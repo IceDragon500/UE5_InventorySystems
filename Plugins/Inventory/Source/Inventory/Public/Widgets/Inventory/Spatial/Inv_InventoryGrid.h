@@ -11,6 +11,7 @@
 #include "Inv_InventoryGrid.generated.h"
 
 
+class UInv_HoverItem;
 struct FInv_GridFragment;
 class UInv_SlottedItem;
 class UInv_ItemComponent;
@@ -61,9 +62,6 @@ public:
 
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
-
-	UFUNCTION()
-	void OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent);
 
 protected:
 
@@ -123,8 +121,9 @@ private:
 	 * @param GridFragment 网格片段信息
 	 * @param ImageFragment 图像片段信息
 	 */
-	void SetSlottedItemImage(UInv_SlottedItem* SlottedItem, const FInv_GridFragment* GridFragment,
-	                         const FInv_ImageFragment* ImageFragment);
+	void SetSlottedItemImage(UInv_SlottedItem* SlottedItem,
+							const FInv_GridFragment* GridFragment,
+							const FInv_ImageFragment* ImageFragment) const;
 
 	/**
 	 * 在指定索引位置添加物品
@@ -251,15 +250,67 @@ private:
 	 * @return 如果子物品类型与目标类型匹配返回true，否则返回false
 	 */
 	bool DoesItemTypeMatch(const UInv_InventoryItem* SubItem, const FGameplayTag& ItemType) const;
-	
+
+	/**
+	 * 检查指定起始索引和物品尺寸是否在网格边界内
+	 * 
+	 * @param StartIndex 起始网格索引位置
+	 * @param ItemDimensions 物品占用的网格尺寸
+	 * @return 如果物品可以完全放置在网格内返回true，否则返回false
+	 */
 	bool IsInGridBounds(const int32 StartIndex, const FIntPoint& ItemDimensions) const;
 
-	int32 DetermineFillAmountForSlot(const bool bStackable, const int32 MaxStackSize, const int32 AmountToFill, const UInv_GridSlot* GirdSlot) const;
+	/**
+	 * 确定在指定槽位中需要填充的物品数量
+	 * 
+	 * @param bStackable 物品是否可堆叠
+	 * @param MaxStackSize 物品最大堆叠数量
+	 * @param AmountToFill 需要填充的总数量
+	 * @param GirdSlot 目标网格槽位
+	 * @return 实际需要在该槽位填充的数量
+	 */
+	int32 DetermineFillAmountForSlot(const bool bStackable, const int32 MaxStackSize, const int32 AmountToFill,
+	                                 const UInv_GridSlot* GirdSlot) const;
 
+	/**
+	 * 获取指定网格槽位的当前堆叠数量
+	 * 
+	 * @param GridSlot 需要查询的网格槽位
+	 * @return 该槽位当前的堆叠数量
+	 */
 	int32 GetStackAmount(const UInv_GridSlot* GridSlot) const;
+
+	/**
+	 * 检查鼠标事件是否为右键点击
+	 * 
+	 * @param MouseEvent 鼠标事件数据
+	 * @return 如果是右键点击返回true，否则返回false
+	 */
+	bool IsRightClick(const FPointerEvent& MouseEvent) const;
+
+	/**
+	 * 检查鼠标事件是否为左键点击
+	 * 
+	 * @param MouseEvent 鼠标事件数据
+	 * @return 如果是左键点击返回true，否则返回false
+	 */
+	bool IsLeftClick(const FPointerEvent& MouseEvent) const;
+
+
+	/**
+	 * 鼠标左键点击物品栏中的道具，将物品“拾取”起来
+	 * @param ClickedInventoryItem 被点击到的道具
+	 * @param GridIndex 被电击到的道具格子索引
+	 */
+	void PickUp(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex);
+
+	void AssignHoverItem(UInv_InventoryItem* InventoryItem);
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
+
+	UFUNCTION()
+	void OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent);
 
 
 	//道具栏的类型
@@ -292,4 +343,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	float TileSize{20.f}; //单个格子的大小 - 边长
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UInv_HoverItem> HoverItemClass; //用来显示鼠标悬停的Widget组件类
+
+	UPROPERTY()
+	TObjectPtr<UInv_HoverItem> HoverItem; //被创建的鼠标悬停的Widget组件
 };
