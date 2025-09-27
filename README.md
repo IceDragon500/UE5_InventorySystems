@@ -148,7 +148,7 @@
 
 ✅64. Hover Item 悬停物品（UI元素）
 
-65. Slotted Item Clicked 槽位物品被点击
+✅65. Slotted Item Clicked 槽位物品被点击
 
 66. Pointer Events 指针事件
 

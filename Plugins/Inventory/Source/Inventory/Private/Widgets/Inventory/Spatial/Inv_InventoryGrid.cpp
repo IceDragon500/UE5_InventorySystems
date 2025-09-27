@@ -113,6 +113,11 @@ void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
 	AddItemToIndices(Result, Item);
 }
 
+void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent)
+{
+	UE_LOG(LogTemp, Warning, TEXT("InventoryGrid::OnSlottedItemClicked %d"), GridIndex);
+}
+
 void UInv_InventoryGrid::AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem)
 {
 	for (const auto& Available : Result.SlotAvailabilities)
@@ -157,6 +162,7 @@ UInv_SlottedItem* UInv_InventoryGrid::CreateSlottedItem(UInv_InventoryItem* Item
 	SlottedItems->SetIsStackable(bStackable);
 	const int32 StackUpdateAmount = bStackable ? StackAmount : 0;
 	SlottedItems->UpdateStackCount(StackUpdateAmount);
+	SlottedItems->OnSlottedItemClicked.AddDynamic(this, &ThisClass::OnSlottedItemClicked);
 
 	return SlottedItems;
 }

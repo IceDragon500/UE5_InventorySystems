@@ -9,8 +9,26 @@
 class UButton;
 class UWidgetSwitcher;
 class UInv_InventoryGrid;
+
 /**
+ * 空间化背包界面类
  * 
+ * 该类负责管理具有空间布局的背包系统UI，支持不同类型的物品分类显示。
+ * 通过网格布局和切换器实现装备、消耗品、制作材料等不同类型物品的分类管理。
+ * 
+ * 主要功能：
+ * - 提供HasRoomForItem方法检查是否有空间存放物品
+ * - 通过WidgetSwitcher实现不同类型物品网格的切换显示
+ * - 管理装备、消耗品、可制作物品三个分类的网格界面
+ * - 提供按钮交互功能，支持用户切换查看不同类型的物品
+ * 
+ * 可用方法：
+ * - HasRoomForItem: 检查背包是否有足够空间存放指定物品
+ * - ShowEquippable: 显示装备类物品网格
+ * - ShowConsumable: 显示消耗品类物品网格  
+ * - ShowCraftable: 显示可制作物品网格
+ * - SetActiveGrid: 激活指定的物品网格并禁用对应按钮
+ * - DisableButton: 禁用指定按钮
  */
 UCLASS()
 class INVENTORY_API UInv_SpatialInventory : public UInv_InventoryBase

@@ -19,15 +19,33 @@ class UCanvasPanel;
 class UInv_GridSlot;
 
 /**
- * InventoryGrid 道具格子
- *
- * 用来处理道具格子的功能和显示
- *
- * 定义了一个公共的EInv_ItemCategory枚举，用来区分3中道具格：装备、消耗品、材料
- *
- * 在蓝图上使用一个Switch空间来切换3种道具分类格子
- *
- * 用来生成指定参数的道具格子，并且有对应的方法
+ * InventoryGrid 道具格子管理类
+ * 
+ * 该类负责管理背包系统中的网格布局，处理物品在网格中的放置、显示和交互。
+ * 支持不同尺寸的物品放置，提供空间检测、物品分类管理等功能。
+ * 
+ * 主要功能：
+ * - 管理指定分类的物品网格（装备、消耗品、材料等）
+ * - 处理物品的空间布局和放置逻辑
+ * - 创建和维护网格槽位及物品显示
+ * - 支持物品堆叠和空间检测
+ * 
+ * 可用方法：
+ * - HasRoomForItem: 检查是否有足够空间放置指定物品
+ * - AddItem: 添加物品到网格中
+ * - AddStacks: 添加堆叠物品
+ * - GetItemCategory: 获取当前网格的物品分类
+ * - ConstructGrid: 构造网格系统
+ * - MatchesCategory: 检查物品是否匹配当前网格分类
+ * - IsInGridBounds: 检查索引是否在网格边界内
+ * 
+ * 核心私有方法：
+ * - HasRoomAtIndex: 检查指定位置是否有足够空间
+ * - CheckSlotConstraints: 检查槽位约束条件
+ * - CreateSlottedItem: 创建槽位物品实例
+ * - UpdateGridSlots: 更新网格槽位状态
+ * - AddItemToIndices: 将物品添加到指定索引位置
+ * - SetSlottedItemImage: 设置槽位物品图像
  */
 UCLASS()
 class INVENTORY_API UInv_InventoryGrid : public UUserWidget
@@ -43,6 +61,9 @@ public:
 
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
+
+	UFUNCTION()
+	void OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent);
 
 protected:
 
