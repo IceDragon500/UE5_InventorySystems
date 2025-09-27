@@ -24,7 +24,7 @@ void UInv_SlottedItem::SetImageBrush(const FSlateBrush& Brush) const
 
 void UInv_SlottedItem::UpdateStackCount(int32 InCount)
 {
-	if (InCount >0)
+	if (InCount >1)
 	{
 		Text_StackCount->SetVisibility(ESlateVisibility::Visible);
 		Text_StackCount->SetText(FText::AsNumber(InCount));

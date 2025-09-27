@@ -121,7 +121,7 @@ private:
 	 * @param GridFragment 网格片段信息
 	 * @param ImageFragment 图像片段信息
 	 */
-	void SetSlottedItemImage(UInv_SlottedItem* SlottedItem,
+	void SetSlottedItemImage(const UInv_SlottedItem* SlottedItem,
 							const FInv_GridFragment* GridFragment,
 							const FInv_ImageFragment* ImageFragment) const;
 
@@ -304,7 +304,20 @@ private:
 	 */
 	void PickUp(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex);
 
+	/**
+	 * 创建被鼠标点击并且“悬浮”在鼠标上的道具
+	 * @param InventoryItem 被鼠标点击的道具
+	 */
 	void AssignHoverItem(UInv_InventoryItem* InventoryItem);
+
+	/**
+	 * 创建被鼠标点击并且“悬浮”在鼠标上的道具
+	 * 如果我们仅有一个网格索引而没有前一个索引，比如拾取物品时的情况，那么我采取的做法是直接将网格索引和前一个网格索引都赋值为同一索引
+	 * @param InventoryItem 被鼠标点击的道具
+	 * @param GridIndex 被点击道具的网格索引
+	 * @param PreviousGridIndex 被点击道具前一个的索引
+	 */
+	void AssignHoverItem(UInv_InventoryItem* InventoryItem,const int32 GridIndex, const int32 PreviousGridIndex);
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);

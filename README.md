@@ -154,7 +154,7 @@
 
 ✅67. Assign Hover Item 分配悬停物品
 
-68. Hover Item Stack Count 悬停物品堆叠数量
+✅68. Hover Item Stack Count 悬停物品堆叠数量
 
 69. Remove Item from Grid 从网格中移除物品
 
