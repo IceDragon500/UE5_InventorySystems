@@ -156,7 +156,7 @@
 
 ✅68. Hover Item Stack Count 悬停物品堆叠数量
 
-69. Remove Item from Grid 从网格中移除物品
+✅69. Remove Item from Grid 从网格中移除物品
 
 
 ### 第8节 悬停物品 (Hover Item)

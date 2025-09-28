@@ -317,7 +317,9 @@ private:
 	 * @param GridIndex 被点击道具的网格索引
 	 * @param PreviousGridIndex 被点击道具前一个的索引
 	 */
-	void AssignHoverItem(UInv_InventoryItem* InventoryItem,const int32 GridIndex, const int32 PreviousGridIndex);
+	void AssignHoverItem(UInv_InventoryItem* InventoryItem, const int32 GridIndex, const int32 PreviousGridIndex);
+
+	void RemoveItemFromGrid(UInv_InventoryItem* InventoryItem, const int32 GridIndex);
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
