@@ -364,4 +364,10 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UInv_HoverItem> HoverItem; //被创建的鼠标悬停的Widget组件
+
+	//保存当前帧下，鼠标指向道具格子的信息
+	FInv_TileParameters TileParameters;
+
+	//上一帧，鼠标指向道具格子的信息
+	FInv_TileParameters LastTileParameters;
 };

@@ -120,3 +120,46 @@ struct FInv_SlotAvailabilityResult
 	
 };
 
+/**
+ * 
+ */
+UENUM()
+enum class EInv_TileQuadrant : uint8
+{
+	TopLeft,
+	TopRight,
+	BottomLeft,
+	BottomRight,
+	None
+};
+
+/**
+ * 瓦片参数
+ * 用来保存实时的、鼠标指向每一格道具格子的参数
+ * 包括这个格子在整个道具栏中的坐标TileCoordinats
+ * 包括这个格子所在的象限TileQuadrant
+ * 包括这个格子的索引TileIndex
+ */
+USTRUCT(BlueprintType)
+struct FInv_TileParameters
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="属性设置")
+	FIntPoint TileCoordinats{}; //瓦片坐标信息
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="属性设置")
+	int32 TileIndex{INDEX_NONE};
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="属性设置")
+	EInv_TileQuadrant TileQuadrant{EInv_TileQuadrant::None};
+	
+};
+
+// 重载==运算符 使用==可以判断两个结构体是否一致
+inline bool operator==(const FInv_TileParameters& LHS, const FInv_TileParameters& RHS)
+{
+	return LHS.TileCoordinats == RHS.TileCoordinats && LHS.TileIndex == RHS.TileIndex && LHS.TileQuadrant == RHS.TileQuadrant;
+}
+
+

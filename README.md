@@ -161,9 +161,9 @@
 
 ### 第8节 悬停物品 (Hover Item)
 
-70. Section 8 Intro 第8节介绍
+✅70. Section 8 Intro 第8节介绍
 
-71. Tile Parameters 网格块参数
+✅71. Tile Parameters 网格块参数
 
 72. Canvas and Mouse Position 画布与鼠标位置
 
