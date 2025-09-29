@@ -16,6 +16,14 @@ class INVENTORY_API UInv_WidgetUtils : public UBlueprintFunctionLibrary
 
 public:
 	/**
+	 * 获取指定Widget在屏幕上的绝对位置
+	 * @param Widget 要获取位置的Widget对象
+	 * @return Widget在屏幕上的二维位置坐标（以屏幕左上角为原点）
+	 */
+	UFUNCTION(BlueprintCallable, Category="Inventory|WidgetUtils")
+	static FVector2D GetWidgetPosition(UWidget* Widget);
+	
+	/**
 	 * 根据传入物品在物品栏中的坐标（行 列） 得到物品在道具列表中的Index索引
 	 * @param Position 道具在道具栏中的坐标
 	 * @param Columns 道具栏总共有多少列
@@ -30,4 +38,6 @@ public:
 	 * @return 道具在道具栏中的坐标（行 列）
 	 */
 	static FIntPoint GetPositionFromIndex(int32 Index, const int32 Columns);
+
+	
 };

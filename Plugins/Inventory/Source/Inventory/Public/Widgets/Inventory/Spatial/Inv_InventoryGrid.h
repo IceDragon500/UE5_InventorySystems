@@ -55,6 +55,7 @@ class INVENTORY_API UInv_InventoryGrid : public UUserWidget
 
 public:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	EInv_ItemCategory GetItemCategory() const { return ItemCategory; }
 
@@ -320,6 +321,8 @@ private:
 	void AssignHoverItem(UInv_InventoryItem* InventoryItem, const int32 GridIndex, const int32 PreviousGridIndex);
 
 	void RemoveItemFromGrid(UInv_InventoryItem* InventoryItem, const int32 GridIndex);
+
+	void UpdateTileParameters(const FVector2D CanvasPosition, const FVector2D MousePosition);
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);

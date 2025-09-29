@@ -165,7 +165,7 @@
 
 ✅71. Tile Parameters 网格块参数
 
-72. Canvas and Mouse Position 画布与鼠标位置
+✅72. Canvas and Mouse Position 画布与鼠标位置
 
 73. Hovered Coordinates 悬停坐标
 
