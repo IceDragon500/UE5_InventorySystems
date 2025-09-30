@@ -40,7 +40,7 @@ void UInv_InventoryGrid::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 void UInv_InventoryGrid::UpdateTileParameters(const FVector2D CanvasPosition, const FVector2D MousePosition)
 {
 	//如果鼠标没有在道具栏的对应的Canva控件上，我们就直接返回
-	//if (!CanvasPanel->DoesWidgetHaveFocus(this))
+	
 	// Calculate the tile quadrant, tile index, and coordinates
 
 	const FIntPoint HoveredTileCoordinates = CalculateHoveredCoordinates(CanvasPosition, MousePosition);
@@ -48,20 +48,68 @@ void UInv_InventoryGrid::UpdateTileParameters(const FVector2D CanvasPosition, co
 	LastTileParameters = TileParameters;
 	TileParameters.TileCoordinats = HoveredTileCoordinates;
 	TileParameters.TileIndex = UInv_WidgetUtils::GetIndexFromPosition(HoveredTileCoordinates, Columns);
+	TileParameters.TileQuadrant = CalculateTileQuadrant(CanvasPosition, MousePosition);
 	
-
-
-		
 	// Handle highlight/unhighlight of the grid slots
+	OnTileParametersUpdate(TileParameters);
+	
 }
 
-FIntPoint UInv_InventoryGrid::CalculateHoveredCoordinates(const FVector2D CanvasPosition,
-	const FVector2D MousePosition) const
+void UInv_InventoryGrid::OnTileParametersUpdate(const FInv_TileParameters& Parameters)
+{
+	if (!IsValid(HoverItem))  return;
+
+	//需要一种简单的方法来存储下面这些信息，以便在需要时随时获取
+	//获取悬停物品尺寸
+	//需要计算高亮显示的起始坐标
+	//需要检查悬停位置
+		//在网格边界内吗？
+		//是否有物品挡住了去路
+		//是否有多个物品，如果途中有多个物品，我们就不能在那里放置物品，如果只有一个物品，那我们就可以将鼠标上这个物品与其交换
+}
+
+FIntPoint UInv_InventoryGrid::CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const
 {
 	return FIntPoint{
 		static_cast<int32>(FMath::FloorToInt((MousePosition.X - CanvasPosition.X) / TileSize)),
 		static_cast<int32>(FMath::FloorToInt((MousePosition.Y - CanvasPosition.Y) / TileSize))
 	};
+
+	/**  FMath::FloorToInt
+	* 这个表达式的作用是计算鼠标在网格中的列索引（X坐标方向上的格子序号）。
+		以你提供的例子来说：
+		MousePosition.X = 660（鼠标X坐标）
+		CanvasPosition.X = 500（画布面板X坐标）
+		TileSize = 100（每个格子的大小）
+		计算过程：
+		MousePosition.X - CanvasPosition.X = 660 - 500 = 160
+		160 / TileSize = 160 / 100 = 1.6
+		FMath::FloorToInt(1.6) = 1（向下取整）
+		static_cast<int32>(1) = 1
+		所以结果确实是 1，这意味着鼠标位于从画布左边缘开始的第2个格子（索引从0开始）
+	 */
+}
+
+EInv_TileQuadrant UInv_InventoryGrid::CalculateTileQuadrant(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const
+{
+	//计算当前图块内的相对位置
+
+	const float TileLocalX = FMath::Fmod(MousePosition.X - CanvasPosition.X, TileSize);//在我们所处的方格中，我们距离左侧有多远
+	const float TileLocalY = FMath::Fmod(MousePosition.Y - CanvasPosition.Y, TileSize);
+
+	//确定鼠标所在的象限
+
+	const bool bIsTop = TileLocalY < TileSize / 2; //如果 y 位于上半部分则为顶部
+	const bool bIsLeft = TileLocalX < TileSize / 2;//若 x 不在上半区而在左半区，我们就判定为左侧
+
+	EInv_TileQuadrant HoveredTileQuadrant{EInv_TileQuadrant::None};
+	if (bIsTop && bIsLeft) HoveredTileQuadrant = EInv_TileQuadrant::TopLeft;
+	else if (bIsTop && !bIsLeft) HoveredTileQuadrant = EInv_TileQuadrant::TopRight;
+	else if (!bIsTop && bIsLeft) HoveredTileQuadrant = EInv_TileQuadrant::BottomLeft;
+	else if (!bIsTop && !bIsLeft) HoveredTileQuadrant = EInv_TileQuadrant::BottomRight;
+
+	return HoveredTileQuadrant;
+	
 }
 
 FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const UInv_ItemComponent* ItemComponent)

@@ -324,7 +324,11 @@ private:
 
 	void UpdateTileParameters(const FVector2D CanvasPosition, const FVector2D MousePosition);
 
-	FIntPoint CalculateHoveredCoordinates(const FVector2D CanvasPosition, const FVector2D MousePosition) const;
+	FIntPoint CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const;
+	
+	EInv_TileQuadrant CalculateTileQuadrant(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const;
+
+	void OnTileParametersUpdate(const FInv_TileParameters& Parameters);
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);

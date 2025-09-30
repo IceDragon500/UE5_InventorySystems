@@ -169,9 +169,9 @@
 
 ✅73. Hovered Coordinates 悬停坐标
 
-74. Calculate Tile Quadrant 计算网格块象限
+✅74. Calculate Tile Quadrant 计算网格块象限
 
-75. On Tile Parameters Updated 网格块参数更新事件
+✅75. On Tile Parameters Updated 网格块参数更新事件
 
 76. Hover Item Dimensions 悬停物品尺寸
 
