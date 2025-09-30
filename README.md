@@ -167,7 +167,7 @@
 
 ✅72. Canvas and Mouse Position 画布与鼠标位置
 
-73. Hovered Coordinates 悬停坐标
+✅73. Hovered Coordinates 悬停坐标
 
 74. Calculate Tile Quadrant 计算网格块象限
 
