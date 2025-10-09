@@ -162,4 +162,20 @@ inline bool operator==(const FInv_TileParameters& LHS, const FInv_TileParameters
 	return LHS.TileCoordinats == RHS.TileCoordinats && LHS.TileIndex == RHS.TileIndex && LHS.TileQuadrant == RHS.TileQuadrant;
 }
 
+USTRUCT()
+struct FInv_SpaceQueryResult
+{
+	GENERATED_BODY()
+
+	//如果查询的空间中没有物品，我们就返回true ,
+	bool bHasSpace{false};
+
+	//如果存在单个可交换物品，我将判定为有效
+	TWeakObjectPtr<UInv_InventoryItem> ValidItem = nullptr;
+
+	//有效物品的左上角索引（如果存在的话）
+	int32 UpperLeftIndex{INDEX_NONE};
+	
+};
+
 

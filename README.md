@@ -173,11 +173,11 @@
 
 ✅75. On Tile Parameters Updated 网格块参数更新事件
 
-76. Hover Item Dimensions 悬停物品尺寸
+✅76. Hover Item Dimensions 悬停物品尺寸
 
-77. Calculate Starting Coordinate 计算起始坐标
+✅77. Calculate Starting Coordinate 计算起始坐标
 
-78. Check Hover Position 检查悬停位置
+✅78. Check Hover Position 检查悬停位置
 
 79. In Grid Bounds 在网格边界内
 

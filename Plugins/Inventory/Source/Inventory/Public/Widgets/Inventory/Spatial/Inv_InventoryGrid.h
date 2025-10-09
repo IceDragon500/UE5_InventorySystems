@@ -336,6 +336,10 @@ private:
 	UFUNCTION()
 	void OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent);
 
+	FIntPoint CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions, EInv_TileQuadrant Quadrant) const;
+
+	FInv_SpaceQueryResult CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions) const;
+
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
@@ -379,4 +383,9 @@ private:
 
 	//上一帧，鼠标指向道具格子的信息
 	FInv_TileParameters LastTileParameters;
+
+	//当我们在有效位置点击网格时物品将被放置的位置
+	int32 ItemDropIndex{INDEX_NONE};
+
+	FInv_SpaceQueryResult CurrentQueryResult;
 };

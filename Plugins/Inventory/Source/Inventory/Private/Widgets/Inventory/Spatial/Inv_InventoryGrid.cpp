@@ -15,6 +15,7 @@
 #include "Widgets/Inventory/SlottedItems/Inv_SlottedItem.h"
 #include "Widgets/Utils/Inv_WidgetUtils.h"
 #include "InputCoreTypes.h"
+#include "Inventory.h"
 
 void UInv_InventoryGrid::NativeOnInitialized()
 {
@@ -61,11 +62,25 @@ void UInv_InventoryGrid::OnTileParametersUpdate(const FInv_TileParameters& Param
 
 	//需要一种简单的方法来存储下面这些信息，以便在需要时随时获取
 	//获取悬停物品尺寸
+	const FIntPoint Dimensions = HoverItem->GetGridDimensions();
+	
 	//需要计算高亮显示的起始坐标
+	const FIntPoint StartCoordinates = CalculateStartingCoordinate(Parameters.TileCoordinats, Dimensions, Parameters.TileQuadrant);
+	ItemDropIndex = UInv_WidgetUtils::GetIndexFromPosition(StartCoordinates, Columns);
+	
 	//需要检查悬停位置
-		//在网格边界内吗？
-		//是否有物品挡住了去路
-		//是否有多个物品，如果途中有多个物品，我们就不能在那里放置物品，如果只有一个物品，那我们就可以将鼠标上这个物品与其交换
+	CurrentQueryResult = CheckHoverPosition(StartCoordinates, Dimensions);
+}
+
+FInv_SpaceQueryResult UInv_InventoryGrid::CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions) const
+{
+	FInv_SpaceQueryResult Result;
+	//需要检查悬停位置
+	//在网格边界内吗？
+	//是否有物品挡住了去路
+	//是否有多个物品，如果途中有多个物品，我们就不能在那里放置物品，如果只有一个物品，那我们就可以将鼠标上这个物品与其交换
+
+	return Result;
 }
 
 FIntPoint UInv_InventoryGrid::CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const
@@ -414,6 +429,39 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 	{
 		PickUp(ClickedInventoryItem, GridIndex);
 	}
+}
+
+FIntPoint UInv_InventoryGrid::CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions,
+                                                          EInv_TileQuadrant Quadrant) const
+{
+	const int32 HasEvenWidth = Dimensions.X % 2 == 0 ? 1 : 0;
+	const int32 HasEvenHeight = Dimensions.Y % 2 == 0 ? 1 : 0;
+
+	FIntPoint StartingCoord;
+	switch (Quadrant)
+	{
+	case EInv_TileQuadrant::TopLeft:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X);
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y);
+		break;
+	case EInv_TileQuadrant::TopRight:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X) + HasEvenWidth;
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y);
+		break;
+	case EInv_TileQuadrant::BottomLeft:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X);
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y) + HasEvenHeight;
+		break;
+	case EInv_TileQuadrant::BottomRight:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X) + HasEvenWidth;
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y) + HasEvenHeight;
+		break;
+	default:
+		UE_LOG(LogInventory, Error, TEXT("Invalid Quadrant."));
+		return  FIntPoint(-1, -1);
+	}
+
+	return StartingCoord;
 }
 
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
