@@ -179,7 +179,7 @@
 
 ✅78. Check Hover Position 检查悬停位置
 
-79. In Grid Bounds 在网格边界内
+✅79. In Grid Bounds 在网格边界内
 
 80. Has Swappable Item 存在可交换物品
 

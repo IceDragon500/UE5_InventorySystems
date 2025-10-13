@@ -72,13 +72,39 @@ void UInv_InventoryGrid::OnTileParametersUpdate(const FInv_TileParameters& Param
 	CurrentQueryResult = CheckHoverPosition(StartCoordinates, Dimensions);
 }
 
-FInv_SpaceQueryResult UInv_InventoryGrid::CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions) const
+FInv_SpaceQueryResult UInv_InventoryGrid::CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions)
 {
 	FInv_SpaceQueryResult Result;
 	//需要检查悬停位置
 	//在网格边界内吗？
-	//是否有物品挡住了去路
+	if (!IsInGridBounds(UInv_WidgetUtils::GetIndexFromPosition(Position, Columns), Dimensions)) return Result;
+
+	Result.bHasSpace = true;
+	
+	//如果有多个索引被同一物品占据,我们需要检查它们是否都拥有相同的左上角索引
+
+	TSet<int32> OccupiedUpperLeftIndices;
+	
+	UInv_InventoryStatics::ForEach2D(GridSlots,
+		UInv_WidgetUtils::GetIndexFromPosition(Position, Columns),
+		Dimensions,
+		Columns,
+		[&](const UInv_GridSlot* GridSlot)
+		{
+			if (GridSlot->GetInventoryItem().IsValid())
+			{
+				OccupiedUpperLeftIndices.Add(GridSlot->GetUpperLeftIndex());
+				Result.bHasSpace = false;
+			}
+		});
+	
 	//是否有多个物品，如果途中有多个物品，我们就不能在那里放置物品，如果只有一个物品，那我们就可以将鼠标上这个物品与其交换
+	if (OccupiedUpperLeftIndices.Num() == 1)//该位置为单一物品 -- 这适用于交换或合并操作
+	{
+		const int32 Index = *OccupiedUpperLeftIndices.CreateConstIterator();
+		Result.ValidItem = GridSlots[Index]->GetInventoryItem();
+		Result.UpperLeftIndex = GridSlots[Index]->GetUpperLeftIndex();
+	}
 
 	return Result;
 }
