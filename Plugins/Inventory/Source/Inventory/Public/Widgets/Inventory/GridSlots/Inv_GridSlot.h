@@ -43,7 +43,7 @@ public:
 	void SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item);//这个格子指向的具体道具的弱指针
 
 	void SetAvailable(bool bAble) { bAvailable = bAble; }//是否可用
-	bool GetAvailable() const { return bAvailable; }//是否可用
+	bool IsAvailable() const { return bAvailable; }//是否可用
 
 	EInv_GridSlotState GetSlotState() const { return GridSlotState; }//当前网格的状态
 	void SetSlotState(EInv_GridSlotState NewState) { GridSlotState = NewState; }//当前网格的状态
@@ -57,11 +57,11 @@ protected:
 
 private:
 	
-	int32 TileIndex {0};//单个格子的索引Index
+	int32 TileIndex {INDEX_NONE};//单个格子的索引Index
 	int32 StackCount{0};//单个格子的堆叠数量
 	int32 UpperLeftIndex{INDEX_NONE};//任何给定物品的左上角索引
 	TWeakObjectPtr<UInv_InventoryItem> InventoryItem;//这个格子指向的具体道具的弱指针
-	bool bAvailable{false};//是否可用
+	bool bAvailable{true};//是否可用 这里应该设置为true，即每个格子都应该是可用的
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Image_GridSlot;

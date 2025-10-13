@@ -46,6 +46,7 @@ void UInv_InventoryGrid::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 void UInv_InventoryGrid::UpdateTileParameters(const FVector2D CanvasPosition, const FVector2D MousePosition)
 {
 	//如果鼠标没有在道具栏的对应的Canva控件上，我们就直接返回
+	if (!bMouseWithinCanvas) return;
 	
 	// Calculate the tile quadrant, tile index, and coordinates
 
@@ -75,6 +76,19 @@ void UInv_InventoryGrid::OnTileParametersUpdate(const FInv_TileParameters& Param
 	
 	//需要检查悬停位置
 	CurrentQueryResult = CheckHoverPosition(StartCoordinates, Dimensions);
+
+	if (CurrentQueryResult.bHasSpace)
+	{
+		HighlightSlots(ItemDropIndex, Dimensions);
+		return;
+	}
+
+	UnHighlightSlots(LastHighlightedIndex, LastHighlightedDimensions);
+
+	if (CurrentQueryResult.ValidItem.IsValid())
+	{
+		//TODO : 该位置存在可交换或添加的单个物品
+	}
 }
 
 FInv_SpaceQueryResult UInv_InventoryGrid::CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions)
@@ -121,11 +135,41 @@ bool UInv_InventoryGrid::CursorExitedCanvas(const FVector2D& BoundaryPos, const 
 
 	if (!bMouseWithinCanvas && bLastMouseWithinCanvas)
 	{
-		//TODO : 取消高亮显示任何槽位
+		UnHighlightSlots(LastHighlightedIndex, LastHighlightedDimensions);
 		return true;
 	}
 
 	return false;
+}
+
+void UInv_InventoryGrid::HighlightSlots(const int32 Index, const FIntPoint& Dimensions)
+{
+	if (!bMouseWithinCanvas) return;
+
+	UnHighlightSlots(LastHighlightedIndex, LastHighlightedDimensions);
+
+	UInv_InventoryStatics::ForEach2D(GridSlots, Index, Dimensions, Columns, [&](UInv_GridSlot* GridSlot)
+	{
+		GridSlot->SetOccupiedTexture();
+	});
+
+	LastHighlightedDimensions = Dimensions;
+	LastHighlightedIndex = Index;
+}
+
+void UInv_InventoryGrid::UnHighlightSlots(const int32 Index, const FIntPoint& Dimensions)
+{
+	UInv_InventoryStatics::ForEach2D(GridSlots, Index, Dimensions, Columns, [&](UInv_GridSlot* GridSlot)
+	{
+		if (GridSlot->IsAvailable())
+		{
+			GridSlot->SetUnoccupiedTexture();
+		}
+		else
+		{
+			GridSlot->SetOccupiedTexture();
+		}
+	});
 }
 
 FIntPoint UInv_InventoryGrid::CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const

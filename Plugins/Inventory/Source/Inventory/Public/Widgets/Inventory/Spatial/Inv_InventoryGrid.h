@@ -342,6 +342,10 @@ private:
 
 	bool CursorExitedCanvas(const FVector2D& BoundaryPos, const FVector2D& BoundarySize, const FVector2D& Location);
 
+	void HighlightSlots(const int32 Index, const FIntPoint& Dimensions);
+	
+	void UnHighlightSlots(const int32 Index, const FIntPoint& Dimensions);
+
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
@@ -393,4 +397,8 @@ private:
 
 	bool bMouseWithinCanvas{false};
 	bool bLastMouseWithinCanvas{false};
+
+	int32 LastHighlightedIndex{INDEX_NONE};
+	FIntPoint LastHighlightedDimensions{-1, -1};
 };
+
