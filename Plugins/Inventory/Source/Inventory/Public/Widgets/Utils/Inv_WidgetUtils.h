@@ -22,6 +22,9 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Inventory|WidgetUtils")
 	static FVector2D GetWidgetPosition(UWidget* Widget);
+
+	UFUNCTION(BlueprintCallable, Category="Inventory|WidgetUtils")
+	static FVector2D GetWidgetSize(UWidget* Widget);
 	
 	/**
 	 * 根据传入物品在物品栏中的坐标（行 列） 得到物品在道具列表中的Index索引
@@ -38,6 +41,8 @@ public:
 	 * @return 道具在道具栏中的坐标（行 列）
 	 */
 	static FIntPoint GetPositionFromIndex(int32 Index, const int32 Columns);
+
+	static bool IsWithinBounds(const FVector2D& BoundaryPos, const FVector2D& WidgetSize, const FVector2D& MousePos);
 
 	
 };

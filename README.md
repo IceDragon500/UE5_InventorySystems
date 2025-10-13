@@ -181,9 +181,9 @@
 
 ✅79. In Grid Bounds 在网格边界内
 
-80. Has Swappable Item 存在可交换物品
+✅80. Has Swappable Item 存在可交换物品
 
-81. Cursor Exited Canvas 光标离开画布
+✅81. Cursor Exited Canvas 光标离开画布
 
 82. Highlighting and UnHighlighting 高亮与取消高亮
 

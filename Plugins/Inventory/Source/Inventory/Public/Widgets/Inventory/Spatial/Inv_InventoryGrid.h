@@ -340,6 +340,8 @@ private:
 
 	FInv_SpaceQueryResult CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions);
 
+	bool CursorExitedCanvas(const FVector2D& BoundaryPos, const FVector2D& BoundarySize, const FVector2D& Location);
+
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
@@ -388,4 +390,7 @@ private:
 	int32 ItemDropIndex{INDEX_NONE};
 
 	FInv_SpaceQueryResult CurrentQueryResult;
+
+	bool bMouseWithinCanvas{false};
+	bool bLastMouseWithinCanvas{false};
 };

@@ -18,6 +18,12 @@ FVector2D UInv_WidgetUtils::GetWidgetPosition(UWidget* Widget)
 	return ViewportPosition;
 }
 
+FVector2D UInv_WidgetUtils::GetWidgetSize(UWidget* Widget)
+{
+	const FGeometry Geometry = Widget->GetCachedGeometry();
+	return Geometry.GetLocalSize();
+}
+
 int32 UInv_WidgetUtils::GetIndexFromPosition(const FIntPoint& Position, const int32 Columns)
 {
 	return Position.X + Position.Y * Columns;
@@ -26,4 +32,10 @@ int32 UInv_WidgetUtils::GetIndexFromPosition(const FIntPoint& Position, const in
 FIntPoint UInv_WidgetUtils::GetPositionFromIndex(int32 Index, const int32 Columns)
 {
 	return FIntPoint(Index % Columns, Index / Columns);
+}
+
+bool UInv_WidgetUtils::IsWithinBounds(const FVector2D& BoundaryPos, const FVector2D& WidgetSize, const FVector2D& MousePos)
+{
+	return MousePos.X >= BoundaryPos.X && MousePos.X <= (BoundaryPos.X + WidgetSize.X) &&
+		MousePos.Y >= BoundaryPos.Y && MousePos.Y <= (BoundaryPos.Y + WidgetSize.Y);
 }
