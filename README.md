@@ -187,7 +187,7 @@
 
 ✅82. Highlighting and UnHighlighting 高亮与取消高亮
 
-83. Change Hover Type 更改悬停类型
+✅83. Change Hover Type 更改悬停类型
 
 
 ### 第9节 放置 (Put Down)
