@@ -5,6 +5,27 @@
 #include "Components/Image.h"
 #include "Items/Inv_InventoryItem.h"
 
+void UInv_GridSlot::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	Super::NativeOnMouseEnter(InGeometry, InMouseEvent);
+
+	GridSlotHovered.Broadcast(TileIndex, InMouseEvent);
+}
+
+void UInv_GridSlot::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
+{
+	Super::NativeOnMouseLeave(InMouseEvent);
+
+	GridSlotUnHovered.Broadcast(TileIndex, InMouseEvent);
+}
+
+FReply UInv_GridSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	GridSlotClicked.Broadcast(TileIndex, InMouseEvent);
+	
+	return FReply::Handled();//事件应该返回一个FReply::Handled（）让系统知道事件已经被处理了
+}
+
 void UInv_GridSlot::SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item)
 {
 	InventoryItem = Item;

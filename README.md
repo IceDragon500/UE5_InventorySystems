@@ -192,9 +192,9 @@
 
 ### 第9节 放置 (Put Down)
 
-84. Section 9 Intro 第9节介绍
+✅84. Section 9 Intro 第9节介绍
 
-85. Grid Slot Events 网格槽位事件
+✅85. Grid Slot Events 网格槽位事件
 
 86. On Grid Slot Clicked 网格槽位被点击事件
 

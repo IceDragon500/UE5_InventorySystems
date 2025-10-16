@@ -8,6 +8,8 @@
 
 class UImage;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGridSlotEvent, int32, GridIndex, const FPointerEvent&, MouseEvent);
+
 /**
  * 道具栏格子不同的状态，会对应不同的背景图片资源
  */
@@ -29,6 +31,13 @@ class INVENTORY_API UInv_GridSlot : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
+
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	
 
 	void SetTileIndex(int32 Index) { TileIndex = Index; } //单个格子的索引Index
 	int32 GetTileIndex() const { return TileIndex; } //单个格子的索引Index
@@ -52,6 +61,10 @@ public:
 	void SetOccupiedTexture();//显示为已占用的背景图片
 	void SetSelectedTexture();//显示为已选中的背景图片
 	void SetGrayedOutTexture();//显示为灰色的背景图片
+
+	FGridSlotEvent GridSlotClicked;//网格槽点击事件
+	FGridSlotEvent GridSlotHovered;//网格槽悬停
+	FGridSlotEvent GridSlotUnHovered;//网格槽取消悬停
 
 protected:
 
