@@ -726,6 +726,27 @@ void UInv_InventoryGrid::ConstructGrid()
 
 void UInv_InventoryGrid::OnGridSlotClicked(int32 GridIndex, const FPointerEvent& MouseEvent)
 {
+	//如果我们没有悬停物品，就不需要执行任何操作
+	if (!IsValid(HoverItem)) return;
+
+	//当我们点击带有悬停物品的网格槽位时，我们希望尝试将该物品放置到目标位置
+
+	//当我们点击网格槽位时，需要确保该物品放置索引是有效的
+	if (!GridSlots.IsValidIndex(ItemDropIndex)) return;
+
+	//检查一下当前的查询结果是否拥有有效的物品
+	if (CurrentQueryResult.ValidItem.IsValid() && GridSlots.IsValidIndex(CurrentQueryResult.UpperLeftIndex))
+	{
+		OnSlottedItemClicked(CurrentQueryResult.UpperLeftIndex, MouseEvent);
+		return;
+	}
+
+	auto GridSlot = GridSlots[ItemDropIndex];
+	if (!GridSlot->GetInventoryItem().IsValid())
+	{
+		//TODO : 将物品放置在此索引位置
+	}
+	
 }
 
 void UInv_InventoryGrid::OnGridSlotHovered(int32 GridIndex, const FPointerEvent& MouseEvent)

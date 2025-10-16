@@ -196,7 +196,7 @@
 
 ✅85. Grid Slot Events 网格槽位事件
 
-86. On Grid Slot Clicked 网格槽位被点击事件
+✅86. On Grid Slot Clicked 网格槽位被点击事件
 
 87. Put Down on Index 在索引位置放置物品
 

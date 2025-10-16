@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -322,38 +322,110 @@ private:
 
 	void RemoveItemFromGrid(UInv_InventoryItem* InventoryItem, const int32 GridIndex);
 
+	/**
+	 * 更新当前鼠标指向的网格格子参数
+	 * 
+	 * @param CanvasPosition 画布面板的位置
+	 * @param MousePosition 鼠标在视口中的位置
+	 */
 	void UpdateTileParameters(const FVector2D CanvasPosition, const FVector2D MousePosition);
 
+	/**
+	 * 计算鼠标悬停的网格坐标
+	 * 
+	 * @param CanvasPosition 画布面板的位置
+	 * @param MousePosition 鼠标在视口中的位置
+	 * @return 鼠标悬停的网格坐标
+	 */
 	FIntPoint CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const;
 	
+	/**
+	 * 计算鼠标在网格格子中的象限位置
+	 * 
+	 * @param CanvasPosition 画布面板的位置
+	 * @param MousePosition 鼠标在视口中的位置
+	 * @return 鼠标所在的象限
+	 */
 	EInv_TileQuadrant CalculateTileQuadrant(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const;
 
+	/**
+	 * 当网格格子参数更新时的处理函数
+	 * 
+	 * @param Parameters 更新后的网格格子参数
+	 */
 	void OnTileParametersUpdate(const FInv_TileParameters& Parameters);
 
+	/**
+	 * 根据象限计算起始坐标
+	 * 
+	 * @param Coordinate 当前坐标
+	 * @param Dimensions 物品占用的网格尺寸
+	 * @param Quadrant 象限位置
+	 * @return 计算出的起始坐标
+	 */
 	FIntPoint CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions, EInv_TileQuadrant Quadrant) const;
 
+	/**
+	 * 检查悬停位置是否有足够空间放置物品
+	 * 
+	 * @param Position 起始位置坐标
+	 * @param Dimensions 物品占用的网格尺寸
+	 * @return 空间查询结果
+	 */
 	FInv_SpaceQueryResult CheckHoverPosition(const FIntPoint& Position, const FIntPoint& Dimensions);
 
+	/**
+	 * 检查鼠标是否离开了画布区域
+	 * 
+	 * @param BoundaryPos 画布边界位置
+	 * @param BoundarySize 画布尺寸
+	 * @param Location 鼠标位置
+	 * @return 如果鼠标离开了画布返回true，否则返回false
+	 */
 	bool CursorExitedCanvas(const FVector2D& BoundaryPos, const FVector2D& BoundarySize, const FVector2D& Location);
 
+	/**
+	 * 高亮显示指定区域的网格格子
+	 * 
+	 * @param Index 起始网格索引
+	 * @param Dimensions 物品占用的网格尺寸
+	 */
 	void HighlightSlots(const int32 Index, const FIntPoint& Dimensions);
 	
+	/**
+	 * 取消高亮显示指定区域的网格格子
+	 * 
+	 * @param Index 起始网格索引
+	 * @param Dimensions 物品占用的网格尺寸
+	 */
 	void UnHighlightSlots(const int32 Index, const FIntPoint& Dimensions);
 
+	/**
+	 * 改变网格格子的悬停状态显示
+	 * 
+	 * @param Index 起始网格索引
+	 * @param Dimensions 物品占用的网格尺寸
+	 * @param GridSlotState 目标网格格子状态
+	 */
 	void ChangeHoverType(const int32 Index, const FIntPoint& Dimensions, EInv_GridSlotState GridSlotState);
 
+	//添加堆叠物品到网格中
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
 
+	//当槽位物品被点击时的处理函数
 	UFUNCTION()
 	void OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent);
 
+	//当网格格子被点击时的处理函数
 	UFUNCTION()
 	void OnGridSlotClicked(int32 GridIndex, const FPointerEvent& MouseEvent);
 
+	//当网格格子被悬停时的处理函数
 	UFUNCTION()
 	void OnGridSlotHovered(int32 GridIndex, const FPointerEvent& MouseEvent);
 
+	//当网格格子取消悬停时的处理函数
 	UFUNCTION()
 	void OnGridSlotUnHovered(int32 GridIndex, const FPointerEvent& MouseEvent);
 
@@ -401,14 +473,11 @@ private:
 	FInv_TileParameters LastTileParameters;
 
 	//当我们在有效位置点击网格时物品将被放置的位置
-	int32 ItemDropIndex{INDEX_NONE};
-
-	FInv_SpaceQueryResult CurrentQueryResult;
-
-	bool bMouseWithinCanvas{false};
-	bool bLastMouseWithinCanvas{false};
-
-	int32 LastHighlightedIndex{INDEX_NONE};
-	FIntPoint LastHighlightedDimensions{-1, -1};
+	int32 ItemDropIndex{INDEX_NONE};//这个变量用于跟踪当用户在有效位置点击网格时，物品将被放置的网格索引位置。
+	FInv_SpaceQueryResult CurrentQueryResult;//存储当前的空间查询结果，用于记录当前鼠标位置下网格空间的可用性信息。
+	bool bMouseWithinCanvas{false};//用于标识鼠标当前是否在画布范围内，帮助处理鼠标进入/离开画布的逻辑。
+	bool bLastMouseWithinCanvas{false};//存储上一帧中鼠标是否在画布范围内的状态，通过与当前状态比较可以检测鼠标进入/离开事件。
+	int32 LastHighlightedIndex{INDEX_NONE};//记录上一次高亮显示的网格索引
+	FIntPoint LastHighlightedDimensions{-1, -1};//存储上一次高亮显示的网格区域尺寸（宽×高）
 };
 
