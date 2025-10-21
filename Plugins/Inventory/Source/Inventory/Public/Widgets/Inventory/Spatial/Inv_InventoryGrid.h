@@ -64,6 +64,9 @@ public:
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
 
+	void ShowCursor();
+	void HideCursor();
+
 protected:
 
 private:
@@ -413,6 +416,23 @@ private:
 
 	void ClearHoverItem();
 
+	UUserWidget* GetVisibleCursorWidget();
+	UUserWidget* GetHiddenCurosrWidget();
+
+
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UUserWidget> VisibleCursorWidgetClass;
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UUserWidget> HiddenCursorWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidget> VisibleCursorWidget;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidget> HiddenCursorWidget;
+
 	//添加堆叠物品到网格中
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
@@ -484,4 +504,3 @@ private:
 	int32 LastHighlightedIndex{INDEX_NONE};//记录上一次高亮显示的网格索引
 	FIntPoint LastHighlightedDimensions{-1, -1};//存储上一次高亮显示的网格区域尺寸（宽×高）
 };
-

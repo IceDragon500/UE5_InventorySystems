@@ -88,5 +88,7 @@ private:
 	 * @param Button 指定的按钮设置为禁用状态
 	 */
 	void SetActiveGrid(UInv_InventoryGrid* Grid, UButton* Button);
+
+	TWeakObjectPtr<UInv_InventoryGrid> ActiveGrid;
 	
 };

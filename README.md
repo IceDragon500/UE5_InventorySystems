@@ -200,7 +200,7 @@
 
 ✅87. Put Down on Index 在索引位置放置物品
 
-88. Show and Hide Cursor 显示与隐藏光标
+✅88. Show and Hide Cursor 显示与隐藏光标
 
 89. On Slotted Item Clicked 槽位物品被点击事件
 
