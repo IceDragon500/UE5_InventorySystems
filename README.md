@@ -202,7 +202,7 @@
 
 ✅88. Show and Hide Cursor 显示与隐藏光标
 
-89. On Slotted Item Clicked 槽位物品被点击事件
+✅89. On Slotted Item Clicked 槽位物品被点击事件
 
 90. Swap With Hover Item 与悬停物品交换
 

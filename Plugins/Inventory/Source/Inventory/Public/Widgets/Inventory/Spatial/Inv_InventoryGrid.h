@@ -419,6 +419,10 @@ private:
 	UUserWidget* GetVisibleCursorWidget();
 	UUserWidget* GetHiddenCurosrWidget();
 
+	bool IsSameStackable(const UInv_InventoryItem* ClickedInventoryItem) const;
+
+	void SwapWithHoverItem(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex);
+
 
 
 	UPROPERTY(EditAnywhere, Category="属性设置")

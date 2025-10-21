@@ -204,6 +204,39 @@ void UInv_InventoryGrid::ChangeHoverType(const int32 Index, const FIntPoint& Dim
 	LastHighlightedDimensions = Dimensions;
 }
 
+FIntPoint UInv_InventoryGrid::CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions,
+														  EInv_TileQuadrant Quadrant) const
+{
+	const int32 HasEvenWidth = Dimensions.X % 2 == 0 ? 1 : 0;
+	const int32 HasEvenHeight = Dimensions.Y % 2 == 0 ? 1 : 0;
+
+	FIntPoint StartingCoord;
+	switch (Quadrant)
+	{
+	case EInv_TileQuadrant::TopLeft:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X);
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y);
+		break;
+	case EInv_TileQuadrant::TopRight:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X) + HasEvenWidth;
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y);
+		break;
+	case EInv_TileQuadrant::BottomLeft:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X);
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y) + HasEvenHeight;
+		break;
+	case EInv_TileQuadrant::BottomRight:
+		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X) + HasEvenWidth;
+		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y) + HasEvenHeight;
+		break;
+	default:
+		UE_LOG(LogInventory, Error, TEXT("Invalid Quadrant."));
+		return  FIntPoint(-1, -1);
+	}
+
+	return StartingCoord;
+}
+
 FIntPoint UInv_InventoryGrid::CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const
 {
 	return FIntPoint{
@@ -494,7 +527,7 @@ void UInv_InventoryGrid::AssignHoverItem(UInv_InventoryItem* InventoryItem)
 	if (!IsValid(HoverItem))
 	{
 		HoverItem = CreateWidget<UInv_HoverItem>(GetOwningPlayer(), HoverItemClass);
-		HoverItem->SetInventoryItem(InventoryItem);
+		//HoverItem->SetInventoryItem(InventoryItem);
 	}
 
 	//设定获取网格片段的功能，以便了解物品占据多少个网格空间
@@ -506,10 +539,12 @@ void UInv_InventoryGrid::AssignHoverItem(UInv_InventoryItem* InventoryItem)
 	const FVector2D DrawSize = GetDrawSize(GridFragment);
 	FSlateBrush IconBrush;
 	IconBrush.SetResourceObject(ImageFragment->GetIcon());
+	IconBrush.DrawAs = ESlateBrushDrawType::Image;
 	IconBrush.ImageSize = DrawSize * UWidgetLayoutLibrary::GetViewportScale(this);//如果视口以不协调的方式缩放，这将进行补偿
 
 	HoverItem->SetImageBrush(IconBrush);
 	HoverItem->SetGridDimensions(GridFragment->GetGridSize());
+	HoverItem->SetInventoryItem(InventoryItem);
 	HoverItem->SetIsStackable(InventoryItem->IsStackable());
 
 	GetOwningPlayer()->SetMouseCursorWidget(EMouseCursor::Default, HoverItem);
@@ -538,7 +573,7 @@ void UInv_InventoryGrid::AddStacks(const FInv_SlotAvailabilityResult& Result)
 
 void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("InventoryGrid::OnSlottedItemClicked %d"), GridIndex);
+	//UE_LOG(LogTemp, Warning, TEXT("InventoryGrid::OnSlottedItemClicked %d"), GridIndex);
 	check(GridSlots.IsValidIndex(GridIndex));
 
 	UInv_InventoryItem* ClickedInventoryItem = GridSlots[GridIndex]->GetInventoryItem().Get();
@@ -549,40 +584,21 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 	if (!IsValid(HoverItem) && IsLeftClick(MouseEvent))
 	{
 		PickUp(ClickedInventoryItem, GridIndex);
+		return;
 	}
-}
 
-FIntPoint UInv_InventoryGrid::CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions,
-                                                          EInv_TileQuadrant Quadrant) const
-{
-	const int32 HasEvenWidth = Dimensions.X % 2 == 0 ? 1 : 0;
-	const int32 HasEvenHeight = Dimensions.Y % 2 == 0 ? 1 : 0;
-
-	FIntPoint StartingCoord;
-	switch (Quadrant)
+	//鼠标上的物品和被点击的物品，是否属于同一类型且可堆叠，如果它们是相同类型且可堆叠，那么：
+	if (IsSameStackable(ClickedInventoryItem))
 	{
-	case EInv_TileQuadrant::TopLeft:
-		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X);
-		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y);
-		break;
-	case EInv_TileQuadrant::TopRight:
-		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X) + HasEvenWidth;
-		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y);
-		break;
-	case EInv_TileQuadrant::BottomLeft:
-		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X);
-		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y) + HasEvenHeight;
-		break;
-	case EInv_TileQuadrant::BottomRight:
-		StartingCoord.X = Coordinate.X - FMath::FloorToInt(0.5f * Dimensions.X) + HasEvenWidth;
-		StartingCoord.Y = Coordinate.Y - FMath::FloorToInt(0.5f * Dimensions.Y) + HasEvenHeight;
-		break;
-	default:
-		UE_LOG(LogInventory, Error, TEXT("Invalid Quadrant."));
-		return  FIntPoint(-1, -1);
+		//是否应该交换它们的堆叠数量
+		//是否应该消耗悬停物品的堆叠，将HoverItem的数量加到被点击物品的堆叠数量中
+		//如果我们的悬停物品超出可填充容量，是否应该填充被点击物品的堆叠数量，而不消耗悬停物品
+		//当被点击物品已满时，被点击的道具已经满了，那么我们应该与悬停物品交换
+		return;
 	}
 
-	return StartingCoord;
+	//如果我们在最后没有提前返回，就应该与悬停物品交换
+	SwapWithHoverItem(ClickedInventoryItem, GridIndex);
 }
 
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
@@ -736,12 +752,14 @@ void UInv_InventoryGrid::OnGridSlotClicked(int32 GridIndex, const FPointerEvent&
 	if (!GridSlots.IsValidIndex(ItemDropIndex)) return;
 
 	//检查一下当前的查询结果是否拥有有效的物品
+	//如果存在有效的物品，则需要将物品和道具栏中的物品进行交换
 	if (CurrentQueryResult.ValidItem.IsValid() && GridSlots.IsValidIndex(CurrentQueryResult.UpperLeftIndex))
 	{
 		OnSlottedItemClicked(CurrentQueryResult.UpperLeftIndex, MouseEvent);
 		return;
 	}
 
+	//如果没有有效的物品，则说明这里是个空位置，我们需要将物品放置在此索引位置
 	auto GridSlot = GridSlots[ItemDropIndex];
 	if (!GridSlot->GetInventoryItem().IsValid())
 	{
@@ -796,6 +814,33 @@ UUserWidget* UInv_InventoryGrid::GetHiddenCurosrWidget()
 	}
 
 	return HiddenCursorWidget;
+}
+
+bool UInv_InventoryGrid::IsSameStackable(const UInv_InventoryItem* ClickedInventoryItem) const
+{
+	const bool bIsSameItem = ClickedInventoryItem == HoverItem->GetInventoryItem();
+	const bool bIsStackable = ClickedInventoryItem->IsStackable();
+
+	return bIsSameItem && bIsStackable && HoverItem->GetItemType().MatchesTagExact(ClickedInventoryItem->GetItemManifest().GetItemTypeTag());
+}
+
+void UInv_InventoryGrid::SwapWithHoverItem(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex)
+{
+	if (!IsValid(HoverItem)) return;
+
+	UInv_InventoryItem* TempInventoryItem = HoverItem->GetInventoryItem();
+	const int32 TempStackCount = HoverItem->GetStackCount();
+	const bool bTempIsStackable = HoverItem->IsStackable();
+
+	//keep the same previous grid index
+
+	AssignHoverItem(ClickedInventoryItem, GridIndex, HoverItem->GetPreviousGridIndex());
+
+	RemoveItemFromGrid(ClickedInventoryItem, GridIndex);
+
+	AddItemAtIndex(TempInventoryItem, ItemDropIndex, bTempIsStackable, TempStackCount);
+
+	UpdateGridSlots(TempInventoryItem, ItemDropIndex, bTempIsStackable, TempStackCount);
 }
 
 void UInv_InventoryGrid::ShowCursor()
