@@ -198,7 +198,7 @@
 
 ✅86. On Grid Slot Clicked 网格槽位被点击事件
 
-87. Put Down on Index 在索引位置放置物品
+✅87. Put Down on Index 在索引位置放置物品
 
 88. Show and Hide Cursor 显示与隐藏光标
 

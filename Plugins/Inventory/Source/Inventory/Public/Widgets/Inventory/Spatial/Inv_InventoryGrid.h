@@ -409,6 +409,10 @@ private:
 	 */
 	void ChangeHoverType(const int32 Index, const FIntPoint& Dimensions, EInv_GridSlotState GridSlotState);
 
+	void PutDownOnIndex(const int32 Index);
+
+	void ClearHoverItem();
+
 	//添加堆叠物品到网格中
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);

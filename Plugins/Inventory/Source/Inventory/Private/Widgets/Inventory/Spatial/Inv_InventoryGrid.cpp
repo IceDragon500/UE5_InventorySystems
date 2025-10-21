@@ -16,6 +16,7 @@
 #include "Widgets/Utils/Inv_WidgetUtils.h"
 #include "InputCoreTypes.h"
 #include "Inventory.h"
+#include "ShaderPrintParameters.h"
 
 void UInv_InventoryGrid::NativeOnInitialized()
 {
@@ -745,7 +746,32 @@ void UInv_InventoryGrid::OnGridSlotClicked(int32 GridIndex, const FPointerEvent&
 	if (!GridSlot->GetInventoryItem().IsValid())
 	{
 		//TODO : 将物品放置在此索引位置
+		PutDownOnIndex(ItemDropIndex);
 	}
+	
+}
+
+void UInv_InventoryGrid::PutDownOnIndex(const int32 Index)
+{
+	AddItemAtIndex(HoverItem->GetInventoryItem(), Index, HoverItem->IsStackable(), HoverItem->GetStackCount());
+	UpdateGridSlots(HoverItem->GetInventoryItem(), Index, HoverItem->IsStackable(), HoverItem->GetStackCount());
+	ClearHoverItem();
+}
+
+void UInv_InventoryGrid::ClearHoverItem()
+{
+	if (!IsValid(HoverItem)) return;
+
+	HoverItem->SetInventoryItem(nullptr);
+	HoverItem->SetIsStackable(false);
+	HoverItem->SetPreviousGridIndex(INDEX_NONE);
+	HoverItem->UpdateStackCount(0);
+	HoverItem->SetImageBrush(FSlateNoResource());
+
+	HoverItem->RemoveFromParent();
+	HoverItem = nullptr;
+
+	//TODO : 显示鼠标光标
 	
 }
 
