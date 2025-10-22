@@ -204,11 +204,11 @@
 
 ✅89. On Slotted Item Clicked 槽位物品被点击事件
 
-90. Swap With Hover Item 与悬停物品交换
+✅90. Swap With Hover Item 与悬停物品交换
 
-91. Should Swap Stack Counts 是否交换堆叠数量
+✅91. Should Swap Stack Counts 是否交换堆叠数量
 
-92. Swap Stack Counts 交换堆叠数量
+✅92. Swap Stack Counts 交换堆叠数量
 
 93. Consume Hover Item Stacks 消耗悬停物品堆叠
 
