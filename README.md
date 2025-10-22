@@ -212,7 +212,7 @@
 
 ✅93. Consume Hover Item Stacks 消耗悬停物品堆叠
 
-94. Filling in Stacks 填充堆叠
+✅94. Filling in Stacks 填充堆叠
 
 95. Slot is Full 槽位已满
 

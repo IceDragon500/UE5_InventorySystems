@@ -600,14 +600,23 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 		if (ShouldSwapStackCounts(RoomInClickedSlot, HoveredStackCount,MaxStackSize))
 		{
 			SwapStackCounts(ClickedStackCount, HoveredStackCount, GridIndex);
+			return;
 		}
 		
 		//是否应该消耗悬停物品的堆叠，将HoverItem的数量加到被点击物品的堆叠数量中（例如，背包中一个9堆叠的红药瓶和1个红药瓶，鼠标点起1个红药瓶，再点击9个堆叠的红药瓶，只需要增加被点击物品的堆叠数量即可，然后清除鼠标上的HoverItem）
 		if (ShouldConsumeHoverItemStacks(HoveredStackCount, RoomInClickedSlot))
 		{
 			ConsumeHoverItemStacks(ClickedStackCount, HoveredStackCount, GridIndex);
+			return;
 		}
+		
 		//如果我们的悬停物品超出可填充容量，是否应该填充被点击物品的堆叠数量，而不消耗悬停物品
+		if (ShouldFillInStack(RoomInClickedSlot, HoveredStackCount))
+		{
+			FillInStack(RoomInClickedSlot, HoveredStackCount - RoomInClickedSlot, GridIndex);
+			return;
+		}
+		
 		//当被点击物品已满时，被点击的道具已经满了，那么我们应该与悬停物品交换
 		return;
 	}
@@ -902,6 +911,24 @@ void UInv_InventoryGrid::ConsumeHoverItemStacks(const int32 ClickedStackCount, c
 	const FIntPoint Dimensions = GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
 
 	HighlightSlots(Index, Dimensions);
+}
+
+bool UInv_InventoryGrid::ShouldFillInStack(const int32 RoomInClickedSlot, const int32 HoveredStackCount)
+{
+	return RoomInClickedSlot < HoveredStackCount;
+}
+
+void UInv_InventoryGrid::FillInStack(const int32 FillAmount, const int32 Remainder, const int32 Index)
+{
+	UInv_GridSlot* GridSlot = GridSlots[Index];
+	const int32 NewStackCount = GridSlot->GetStackCount() + FillAmount;
+
+	GridSlot->SetStackCount(NewStackCount);
+
+	UInv_SlottedItem* ClickedSlottedItem = SlottedItemMap.FindChecked(Index);
+	ClickedSlottedItem->UpdateStackCount(NewStackCount);
+
+	HoverItem->UpdateStackCount(Remainder);
 }
 
 void UInv_InventoryGrid::ShowCursor()

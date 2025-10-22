@@ -24,7 +24,7 @@ void UInv_SlottedItem::SetImageBrush(const FSlateBrush& Brush) const
 
 void UInv_SlottedItem::UpdateStackCount(int32 InCount)
 {
-	if (InCount >1)
+	if (InCount >1) //大于1才显示道具数量，如果等于1则不显示
 	{
 		Text_StackCount->SetVisibility(ESlateVisibility::Visible);
 		Text_StackCount->SetText(FText::AsNumber(InCount));
