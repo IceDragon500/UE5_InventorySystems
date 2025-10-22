@@ -214,7 +214,7 @@
 
 ✅94. Filling in Stacks 填充堆叠
 
-95. Slot is Full 槽位已满
+✅95. Slot is Full 槽位已满
 
 
 ### 第10节 弹出菜单 (Pop Up Menu)

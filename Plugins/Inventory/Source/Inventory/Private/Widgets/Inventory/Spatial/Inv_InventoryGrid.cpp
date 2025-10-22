@@ -617,8 +617,11 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 			return;
 		}
 		
-		//当被点击物品已满时，被点击的道具已经满了，那么我们应该与悬停物品交换
-		return;
+		//点击的槽位已经满 什么都不做
+		if (RoomInClickedSlot == 0)
+		{
+			return;
+		}
 	}
 
 	//如果我们在最后没有提前返回，就应该与悬停物品交换
