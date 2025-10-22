@@ -595,12 +595,18 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 		const int32 MaxStackSize = StackableFragment->GetMaxStackSize();
 		const int32 RoomInClickedSlot = MaxStackSize - ClickedStackCount;
 		const int32 HoveredStackCount = HoverItem->GetStackCount();
+		
 		//是否应该交换它们的堆叠数量（例如，背包中一个最大10堆叠的红药瓶和1个红药瓶，鼠标点起1个红药瓶，再点击10个堆叠的红药瓶，只需要交换他们的堆叠数量即可，没有必要做到完全交换，因为是同一个道具）
 		if (ShouldSwapStackCounts(RoomInClickedSlot, HoveredStackCount,MaxStackSize))
 		{
 			SwapStackCounts(ClickedStackCount, HoveredStackCount, GridIndex);
 		}
+		
 		//是否应该消耗悬停物品的堆叠，将HoverItem的数量加到被点击物品的堆叠数量中（例如，背包中一个9堆叠的红药瓶和1个红药瓶，鼠标点起1个红药瓶，再点击9个堆叠的红药瓶，只需要增加被点击物品的堆叠数量即可，然后清除鼠标上的HoverItem）
+		if (ShouldConsumeHoverItemStacks(HoveredStackCount, RoomInClickedSlot))
+		{
+			ConsumeHoverItemStacks(ClickedStackCount, HoveredStackCount, GridIndex);
+		}
 		//如果我们的悬停物品超出可填充容量，是否应该填充被点击物品的堆叠数量，而不消耗悬停物品
 		//当被点击物品已满时，被点击的道具已经满了，那么我们应该与悬停物品交换
 		return;
@@ -858,17 +864,44 @@ bool UInv_InventoryGrid::ShouldSwapStackCounts(const int32 RoomInClickedSlot, co
 	return RoomInClickedSlot == 0 && HoveredStackCount < MaxStackSize;
 }
 
-void UInv_InventoryGrid::SwapStackCounts(const int32 ClickedStackCount, const int32 HoverStackCount, const int32 Index)
+void UInv_InventoryGrid::SwapStackCounts(const int32 ClickedStackCount, const int32 HoveredStackCount, const int32 Index)
 {
 	//先将道具格子中的道具数量设置为鼠标上的道具数量
 	UInv_GridSlot* GirdSlot = GridSlots[Index];
-	GirdSlot->SetStackCount(HoverStackCount);
+	GirdSlot->SetStackCount(HoveredStackCount);
 
 	UInv_SlottedItem* ClickedSlottedItem = SlottedItemMap.FindChecked(Index);
-	ClickedSlottedItem->UpdateStackCount(HoverStackCount);
+	ClickedSlottedItem->UpdateStackCount(HoveredStackCount);
 
 	HoverItem->UpdateStackCount(ClickedStackCount);
 	
+}
+
+bool UInv_InventoryGrid::ShouldConsumeHoverItemStacks(const int32 HoveredStackCount,
+	const int32 RoomInClickedSlot) const
+{
+	return RoomInClickedSlot >= HoveredStackCount;
+}
+
+void UInv_InventoryGrid::ConsumeHoverItemStacks(const int32 ClickedStackCount, const int32 HoveredStackCount,
+	const int32 Index)
+{
+	const int32 AmountToTransfer = HoveredStackCount;
+	const int32 NewClickedStackCount = ClickedStackCount + AmountToTransfer;
+
+	GridSlots[Index]->SetStackCount(NewClickedStackCount);
+	SlottedItemMap.FindChecked(Index)->UpdateStackCount(NewClickedStackCount);
+
+	//这里会有点问题
+	
+	ClearHoverItem();
+
+	ShowCursor();
+
+	const FInv_GridFragment* GridFragment = GridSlots[Index]->GetInventoryItem()->GetItemManifest().GetFragmentOfType<FInv_GridFragment>();
+	const FIntPoint Dimensions = GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
+
+	HighlightSlots(Index, Dimensions);
 }
 
 void UInv_InventoryGrid::ShowCursor()

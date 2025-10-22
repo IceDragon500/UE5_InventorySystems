@@ -210,7 +210,7 @@
 
 ✅92. Swap Stack Counts 交换堆叠数量
 
-93. Consume Hover Item Stacks 消耗悬停物品堆叠
+✅93. Consume Hover Item Stacks 消耗悬停物品堆叠
 
 94. Filling in Stacks 填充堆叠
 
