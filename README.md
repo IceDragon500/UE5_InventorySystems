@@ -227,7 +227,7 @@
 
 ✅99. Item Pop Up Delegates 物品弹出菜单委托
 
-100. Finishing the Item Pop Up Class 完成物品弹出菜单类
+✅100. Finishing the Item Pop Up Class 完成物品弹出菜单类
 
 101. Item Pop Up Blueprint 物品弹出菜单蓝图
 

@@ -11,7 +11,7 @@ class UTextBlock;
 class USlider;
 class UButton;
 
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FPopUpMenuSplit, int32, SplitAmount, int32, Index);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FPopUpMenuSplit, int32, SplitAmount, int32, Index); //99课这里删除了MULTICAST
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopUpMenuDrop, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopUpMenuConsume, int32, Index);
 
@@ -26,12 +26,24 @@ class INVENTORY_API UInv_ItemPopUp : public UUserWidget
 
 public:
 	virtual void NativeOnInitialized() override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 
 	FPopUpMenuSplit OnPopUpMenuSplit;
 	FPopUpMenuDrop OnPopUpMenuDrop;
 	FPopUpMenuConsume OnPopUpMenuConsume;
 
 	int32 GetSplitAmount() const;
+
+	void CollapseSplitButton() const;
+	void CollapseConsumeButton() const;
+
+	void SetSliderParams(const float Max, const float Value) const;
+
+	//获取弹出菜单界面的大小
+	FVector2D GetBoxSize() const;
+
+	void SetGridIndex(int32 Index) { GridIndex = Index; }
+	int32 GetGridIndex() const { return GridIndex; }
 
 protected:
 
@@ -52,7 +64,7 @@ private:
 	TObjectPtr<USlider> Slider_Split; //分割量的滑块
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UTextBlock> TextBlock_Split; //显示分割出来的数量
+	TObjectPtr<UTextBlock> Text_SplitAmount; //显示分割出来的数量
 
 	int32 GridIndex{INDEX_NONE};
 
@@ -66,6 +78,7 @@ private:
 	void OnConsumeButtonClicked();//使用物品按钮被按下
 
 	UFUNCTION()
-	void OnSplitValueChanged(float Value);//滑块值改变
-	
+	void OnSplitValueChanged(float Value);//滑块值改变	
 };
+
+
