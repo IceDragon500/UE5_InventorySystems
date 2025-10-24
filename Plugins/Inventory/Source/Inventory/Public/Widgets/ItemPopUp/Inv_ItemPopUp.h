@@ -19,6 +19,7 @@ class INVENTORY_API UInv_ItemPopUp : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	virtual void NativeOnInitialized() override;
 
 protected:
 
@@ -41,5 +42,16 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextBlock_Split; //显示分割出来的数量
 
+	UFUNCTION()
+	void OnSplitButtonClicked();//分割物品按钮被按下
+
+	UFUNCTION()
+	void OnDropButtonClicked();//丢弃物品按钮被按下
+
+	UFUNCTION()
+	void OnConsumeButtonClicked();//使用物品按钮被按下
+
+	UFUNCTION()
+	void OnSplitValueChanged(float Value);//滑块值改变
 	
 };
