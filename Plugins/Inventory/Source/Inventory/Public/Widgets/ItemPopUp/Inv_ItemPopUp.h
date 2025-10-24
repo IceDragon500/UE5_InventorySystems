@@ -10,6 +10,12 @@ class USizeBox;
 class UTextBlock;
 class USlider;
 class UButton;
+
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FPopUpMenuSplit, int32, SplitAmount, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopUpMenuDrop, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopUpMenuConsume, int32, Index);
+
+
 /**
  * 当在物品栏网格中右键点击物品时，物品弹出窗口会显示出来
  */
@@ -20,6 +26,12 @@ class INVENTORY_API UInv_ItemPopUp : public UUserWidget
 
 public:
 	virtual void NativeOnInitialized() override;
+
+	FPopUpMenuSplit OnPopUpMenuSplit;
+	FPopUpMenuDrop OnPopUpMenuDrop;
+	FPopUpMenuConsume OnPopUpMenuConsume;
+
+	int32 GetSplitAmount() const;
 
 protected:
 
@@ -41,6 +53,8 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextBlock_Split; //显示分割出来的数量
+
+	int32 GridIndex{INDEX_NONE};
 
 	UFUNCTION()
 	void OnSplitButtonClicked();//分割物品按钮被按下
