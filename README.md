@@ -229,7 +229,7 @@
 
 ✅100. Finishing the Item Pop Up Class 完成物品弹出菜单类
 
-101. Item Pop Up Blueprint 物品弹出菜单蓝图
+✅101. Item Pop Up Blueprint 物品弹出菜单蓝图
 
 102. Create Item Pop Up 创建物品弹出菜单
 
