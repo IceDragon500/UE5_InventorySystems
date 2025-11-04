@@ -480,6 +480,15 @@ private:
 	UFUNCTION()
 	void OnGridSlotUnHovered(int32 GridIndex, const FPointerEvent& MouseEvent);
 
+	UFUNCTION()
+	void OnPopUpMenuSplit(int32 SplitAmount, int32 Index);
+
+	UFUNCTION()
+	void OnPopUpMenuDrop(int32 Index);
+
+	UFUNCTION()
+	void OnPopUpMenuConsume(int32 Index);
+
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
 	EInv_ItemCategory ItemCategory{EInv_ItemCategory::Equippable};
