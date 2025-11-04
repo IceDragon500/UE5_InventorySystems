@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Inv_GridSlot.generated.h"
 
+class UInv_ItemPopUp;
 class UImage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGridSlotEvent, int32, GridIndex, const FPointerEvent&, MouseEvent);
@@ -48,7 +49,7 @@ public:
 	void SetUpperLeftIndex(int32 Index) { UpperLeftIndex = Index; }//任何给定物品的左上角索引
 	int32 GetUpperLeftIndex() const { return UpperLeftIndex; }//任何给定物品的左上角索引
 
-	TWeakObjectPtr<UInv_InventoryItem> GetInventoryItem() const { return InventoryItem; }//这个格子指向的具体道具的弱指针
+	TWeakObjectPtr<UInv_InventoryItem> GetInventoryItem() const;//这个格子指向的具体道具的弱指针
 	void SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item);//这个格子指向的具体道具的弱指针
 
 	void SetAvailable(bool bAble) { bAvailable = bAble; }//是否可用
@@ -56,6 +57,9 @@ public:
 
 	EInv_GridSlotState GetSlotState() const { return GridSlotState; }//当前网格的状态
 	void SetSlotState(EInv_GridSlotState NewState) { GridSlotState = NewState; }//当前网格的状态
+
+	void SetItemPopUp(UInv_ItemPopUp* PopUp);
+	TWeakObjectPtr<UInv_ItemPopUp> GetItemPopUp() const;
 	
 	void SetUnoccupiedTexture();//显示为默认的图片
 	void SetOccupiedTexture();//显示为已占用的背景图片
@@ -69,12 +73,12 @@ public:
 protected:
 
 private:
-	
-	int32 TileIndex {INDEX_NONE};//单个格子的索引Index
 	int32 StackCount{0};//单个格子的堆叠数量
+	bool bAvailable{true};//是否可用 这里应该设置为true，即每个格子都应该是可用的
+	int32 TileIndex {INDEX_NONE};//单个格子的索引Index
 	int32 UpperLeftIndex{INDEX_NONE};//任何给定物品的左上角索引
 	TWeakObjectPtr<UInv_InventoryItem> InventoryItem;//这个格子指向的具体道具的弱指针
-	bool bAvailable{true};//是否可用 这里应该设置为true，即每个格子都应该是可用的
+	TWeakObjectPtr<UInv_ItemPopUp> ItemPopUp;//这个格子对应右键菜单的弱指针
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UImage> Image_GridSlot;
@@ -92,6 +96,9 @@ private:
 	FSlateBrush Brush_GrayedOut;//显示为灰色的背景图片
 	
 	EInv_GridSlotState GridSlotState{EInv_GridSlotState::Unoccupied};//当前网格的状态
+
+	UFUNCTION()
+	void OnItemPopUpDestruct(UUserWidget* Menu);
 
 
 };

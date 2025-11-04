@@ -4,6 +4,7 @@
 #include "Widgets/Inventory/GridSlots/Inv_GridSlot.h"
 #include "Components/Image.h"
 #include "Items/Inv_InventoryItem.h"
+#include "Widgets/ItemPopUp/Inv_ItemPopUp.h"
 
 void UInv_GridSlot::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
@@ -26,9 +27,26 @@ FReply UInv_GridSlot::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 	return FReply::Handled();//事件应该返回一个FReply::Handled（）让系统知道事件已经被处理了
 }
 
+TWeakObjectPtr<UInv_InventoryItem> UInv_GridSlot::GetInventoryItem() const
+{
+	return InventoryItem;
+}
+
 void UInv_GridSlot::SetInventoryItem(TWeakObjectPtr<UInv_InventoryItem> Item)
 {
 	InventoryItem = Item;
+}
+
+void UInv_GridSlot::SetItemPopUp(UInv_ItemPopUp* PopUp)
+{
+	ItemPopUp = PopUp;
+	ItemPopUp->SetGridIndex(GetTileIndex());
+	ItemPopUp->OnNativeDestruct.AddUObject(this, &ThisClass::OnItemPopUpDestruct);
+}
+
+TWeakObjectPtr<UInv_ItemPopUp> UInv_GridSlot::GetItemPopUp() const
+{
+	return ItemPopUp;
 }
 
 void UInv_GridSlot::SetUnoccupiedTexture()
@@ -53,4 +71,9 @@ void UInv_GridSlot::SetGrayedOutTexture()
 {
 	GridSlotState = EInv_GridSlotState::GrayedOut;
 	Image_GridSlot->SetBrush(Brush_GrayedOut);
+}
+
+void UInv_GridSlot::OnItemPopUpDestruct(UUserWidget* Menu)
+{
+	ItemPopUp.Reset();
 }

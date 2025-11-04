@@ -517,6 +517,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<UInv_HoverItem> HoverItem; //被创建的鼠标悬停的Widget组件
 
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FVector2D ItemPopUpOffset{0,0}; //用来设置右键菜单与鼠标之间的距离
+
 	//保存当前帧下，鼠标指向道具格子的信息
 	FInv_TileParameters TileParameters;
 
