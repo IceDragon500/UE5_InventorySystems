@@ -11,6 +11,7 @@
 #include "Inv_InventoryGrid.generated.h"
 
 
+class UInv_ItemPopUp;
 class UInv_HoverItem;
 struct FInv_GridFragment;
 class UInv_SlottedItem;
@@ -67,10 +68,14 @@ public:
 	void ShowCursor();
 	void HideCursor();
 
+	void SetOwningCanvas(UCanvasPanel* OwningCanvas);
+
 protected:
 
 private:
 	TWeakObjectPtr<UInv_InventoryComponent> InventoryComponent;
+
+	TWeakObjectPtr<UCanvasPanel> OwningCanvasPanel;
 
 	/**
 	 * 构造网格系统，根据行数和列数创建对应的网格槽位
@@ -435,8 +440,14 @@ private:
 
 	void FillInStack(const int32 FillAmount, const int32 Remainder, const int32 Index);
 
+	void CreateItemPopUp(const int32 GridIndex);
 
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UInv_ItemPopUp> ItemPopUpClass;
 
+	UPROPERTY()
+	TObjectPtr<UInv_ItemPopUp> ItemPopUp;
+	
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UUserWidget> VisibleCursorWidgetClass;
 

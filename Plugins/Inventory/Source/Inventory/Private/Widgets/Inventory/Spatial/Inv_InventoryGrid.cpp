@@ -14,9 +14,10 @@
 #include "Widgets/Inventory/HoverItem/Inv_HoverItem.h"
 #include "Widgets/Inventory/SlottedItems/Inv_SlottedItem.h"
 #include "Widgets/Utils/Inv_WidgetUtils.h"
+#include "Widgets/ItemPopUp/Inv_ItemPopUp.h"
 #include "InputCoreTypes.h"
 #include "Inventory.h"
-#include "ShaderPrintParameters.h"
+
 
 void UInv_InventoryGrid::NativeOnInitialized()
 {
@@ -586,6 +587,12 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 		PickUp(ClickedInventoryItem, GridIndex);
 		return;
 	}
+	
+	if (IsRightClick(MouseEvent))
+	{
+		CreateItemPopUp(GridIndex);
+		return;
+	}
 
 	//鼠标上的物品和被点击的物品，是否属于同一类型且可堆叠，如果它们是相同类型且可堆叠，那么：
 	if (IsSameStackable(ClickedInventoryItem))
@@ -934,6 +941,22 @@ void UInv_InventoryGrid::FillInStack(const int32 FillAmount, const int32 Remaind
 	HoverItem->UpdateStackCount(Remainder);
 }
 
+void UInv_InventoryGrid::CreateItemPopUp(const int32 GridIndex)
+{
+	UInv_InventoryItem* RightClickedItem = GridSlots[GridIndex]->GetInventoryItem().Get();
+
+	if (!IsValid(RightClickedItem)) return;
+
+	ItemPopUp = CreateWidget<UInv_ItemPopUp>(this, ItemPopUpClass);
+
+	OwningCanvasPanel->AddChildToCanvas(ItemPopUp);
+
+	UCanvasPanelSlot* CanvasSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(ItemPopUp);
+	const FVector2D MousePosition = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetOwningPlayer());
+	CanvasSlot->SetPosition(MousePosition);
+	CanvasSlot->SetSize(ItemPopUp->GetBoxSize());
+}
+
 void UInv_InventoryGrid::ShowCursor()
 {
 	if (!IsValid(GetOwningPlayer())) return;
@@ -944,6 +967,11 @@ void UInv_InventoryGrid::HideCursor()
 {
 	if (!IsValid(GetOwningPlayer())) return;
 	GetOwningPlayer()->SetMouseCursorWidget(EMouseCursor::Default, GetHiddenCurosrWidget());
+}
+
+void UInv_InventoryGrid::SetOwningCanvas(UCanvasPanel* OwningCanvas)
+{
+	OwningCanvasPanel = OwningCanvas;
 }
 
 void UInv_InventoryGrid::OnGridSlotHovered(int32 GridIndex, const FPointerEvent& MouseEvent)
