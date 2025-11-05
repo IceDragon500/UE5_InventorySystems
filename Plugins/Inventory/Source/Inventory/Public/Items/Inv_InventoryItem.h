@@ -30,7 +30,7 @@ public:
 	bool IsStackable() const;
 	bool IsConsumable() const;
 
-	int32 GetTotalStackCount() const { return TotalStackCount; }
+	int32 GetTotalStackCount() const { return TotalStackCount; }//获得鼠标点击的这个一道具的堆叠数量
 	void SetTotalStackCount(int32 Count) { TotalStackCount = Count; }
 
 protected:
@@ -41,7 +41,7 @@ private:
 	FInstancedStruct ItemManifest;
 
 	UPROPERTY(Replicated)
-	int32 TotalStackCount{0};
+	int32 TotalStackCount{0};//当前这个道具在物品栏中，鼠标点击的这一堆的堆叠数量
 	
 };
 

@@ -117,6 +117,28 @@ void UInv_InventoryComponent::Server_AddStacksToItem_Implementation(UInv_ItemCom
 	
 }
 
+void UInv_InventoryComponent::Server_DropItem_Implementation(UInv_InventoryItem* DropItem, int32 DropCount)
+{
+	const int32 NewStackCount = DropItem->GetTotalStackCount() - DropCount;
+	if (NewStackCount <= 0)
+	{
+		//如果当前被丢弃的数量与当前这个道具堆叠数量相同，则表示需要从InventoryList移除这个道具
+		InventoryList.RemoveItem(DropItem);
+	}
+	else
+	{
+		//如果数量小于这个道具的堆叠数量，也就是说这个道具还有剩，则只需要设置一下这个道具堆叠数量
+		DropItem->SetTotalStackCount(NewStackCount);
+	}
+
+	SpawnDroppedItem(DropItem, DropCount);
+}
+
+void UInv_InventoryComponent::SpawnDroppedItem(UInv_InventoryItem* Item, int32 StackCount)
+{
+	//TODO : 实际生成或仅生成掉落的物品
+}
+
 void UInv_InventoryComponent::ToggleInventoryMenu()
 {
 	if (bInventoryMenuOpen)

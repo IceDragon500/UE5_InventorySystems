@@ -64,11 +64,16 @@ public:
 	UFUNCTION(Server, Reliable)
 	void Server_AddStacksToItem(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder);
 
+	UFUNCTION(Server, Reliable)
+	void Server_DropItem(UInv_InventoryItem* DropItem, int32 DropCount);
+
 	//切换库存菜单
 	void ToggleInventoryMenu();
 
 	//注册用于网络复制的子对象
 	void AddRepSubObj(UObject* SubObj);
+
+	void SpawnDroppedItem(UInv_InventoryItem* Item, int32 StackCount);
 
 	FinventoryItemChange OnItemAdded;//在道具被添加的时候进行一个广播
 	FinventoryItemChange OnItemRemoved;//在道具被删除的时候进行一个广播

@@ -246,7 +246,7 @@
 
 ✅107. Drop Item 丢弃物品
 
-108. Server Drop Item 服务器端丢弃物品（RPC）
+✅108. Server Drop Item 服务器端丢弃物品（RPC）
 
 109. Spawn Dropped Item 生成被丢弃的物品
 
