@@ -31,6 +31,13 @@ void UInv_SpatialInventory::NativeOnInitialized()
 	ShowEquippable();
 }
 
+FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	ActiveGrid->DropItem();
+	return FReply::Handled(); //112讲 改成这样
+	
+}
+
 FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const
 {
 	//获取到拾取的道具是什么类型的

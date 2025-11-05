@@ -38,6 +38,7 @@ class INVENTORY_API UInv_SpatialInventory : public UInv_InventoryBase
 public:
 	
 	virtual void NativeOnInitialized() override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	/**
 	 * 有存放物品的空间

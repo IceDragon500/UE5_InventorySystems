@@ -69,6 +69,8 @@ public:
 	void HideCursor();
 
 	void SetOwningCanvas(UCanvasPanel* OwningCanvas);
+	
+	void DropItem();
 
 protected:
 
@@ -442,7 +444,7 @@ private:
 
 	void CreateItemPopUp(const int32 GridIndex);
 
-	void DropItem();
+	
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UInv_ItemPopUp> ItemPopUpClass;

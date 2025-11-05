@@ -254,7 +254,7 @@
 
 ✅111. Test Dropping Items 测试丢弃物品
 
-112. Dropping Items Manually 手动丢弃物品
+✅112. Dropping Items Manually 手动丢弃物品
 
 
 ### 第12节 消耗物品 (Consuming Items)
