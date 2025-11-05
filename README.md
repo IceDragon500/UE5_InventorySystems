@@ -242,9 +242,9 @@
 
 ### 第11节 丢弃物品 (Dropping Items)
 
-106. Section 11 Intro 第11节介绍
+✅106. Section 11 Intro 第11节介绍
 
-107. Drop Item 丢弃物品
+✅107. Drop Item 丢弃物品
 
 108. Server Drop Item 服务器端丢弃物品（RPC）
 

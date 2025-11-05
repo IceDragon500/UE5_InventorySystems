@@ -635,6 +635,17 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 	SwapWithHoverItem(ClickedInventoryItem, GridIndex);
 }
 
+void UInv_InventoryGrid::DropItem()
+{
+	if (!IsValid(HoverItem)) return;
+	if (!IsValid(HoverItem->GetInventoryItem())) return;
+
+	//TODO : 指示服务器实际执行物品丢弃操作，这涉及生成物品的过程、从库存中移除物品等操作
+
+	ClearHoverItem();
+	ShowCursor();
+}
+
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
 {
 	if (!MatchesCategory(Item)) return;
@@ -965,6 +976,7 @@ void UInv_InventoryGrid::CreateItemPopUp(const int32 GridIndex)
 
 	const int32 SliderMax = GridSlots[GridIndex]->GetStackCount() - 1;
 
+	//当物品可以拆分，显示拆分按钮  绑定OnPopUpMenuSplit
 	if (RightClickedItem->IsStackable() && SliderMax > 0)
 	{
 		ItemPopUp->OnPopUpMenuSplit.BindDynamic(this, &ThisClass::OnPopUpMenuSplit);
@@ -975,8 +987,10 @@ void UInv_InventoryGrid::CreateItemPopUp(const int32 GridIndex)
 		ItemPopUp->CollapseSplitButton();
 	}
 
+	//显示扔掉按钮，绑定OnPopUpMenuDrop
 	ItemPopUp->OnPopUpMenuDrop.AddDynamic(this, &ThisClass::OnPopUpMenuDrop);//我这里是多播，所以用AddDynamic 和教程不一样
 
+	//显示使用按钮，绑定OnPopUpMenuConsume
 	if (RightClickedItem->IsConsumable())
 	{
 		ItemPopUp->OnPopUpMenuConsume.AddDynamic(this, &ThisClass::OnPopUpMenuConsume);
@@ -1048,6 +1062,12 @@ void UInv_InventoryGrid::OnPopUpMenuSplit(int32 SplitAmount, int32 Index)
 
 void UInv_InventoryGrid::OnPopUpMenuDrop(int32 Index)
 {
+	UInv_InventoryItem* RightClickItem = GridSlots[Index]->GetInventoryItem().Get();
+	if (!IsValid(RightClickItem)) return;
+
+	PickUp(RightClickItem, Index);
+	DropItem();
+	
 }
 
 void UInv_InventoryGrid::OnPopUpMenuConsume(int32 Index)

@@ -34,10 +34,10 @@ public:
 
 	int32 GetSplitAmount() const;
 
-	void CollapseSplitButton() const;
-	void CollapseConsumeButton() const;
+	void CollapseSplitButton() const;//设置拆分功能不可显示
+	void CollapseConsumeButton() const;//设置使用功能不可显示
 
-	void SetSliderParams(const float Max, const float Value) const;
+	void SetSliderParams(const float Max, const float Value) const;//设置拆分条的最大和最小值
 
 	//获取弹出菜单界面的大小
 	FVector2D GetBoxSize() const;
