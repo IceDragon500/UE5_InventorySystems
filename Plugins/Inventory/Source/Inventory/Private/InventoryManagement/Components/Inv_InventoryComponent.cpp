@@ -145,7 +145,12 @@ void UInv_InventoryComponent::SpawnDroppedItem(UInv_InventoryItem* Item, int32 S
 	const FRotator SpawnRotation = FRotator::ZeroRotator;
 
 	//TODO : 接下来我们要让物品清单生成可拾取道具的 Actor
-	
+	FInv_ItemManifest ItemManifest = Item->GetItemManifestMutable();
+	if (FInv_StackableFragment* StackableFragment = ItemManifest.GetFragmentOfTypeMutable<FInv_StackableFragment>())
+	{
+		StackableFragment->SetStackCount(StackCount);
+	}
+	ItemManifest.SpawnPickupActor(this, SpawnLocation, SpawnRotation);
 }
 
 void UInv_InventoryComponent::ToggleInventoryMenu()

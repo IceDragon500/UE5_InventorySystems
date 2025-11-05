@@ -42,6 +42,8 @@ struct INVENTORY_API FInv_ItemManifest
 	template<typename T> requires std::derived_from<T, FInv_ItemFragment>
 	T* GetFragmentOfTypeMutable();
 
+	void SpawnPickupActor(const UObject* WorldContextObject, const FVector& SpawnLocation ,const FRotator& SpawnRotation);
+
 private:
 
 	//用来保存道具的各种“词条”Fragment
@@ -59,6 +61,10 @@ private:
 	//物品的类型Tag
 	UPROPERTY(editAnywhere, Category="属性设置", meta=(Categories="GameItems")) //添加一个 UPROPERTY(meta = (Categories = "GameItems")) 来筛选编辑器下拉菜单中的标签，使其仅显示以 GameItems 开头的标签
 	FGameplayTag ItemTypeTag {FGameplayTag()};
+
+	//被丢弃的物品需要生成类，需要在这个类设置Manifest清单
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<AActor> PickupActorClass;
 	
 };
 

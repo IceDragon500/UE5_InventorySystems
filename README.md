@@ -250,7 +250,7 @@
 
 ✅109. Spawn Dropped Item 生成被丢弃的物品
 
-110. Spawn Pickup Actor 生成可拾取Actor
+✅110. Spawn Pickup Actor 生成可拾取Actor
 
 111. Test Dropping Items 测试丢弃物品
 

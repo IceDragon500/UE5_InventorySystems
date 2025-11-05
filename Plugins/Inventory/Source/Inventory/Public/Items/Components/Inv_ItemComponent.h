@@ -32,6 +32,9 @@ public:
 
 	FInv_ItemManifest GetItemManifest() const { return ItemManifest; }
 
+	void InitItemManifest(FInv_ItemManifest CopyManifest);
+	
+
 	//处理物品被拾取时发生的情况
 	void PickedUp();
 

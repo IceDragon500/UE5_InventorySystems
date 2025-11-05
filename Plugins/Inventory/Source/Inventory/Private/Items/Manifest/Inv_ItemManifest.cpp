@@ -3,6 +3,7 @@
 
 #include "Items/Manifest/Inv_ItemManifest.h"
 #include "Items/Inv_InventoryItem.h"
+#include "Items/Components/Inv_ItemComponent.h"
 
 
 UInv_InventoryItem* FInv_ItemManifest::Manifest(UObject* NewOuter)
@@ -12,4 +13,18 @@ UInv_InventoryItem* FInv_ItemManifest::Manifest(UObject* NewOuter)
 
 	return Item;
 	
+}
+
+void FInv_ItemManifest::SpawnPickupActor(const UObject* WorldContextObject, const FVector& SpawnLocation, const FRotator& SpawnRotation)
+{
+	if (!PickupActorClass || !IsValid(WorldContextObject)) return;
+
+	AActor* SpawnActor = WorldContextObject->GetWorld()->SpawnActor<AActor>(PickupActorClass, SpawnLocation, SpawnRotation);
+	if (!IsValid(SpawnActor)) return;
+
+	//设置物品、清单、物品类别、物品类型
+	UInv_ItemComponent* ItemComp = SpawnActor->FindComponentByClass<UInv_ItemComponent>();
+	check(ItemComp);
+
+	ItemComp->InitItemManifest(*this); //110讲
 }
