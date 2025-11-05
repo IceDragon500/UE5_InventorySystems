@@ -116,7 +116,7 @@ private:
 	float DropSpanwDistanceMax{50.f};//设置角色正前方掉落物品距离角色本身最远距离
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	float RelativeSpawnElevation{-70.f};//设置角色正前方掉落物品距离地面的高度
+	float RelativeSpawnElevation{70.f};//设置角色正前方掉落物品距离地面的高度
 	
 	
 };

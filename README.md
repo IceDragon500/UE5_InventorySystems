@@ -252,7 +252,7 @@
 
 ✅110. Spawn Pickup Actor 生成可拾取Actor
 
-111. Test Dropping Items 测试丢弃物品
+✅111. Test Dropping Items 测试丢弃物品
 
 112. Dropping Items Manually 手动丢弃物品
 

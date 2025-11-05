@@ -640,7 +640,8 @@ void UInv_InventoryGrid::DropItem()
 	if (!IsValid(HoverItem)) return;
 	if (!IsValid(HoverItem->GetInventoryItem())) return;
 
-	//TODO : 指示服务器实际执行物品丢弃操作，这涉及生成物品的过程、从库存中移除物品等操作
+	//指示服务器实际执行物品丢弃操作，这涉及生成物品的过程、从库存中移除物品等操作
+	InventoryComponent->Server_DropItem(HoverItem->GetInventoryItem(), HoverItem->GetStackCount());
 
 	ClearHoverItem();
 	ShowCursor();
