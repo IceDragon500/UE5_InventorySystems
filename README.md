@@ -237,7 +237,7 @@
 
 ✅104. Split Drop and Consume Callbacks 拆分、丢弃和消耗的回调函数
 
-105. On Pop Up Menu Split 弹出菜单拆分事件
+✅105. On Pop Up Menu Split 弹出菜单拆分事件
 
 
 ### 第11节 丢弃物品 (Dropping Items)
