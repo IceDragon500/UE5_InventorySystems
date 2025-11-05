@@ -248,7 +248,7 @@
 
 ✅108. Server Drop Item 服务器端丢弃物品（RPC）
 
-109. Spawn Dropped Item 生成被丢弃的物品
+✅109. Spawn Dropped Item 生成被丢弃的物品
 
 110. Spawn Pickup Actor 生成可拾取Actor
 

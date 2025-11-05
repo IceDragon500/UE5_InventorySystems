@@ -136,7 +136,16 @@ void UInv_InventoryComponent::Server_DropItem_Implementation(UInv_InventoryItem*
 
 void UInv_InventoryComponent::SpawnDroppedItem(UInv_InventoryItem* Item, int32 StackCount)
 {
-	//TODO : 实际生成或仅生成掉落的物品
+	//在角色正前方一个夹角内，随机使用一个旋转度数，获得一个位置 生成道具
+	const APawn* OwningPawn = OwningController->GetPawn();
+	FVector RotatedForward = OwningPawn->GetActorForwardVector();
+	RotatedForward = RotatedForward.RotateAngleAxis(FMath::FRandRange(DropSpawnAngleMin, DropSpawnAngleMax), FVector::UpVector);
+	FVector SpawnLocation = OwningPawn->GetActorLocation() + RotatedForward * FMath::FRandRange(DropSpawnDistanceMin, DropSpawnAngleMax);
+	SpawnLocation.Z = RelativeSpawnElevation;
+	const FRotator SpawnRotation = FRotator::ZeroRotator;
+
+	//TODO : 接下来我们要让物品清单生成可拾取道具的 Actor
+	
 }
 
 void UInv_InventoryComponent::ToggleInventoryMenu()

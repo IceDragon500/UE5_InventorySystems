@@ -42,7 +42,7 @@ public:
 	 * 如果添加失败，比如背包满了，我们希望广播一个委托，用于当我们的库存组件因为满了而失败的情况
 	 * @param ItemComponent 
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="Inventory")
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="属性设置")
 	void TryAddItem(UInv_ItemComponent* ItemComponent);
 
 	/**
@@ -93,15 +93,30 @@ private:
 	UPROPERTY(Replicated)
 	FInv_InventoryFastArray InventoryList;
 
-	UPROPERTY(EditAnywhere, Category="Inventory")
+	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UInv_InventoryBase> InventoryMenuClass;
 
 	UPROPERTY()
 	TObjectPtr<UInv_InventoryBase> InventoryMenu;
 
-	bool bInventoryMenuOpen = false;
+	bool bInventoryMenuOpen{false};
 	void OpenInventoryMenu();//显示道具菜单
 	void CloseInventoryMenu();//关闭道具菜单
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float DropSpawnAngleMin{-85.f};//设置角色正前方掉落物品范围的最小夹角
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float DropSpawnAngleMax{85.f};//设置角色正前方掉落物品范围的最大夹角
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float DropSpawnDistanceMin{10.f};//设置角色正前方掉落物品距离角色本身最近距离
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float DropSpanwDistanceMax{50.f};//设置角色正前方掉落物品距离角色本身最远距离
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float RelativeSpawnElevation{-70.f};//设置角色正前方掉落物品距离地面的高度
 	
 	
 };
