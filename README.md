@@ -263,7 +263,7 @@
 
 ✅114. On Pop Up Menu Consume 弹出菜单消耗事件
 
-115. Server Consume Item 服务器端消耗物品（RPC）
+✅115. Server Consume Item 服务器端消耗物品（RPC）
 
 116. Consumable Fragments 可消耗物品片段
 

@@ -67,6 +67,9 @@ public:
 	UFUNCTION(Server, Reliable)
 	void Server_DropItem(UInv_InventoryItem* DropItem, int32 DropCount);
 
+	UFUNCTION(Server, Reliable)
+	void Server_ConsumeItem(UInv_InventoryItem* Item);
+
 	//切换库存菜单
 	void ToggleInventoryMenu();
 

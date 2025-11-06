@@ -1083,8 +1083,10 @@ void UInv_InventoryGrid::OnPopUpMenuConsume(int32 Index)
 	UpperLeftGridSlot->SetStackCount(NewStackCount);
 	SlottedItemMap.FindChecked(UpperLeftIndex)->UpdateStackCount(NewStackCount);
 
-	//TODO : 通知服务器我们正在消耗一个物品,这将涉及到我们实际的库存
+	//通知服务器我们正在消耗一个物品,这将涉及到我们实际的库存
+	InventoryComponent->Server_ConsumeItem(RightClickItem);
 
+	//如果数量归0，意思就是这个格子的道具被消耗完了，也需要删除这个格子上的道具
 	if (NewStackCount <= 0)
 	{
 		RemoveItemFromGrid(RightClickItem, Index);
