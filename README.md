@@ -259,9 +259,9 @@
 
 ### 第12节 消耗物品 (Consuming Items)
 
-113. Section 12 Intro 第12节介绍
+✅113. Section 12 Intro 第12节介绍
 
-114. On Pop Up Menu Consume 弹出菜单消耗事件
+✅114. On Pop Up Menu Consume 弹出菜单消耗事件
 
 115. Server Consume Item 服务器端消耗物品（RPC）
 

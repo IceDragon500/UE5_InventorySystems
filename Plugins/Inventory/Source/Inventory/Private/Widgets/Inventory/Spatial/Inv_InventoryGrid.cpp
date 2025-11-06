@@ -1073,6 +1073,23 @@ void UInv_InventoryGrid::OnPopUpMenuDrop(int32 Index)
 
 void UInv_InventoryGrid::OnPopUpMenuConsume(int32 Index)
 {
+	UInv_InventoryItem* RightClickItem = GridSlots[Index]->GetInventoryItem().Get();
+	if (!IsValid(RightClickItem)) return;
+
+	const int32 UpperLeftIndex = GridSlots[Index]->GetUpperLeftIndex();
+	UInv_GridSlot* UpperLeftGridSlot = GridSlots[UpperLeftIndex];
+	const int32 NewStackCount = UpperLeftGridSlot->GetStackCount() - 1;
+
+	UpperLeftGridSlot->SetStackCount(NewStackCount);
+	SlottedItemMap.FindChecked(UpperLeftIndex)->UpdateStackCount(NewStackCount);
+
+	//TODO : 通知服务器我们正在消耗一个物品,这将涉及到我们实际的库存
+
+	if (NewStackCount <= 0)
+	{
+		RemoveItemFromGrid(RightClickItem, Index);
+	}
+	
 }
 
 bool UInv_InventoryGrid::MatchesCategory(const UInv_InventoryItem* Item) const
