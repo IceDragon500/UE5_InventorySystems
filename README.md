@@ -270,9 +270,9 @@
 
 ### 第13节 物品描述 (Item Description)
 
-117. Section 13 Intro 第13节介绍
+✅117. Section 13 Intro 第13节介绍
 
-118. Item Description Widget 物品描述控件
+✅118. Item Description Widget 物品描述控件
 
 119. Hover and Unhover for Slotted Items 槽位物品的悬停与取消悬停
 
