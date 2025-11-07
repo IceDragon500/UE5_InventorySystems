@@ -265,7 +265,7 @@
 
 ✅115. Server Consume Item 服务器端消耗物品（RPC）
 
-116. Consumable Fragments 可消耗物品片段
+✅116. Consumable Fragments 可消耗物品片段
 
 
 ### 第13节 物品描述 (Item Description)

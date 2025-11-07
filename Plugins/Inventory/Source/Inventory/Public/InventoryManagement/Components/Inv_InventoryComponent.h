@@ -106,20 +106,25 @@ private:
 	void OpenInventoryMenu();//显示道具菜单
 	void CloseInventoryMenu();//关闭道具菜单
 
+	//设置角色正前方掉落物品范围的最小夹角
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	float DropSpawnAngleMin{-85.f};//设置角色正前方掉落物品范围的最小夹角
+	float DropSpawnAngleMin{-85.f};
 
+	//设置角色正前方掉落物品范围的最大夹角
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	float DropSpawnAngleMax{85.f};//设置角色正前方掉落物品范围的最大夹角
+	float DropSpawnAngleMax{85.f};
 
+	//设置角色正前方掉落物品距离角色本身最近距离
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	float DropSpawnDistanceMin{10.f};//设置角色正前方掉落物品距离角色本身最近距离
+	float DropSpawnDistanceMin{10.f};
 
+	//设置角色正前方掉落物品距离角色本身最远距离
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	float DropSpanwDistanceMax{50.f};//设置角色正前方掉落物品距离角色本身最远距离
+	float DropSpawnDistanceMax{50.f};
 
+	//设置角色正前方掉落物品距离地面的高度
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	float RelativeSpawnElevation{70.f};//设置角色正前方掉落物品距离地面的高度
+	float RelativeSpawnElevation{70.f};
 	
 	
 };

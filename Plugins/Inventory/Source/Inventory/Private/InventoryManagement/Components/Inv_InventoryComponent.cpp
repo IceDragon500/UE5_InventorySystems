@@ -165,8 +165,11 @@ void UInv_InventoryComponent::Server_ConsumeItem_Implementation(UInv_InventoryIt
 		Item->SetTotalStackCount(NewStackCount);
 	}
 
-	//TODO : 获取消耗品片段并调用消耗功能
-	// 创建消耗品片段类型
+	//获取消耗品片段并调用消耗功能
+	if (FInv_ConsumableFragment* ConsumableFragment = Item->GetItemManifestMutable().GetFragmentOfTypeMutable<FInv_ConsumableFragment>())
+	{
+		ConsumableFragment->OnConsume(OwningController.Get());
+	}
 }
 
 void UInv_InventoryComponent::ToggleInventoryMenu()

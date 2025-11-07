@@ -47,7 +47,7 @@ struct FInv_ItemFragment
 private:
 
 	//用来给道具赋予片段属性的字段，使用GameplayTag来进行区分
-	UPROPERTY(EditAnywhere, Category="属性设置")
+	UPROPERTY(EditAnywhere, Category="属性设置", meta=(Categories="FragmentTags"))
 	FGameplayTag FragmentTag = FGameplayTag::EmptyTag;
 	
 };
@@ -123,6 +123,52 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	int32 StackCount{1};//当前堆叠数量
+	
+};
+
+/**
+ * 作为消耗品功能的父类结构体
+ * 使用之后不同的功能，需要重写Consume方法
+ */
+USTRUCT()
+struct FInv_ConsumableFragment : public FInv_ItemFragment
+{
+	GENERATED_BODY()
+
+	virtual void OnConsume(APlayerController* PC) {}
+};
+
+/**
+ * 继承自FInv_ConsumableFragment
+ * 实现生命值药品回复的效果
+ */
+USTRUCT()
+struct FInv_HealthPotionFragment : public FInv_ConsumableFragment
+{
+	GENERATED_BODY()
+
+	//回复的生命值数量
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float  HealAmount = 20.f;
+	
+	virtual void OnConsume(APlayerController* PC) override;
+	
+};
+
+/**
+ * 继承自FInv_ConsumableFragment
+ * 实现法力值药品回复的效果
+ */
+USTRUCT()
+struct FInv_ManaPotionFragment : public FInv_ConsumableFragment
+{
+	GENERATED_BODY()
+
+	//回复的法力值数量
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float  ManaAmount = 20.f;
+	
+	virtual void OnConsume(APlayerController* PC) override;
 	
 };
 
