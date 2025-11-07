@@ -278,7 +278,7 @@
 
 ✅120. Creating an Item Description 创建物品描述
 
-121. Set Item Description Size and Position 设置物品描述大小和位置
+✅121. Set Item Description Size and Position 设置物品描述大小和位置
 
 
 ### 第14节 组合模式 (The Composite Pattern)

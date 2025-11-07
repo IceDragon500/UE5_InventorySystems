@@ -574,9 +574,9 @@ void UInv_InventoryGrid::AddStacks(const FInv_SlotAvailabilityResult& Result)
 
 void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEvent& MouseEvent)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("InventoryGrid::OnSlottedItemClicked %d"), GridIndex);
+	UInv_InventoryStatics::ItemUnHovered(GetOwningPlayer());
+	
 	check(GridSlots.IsValidIndex(GridIndex));
-
 	UInv_InventoryItem* ClickedInventoryItem = GridSlots[GridIndex]->GetInventoryItem().Get();
 
 	//创建一个悬停物品,并将其画刷设置为该库存物品的图标

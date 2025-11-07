@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/CanvasPanel.h"
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 #include "Inv_SpatialInventory.generated.h"
 
@@ -40,6 +41,7 @@ public:
 	
 	virtual void NativeOnInitialized() override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	/**
 	 * 有存放物品的空间
@@ -114,6 +116,8 @@ private:
 	 * @param Button 指定的按钮设置为禁用状态
 	 */
 	void SetActiveGrid(UInv_InventoryGrid* Grid, UButton* Button);
+
+	void SetItemDescriptionSizeAndPostion(UInv_ItemDescription* Description, UCanvasPanel* Canvas) const;
 
 	TWeakObjectPtr<UInv_InventoryGrid> ActiveGrid;
 	
