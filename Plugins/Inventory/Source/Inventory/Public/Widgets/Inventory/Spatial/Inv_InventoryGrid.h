@@ -72,6 +72,8 @@ public:
 	
 	void DropItem();
 
+	bool HasHoverItem() const;
+
 protected:
 
 private:

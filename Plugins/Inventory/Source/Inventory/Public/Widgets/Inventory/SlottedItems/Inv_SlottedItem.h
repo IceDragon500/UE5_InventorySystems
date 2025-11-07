@@ -15,6 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSlottedItemClicked, int32, GridInd
 /**
  * 插槽物品：在UserWidget上的表示
  * 图标
+ * 放置在道具栏里面的道具Widget，包含了自身的尺寸，占用的Index
  */
 UCLASS()
 class INVENTORY_API UInv_SlottedItem : public UUserWidget
@@ -23,6 +24,8 @@ class INVENTORY_API UInv_SlottedItem : public UUserWidget
 
 public:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 
 	
 	void SetIsStackable(bool bStackable) { bIsStackable = bStackable; }

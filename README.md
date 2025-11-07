@@ -274,7 +274,7 @@
 
 ✅118. Item Description Widget 物品描述控件
 
-119. Hover and Unhover for Slotted Items 槽位物品的悬停与取消悬停
+✅119. Hover and Unhover for Slotted Items 槽位物品的悬停与取消悬停
 
 120. Creating an Item Description 创建物品描述
 

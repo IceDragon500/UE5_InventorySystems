@@ -9,7 +9,7 @@
 
 class UInv_ItemComponent;
 /**
- * 
+ * 子类：UInv_SpatialInventory
  */
 UCLASS()
 class INVENTORY_API UInv_InventoryBase : public UUserWidget
@@ -22,6 +22,12 @@ public:
 	{
 		return FInv_SlotAvailabilityResult();
 	}
+
+	virtual void OnItemHovered(UInv_InventoryItem* Item) {} //鼠标悬停在当前道具上
+
+	virtual void OnItemUnHovered() {} //鼠标移动开了
+
+	virtual bool HasHoverItem() const { return false; }
 
 protected:
 
