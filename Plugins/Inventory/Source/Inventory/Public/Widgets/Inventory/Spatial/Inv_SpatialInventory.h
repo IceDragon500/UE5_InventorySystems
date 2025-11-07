@@ -6,6 +6,7 @@
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 #include "Inv_SpatialInventory.generated.h"
 
+class UInv_ItemDescription;
 class UCanvasPanel;
 class UButton;
 class UWidgetSwitcher;
@@ -79,6 +80,20 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_Craftable;
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UInv_ItemDescription> ItemDescriptionClass;
+
+	UPROPERTY()
+	TObjectPtr<UInv_ItemDescription> ItemDescription;
+
+	FTimerHandle DescriptionTimer;
+
+	//设置道具描述控件的显示延迟时间
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float DescriptionTimerDelta{.5f};
+
+	UInv_ItemDescription* GetItemDescription();
 
 	UFUNCTION()
 	void ShowEquippable();
