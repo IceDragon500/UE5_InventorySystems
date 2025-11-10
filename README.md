@@ -283,9 +283,9 @@
 
 ### 第14节 组合模式 (The Composite Pattern)
 
-122. The Composite Pattern 组合模式
+✅122. The Composite Pattern 组合模式
 
-123. Setting up the Composite Pattern 设置组合模式
+✅123. Setting up the Composite Pattern 设置组合模式
 
 124. Assimilate Inventory Fragments 整合库存片段
 
