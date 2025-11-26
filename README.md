@@ -289,7 +289,7 @@
 
 ✅124. Assimilate Inventory Fragments 整合库存片段
 
-125. The Image Fragment 图像片段
+✅125. The Image Fragment 图像片段
 
 126. The Text Fragment 文本片段
 
