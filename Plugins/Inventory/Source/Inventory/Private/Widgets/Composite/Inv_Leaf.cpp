@@ -3,7 +3,7 @@
 
 #include "Widgets/Composite/Inv_Leaf.h"
 
-void UInv_Leaf::ApplyFunction(FuncType Function)
+void UInv_Leaf::ApplyFunction(FUncType Function)
 {
 	Function(this);
 }

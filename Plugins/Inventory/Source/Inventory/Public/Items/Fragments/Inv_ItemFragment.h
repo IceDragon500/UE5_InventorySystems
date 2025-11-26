@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "Widgets/Composite/Inv_CompositeBase.h"
 #include "Inv_ItemFragment.generated.h"
 
+class UInv_CompositeBase;
 /**
  * 物品片段的基类
  * 
@@ -49,6 +51,22 @@ private:
 	//用来给道具赋予片段属性的字段，使用GameplayTag来进行区分
 	UPROPERTY(EditAnywhere, Category="属性设置", meta=(Categories="FragmentTags"))
 	FGameplayTag FragmentTag = FGameplayTag::EmptyTag;
+	
+};
+
+/**
+ * Item fragment specifically for assimilation into a widget
+ * 专门用于同化到小部件中的项片段
+ */
+USTRUCT(BlueprintType)
+struct FInv_InventoryItemFragment : public FInv_ItemFragment
+{
+	GENERATED_BODY()
+
+	virtual void Assimilate(UInv_CompositeBase* Composite) const;
+
+protected:
+	bool MatchesWidgetTag(const UInv_CompositeBase* Composite) const;
 	
 };
 

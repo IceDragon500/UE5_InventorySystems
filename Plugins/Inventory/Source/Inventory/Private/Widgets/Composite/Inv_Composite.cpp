@@ -19,7 +19,7 @@ void UInv_Composite::NativeOnInitialized()
 	});
 }
 
-void UInv_Composite::ApplyFunction(FuncType Function)
+void UInv_Composite::ApplyFunction(FUncType Function)
 {
 	for (auto& Child : Children)
 	{

@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -20,11 +20,11 @@ public:
 	FGameplayTag GetFragmentTag() const { return FragmentTag; }
 	void SetFragmentTag(const FGameplayTag& Tag) { FragmentTag = Tag; }
 
-	virtual void Collapse();//复合组件都能通过此函数实现折叠与展开
-	void Expand();
+	virtual void Collapse();//用于折叠复合组件，将其设置为不可见状态
+	void Expand();//用于展开复合组件，使其变为可见状态
 
-	using FuncType = TFunction<void(UInv_CompositeBase*)>;
-	virtual void ApplyFunction(FuncType Function) {}
+	using FUncType = TFunction<void(UInv_CompositeBase*)>;
+	virtual void ApplyFunction(FUncType Function) {}
 
 protected:
 

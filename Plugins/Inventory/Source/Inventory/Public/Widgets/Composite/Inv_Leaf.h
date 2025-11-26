@@ -15,7 +15,7 @@ class INVENTORY_API UInv_Leaf : public UInv_CompositeBase
 	GENERATED_BODY()
 
 public:
-	virtual void ApplyFunction(FuncType Function) override;
+	virtual void ApplyFunction(FUncType Function) override;
 
 protected:
 

@@ -287,7 +287,7 @@
 
 ✅123. Setting up the Composite Pattern 设置组合模式
 
-124. Assimilate Inventory Fragments 整合库存片段
+✅124. Assimilate Inventory Fragments 整合库存片段
 
 125. The Image Fragment 图像片段
 

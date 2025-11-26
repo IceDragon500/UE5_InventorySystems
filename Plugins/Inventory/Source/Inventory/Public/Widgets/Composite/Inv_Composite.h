@@ -16,7 +16,7 @@ class INVENTORY_API UInv_Composite : public UInv_CompositeBase
 
 public:
 	virtual void NativeOnInitialized() override;
-	virtual void ApplyFunction(FuncType Function) override;
+	virtual void ApplyFunction(FUncType Function) override;
 	virtual void Collapse() override;
 
 protected:
