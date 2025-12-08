@@ -291,7 +291,7 @@
 
 ✅125. The Image Fragment 图像片段
 
-126. The Text Fragment 文本片段
+✅126. The Text Fragment 文本片段
 
 127. Labeled Number Fragment 带标签的数字片段
 

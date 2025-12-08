@@ -7,6 +7,7 @@
 #include "Widgets/Composite/Inv_CompositeBase.h"
 #include "Inv_ItemFragment.generated.h"
 
+class UTextBlock;
 class UInv_CompositeBase;
 /**
  * 物品片段的基类
@@ -192,3 +193,21 @@ struct FInv_ManaPotionFragment : public FInv_ConsumableFragment
 	
 };
 
+/**
+ * 属性片段：道具文字描述
+ */
+USTRUCT(BlueprintType)
+struct FInv_TextFragment : public FInv_InventoryItemFragment
+{
+	GENERATED_BODY()
+
+	FText GetText() const { return FragmentText; }
+	void SetText(const FText& Text) { FragmentText = Text; }
+	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+	
+private:
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FText FragmentText;
+	
+};
