@@ -18,7 +18,7 @@ struct INVENTORY_API FInv_ItemManifest
 {
 	GENERATED_BODY()
 
-	EInv_ItemCategory GetItemCategory() const { return ItemCategory; }
+	TArray<TInstancedStruct<FInv_ItemFragment>>& GetFragmentsMutable() { return Fragments; } //127讲，这里一定要有一个&
 
 	/**
 	 * 创建物品
@@ -27,6 +27,8 @@ struct INVENTORY_API FInv_ItemManifest
 	 * @return 
 	 */
 	UInv_InventoryItem* Manifest(UObject* NewOuter);
+
+	EInv_ItemCategory GetItemCategory() const { return ItemCategory; }
 
 	/**
 	 * 获取物品的类型Tag
@@ -71,6 +73,8 @@ private:
 	//被丢弃的物品需要生成类，需要在这个类设置Manifest清单
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<AActor> PickupActorClass;
+
+	void ClearFragments();
 	
 };
 

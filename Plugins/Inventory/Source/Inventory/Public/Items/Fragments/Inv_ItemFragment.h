@@ -46,7 +46,7 @@ struct FInv_ItemFragment
 
 	FGameplayTag GetFragmentTag() const { return FragmentTag; }
 	void SetFragmentTag(FGameplayTag Tag) { FragmentTag = Tag; }
-	
+	virtual void Manifest() {}
 private:
 
 	//用来给道具赋予片段属性的字段，使用GameplayTag来进行区分
@@ -194,7 +194,7 @@ struct FInv_ManaPotionFragment : public FInv_ConsumableFragment
 };
 
 /**
- * 属性片段：道具文字描述
+ * 属性片段：道具名称描述
  */
 USTRUCT(BlueprintType)
 struct FInv_TextFragment : public FInv_InventoryItemFragment
@@ -209,5 +209,47 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FText FragmentText;
+	
+};
+
+/**
+ * 属性片段：道具文字描述
+ */
+USTRUCT(BlueprintType)
+struct FInv_LabeledNumberFragment : public FInv_InventoryItemFragment
+{
+	GENERATED_BODY()
+
+	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+	virtual void Manifest() override;
+
+	//第一次生成的时候进行随机化，随后不再进行，这里会变成false
+	bool bRandomizeOnManifest{true};
+
+private:
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FText Text_Label{};//文字描述
+
+	UPROPERTY(VisibleAnywhere, Category="属性设置")
+	float Value{1};//数值
+	
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float ValueMin{1};//数值最小值
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float ValueMax{1};//数值最大值
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	bool bCollapseLabel{false};//如果没有对应的文字描述，则需要将其设置成true，表示可以被折叠不再显示
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	bool bCollapseValue{false};//如果没有对应的数值，则需要将其设置成true，表示可以被折叠不再显示
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	int32 MinFractionalDigits{1};//可以指定小数位数
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	int32 MaxFractionalDigits{1};//可以指定小数位数
 	
 };

@@ -293,7 +293,7 @@
 
 ✅126. The Text Fragment 文本片段
 
-127. Labeled Number Fragment 带标签的数字片段
+✅127. Labeled Number Fragment 带标签的数字片段
 
 128. Consume Modifiers 消耗效果修饰器
 
