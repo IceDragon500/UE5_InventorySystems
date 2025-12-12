@@ -297,7 +297,7 @@
 
 ✅128. Consume Modifiers 消耗效果修饰器
 
-129. Completing the Item Description 完成物品描述
+✅129. Completing the Item Description 完成物品描述
 
 
 

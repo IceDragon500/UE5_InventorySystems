@@ -18,6 +18,11 @@ namespace FragmentTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(ItemNameFragment) //道具名称文字片段
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(PrimaryStatFragment) //主要属性文字片段
 
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(ItemTypeFragment) //道具类型文字片段
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(FlavorTextFragment) //主要属性文字片段
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(SellValueFragment) //道具售价文字片段
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(RequiredLevelFragment) //回收等级属性文字片段
+
 	namespace StatMod
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(StatMod_1)
