@@ -76,6 +76,36 @@ void FInv_LabeledNumberFragment::Manifest()
 	
 }
 
+void FInv_ConsumableFragment::OnConsume(APlayerController* PC)
+{
+	for (auto& Modifier : ConsumeModifiers)
+	{
+		auto& ModRef = Modifier.GetMutable();
+		ModRef.OnConsume(PC);
+	}
+}
+
+void FInv_ConsumableFragment::Assimilate(UInv_CompositeBase* Composite) const
+{
+	FInv_InventoryItemFragment::Assimilate(Composite);
+	for (const auto& Modifier : ConsumeModifiers)
+	{
+		const auto& ModRef = Modifier.Get();
+		ModRef.Assimilate(Composite);
+	}
+}
+
+void FInv_ConsumableFragment::Manifest()
+{
+	FInv_InventoryItemFragment::Manifest();
+
+	for (auto& Modifier : ConsumeModifiers)
+	{
+		auto& ModRef = Modifier.GetMutable();
+		ModRef.Manifest();
+	}
+}
+
 void FInv_HealthPotionFragment::OnConsume(APlayerController* PC)
 {
 	//展示：从玩家控制器或 PC 那里获取一个状态组件你可以从中获取生命值
@@ -84,11 +114,11 @@ void FInv_HealthPotionFragment::OnConsume(APlayerController* PC)
 
 	//放置一个能力或调用接口函数来实现治疗
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT(" %f Health Potion Used! "), HealAmount));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT(" %f Health Potion Used! "), GetValue()));
 	
 }
 
 void FInv_ManaPotionFragment::OnConsume(APlayerController* PC)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT(" %f Mana Potion Used! "), ManaAmount));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT(" %f Mana Potion Used! "), GetValue()));
 }

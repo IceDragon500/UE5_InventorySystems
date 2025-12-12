@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "StructUtils/InstancedStruct.h"
 #include "Widgets/Composite/Inv_CompositeBase.h"
 #include "Inv_ItemFragment.generated.h"
 
@@ -148,71 +149,6 @@ private:
 };
 
 /**
- * 作为消耗品功能的父类结构体
- * 使用之后不同的功能，需要重写Consume方法
- */
-USTRUCT()
-struct FInv_ConsumableFragment : public FInv_ItemFragment
-{
-	GENERATED_BODY()
-
-	virtual void OnConsume(APlayerController* PC) {}
-};
-
-/**
- * 继承自FInv_ConsumableFragment
- * 实现生命值药品回复的效果
- */
-USTRUCT()
-struct FInv_HealthPotionFragment : public FInv_ConsumableFragment
-{
-	GENERATED_BODY()
-
-	//回复的生命值数量
-	UPROPERTY(EditAnywhere, Category="属性设置")
-	float  HealAmount = 20.f;
-	
-	virtual void OnConsume(APlayerController* PC) override;
-	
-};
-
-/**
- * 继承自FInv_ConsumableFragment
- * 实现法力值药品回复的效果
- */
-USTRUCT()
-struct FInv_ManaPotionFragment : public FInv_ConsumableFragment
-{
-	GENERATED_BODY()
-
-	//回复的法力值数量
-	UPROPERTY(EditAnywhere, Category="属性设置")
-	float  ManaAmount = 20.f;
-	
-	virtual void OnConsume(APlayerController* PC) override;
-	
-};
-
-/**
- * 属性片段：道具名称描述
- */
-USTRUCT(BlueprintType)
-struct FInv_TextFragment : public FInv_InventoryItemFragment
-{
-	GENERATED_BODY()
-
-	FText GetText() const { return FragmentText; }
-	void SetText(const FText& Text) { FragmentText = Text; }
-	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
-	
-private:
-
-	UPROPERTY(EditAnywhere, Category="属性设置")
-	FText FragmentText;
-	
-};
-
-/**
  * 属性片段：道具文字描述
  */
 USTRUCT(BlueprintType)
@@ -222,6 +158,8 @@ struct FInv_LabeledNumberFragment : public FInv_InventoryItemFragment
 
 	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
 	virtual void Manifest() override;
+
+	float GetValue() const { return Value; }
 
 	//第一次生成的时候进行随机化，随后不再进行，这里会变成false
 	bool bRandomizeOnManifest{true};
@@ -251,5 +189,80 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	int32 MaxFractionalDigits{1};//可以指定小数位数
+	
+};
+
+//Consume Fragments
+
+USTRUCT(BlueprintType)
+struct FInv_ConsumeModifier : public FInv_LabeledNumberFragment
+{
+	GENERATED_BODY()
+
+	virtual void OnConsume(APlayerController* PC) {}
+	
+};
+
+/**
+ * 作为消耗品功能的父类结构体
+ * 使用之后不同的功能，需要重写Consume方法
+ */
+USTRUCT()
+struct FInv_ConsumableFragment : public FInv_InventoryItemFragment
+{
+	GENERATED_BODY()
+
+	virtual void OnConsume(APlayerController* PC);
+	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+	virtual void Manifest() override;
+
+private:
+
+	UPROPERTY(EditAnywhere, Category="属性设置", meta=(ExcludeBaseStruct)) //在虚幻引擎中，ExcludeBaseStruct 是一个用于控制实例化结构体（Instanced Struct）选择列表显示行为的元数据（meta data）标志。当在 Instanced Struct 类型的属性上设置此标志时，它会从编辑器的下拉选择菜单中排除基类结构体，只允许选择派生类或特定类型的结构体
+	TArray<TInstancedStruct<FInv_ConsumeModifier>> ConsumeModifiers;
+};
+
+/**
+ * 继承自FInv_ConsumableFragment
+ * 实现生命值药品回复的效果
+ */
+USTRUCT()
+struct FInv_HealthPotionFragment : public FInv_ConsumeModifier
+{
+	GENERATED_BODY()
+	
+	virtual void OnConsume(APlayerController* PC) override;
+	
+};
+
+/**
+ * 继承自FInv_ConsumableFragment
+ * 实现法力值药品回复的效果
+ */
+USTRUCT()
+struct FInv_ManaPotionFragment : public FInv_ConsumeModifier
+{
+	GENERATED_BODY()
+	
+	virtual void OnConsume(APlayerController* PC) override;
+	
+};
+
+/**
+ * 属性片段：道具名称描述
+ */
+USTRUCT(BlueprintType)
+struct FInv_TextFragment : public FInv_InventoryItemFragment
+{
+	GENERATED_BODY()
+
+	FText GetText() const { return FragmentText; }
+	void SetText(const FText& Text) { FragmentText = Text; }
+	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+	
+private:
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FText FragmentText;
 	
 };

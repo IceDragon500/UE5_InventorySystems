@@ -295,7 +295,7 @@
 
 ✅127. Labeled Number Fragment 带标签的数字片段
 
-128. Consume Modifiers 消耗效果修饰器
+✅128. Consume Modifiers 消耗效果修饰器
 
 129. Completing the Item Description 完成物品描述
 
