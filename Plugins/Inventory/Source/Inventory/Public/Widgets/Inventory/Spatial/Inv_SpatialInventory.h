@@ -7,6 +7,8 @@
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 #include "Inv_SpatialInventory.generated.h"
 
+struct FGameplayTag;
+class UInv_EquippedGridSlot;
 class UInv_ItemDescription;
 class UCanvasPanel;
 class UButton;
@@ -59,6 +61,10 @@ public:
 protected:
 
 private:
+
+	UPROPERTY()
+	TArray<TObjectPtr<UInv_EquippedGridSlot>> EquippedGridSlots;
+	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCanvasPanel> CanvasPanel;
 	
@@ -98,13 +104,16 @@ private:
 	UInv_ItemDescription* GetItemDescription();
 
 	UFUNCTION()
-	void ShowEquippable();
+	void ShowEquippables();
 
 	UFUNCTION()
 	void ShowConsumable();
 
 	UFUNCTION()
-	void ShowCraftable();
+	void ShowCraftables();
+
+	UFUNCTION()
+	void EquippedGridSlotClicked(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag);
 
 	
 	//指定的按钮设置为禁用状态

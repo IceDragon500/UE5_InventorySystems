@@ -303,9 +303,9 @@
 
 ### 第15节 装备物品 (Equipping Items)
 
-130. Section 15 Intro 第15节介绍
+✅130. Section 15 Intro 第15节介绍
 
-131. Equipped Grid Slots 装备网格槽位
+✅131. Equipped Grid Slots 装备网格槽位
 
 132. Hover Functionality 悬停功能
 

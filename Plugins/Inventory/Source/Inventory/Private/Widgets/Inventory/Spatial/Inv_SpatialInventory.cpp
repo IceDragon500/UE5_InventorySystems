@@ -4,12 +4,14 @@
 #include "Widgets/Inventory/Spatial/Inv_SpatialInventory.h"
 #include "Inventory.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Blueprint/WidgetTree.h"
 #include "Widgets/Inventory/Spatial/Inv_InventoryGrid.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/WidgetSwitcher.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
+#include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
 #include "Widgets/ItemDescription/Inv_ItemDescription.h"
 
 
@@ -22,15 +24,30 @@ void UInv_SpatialInventory::NativeOnInitialized()
 	check(Grid_Consumable != nullptr);
 	check(Grid_Craftable != nullptr);
 
-	Button_Equippable->OnClicked.AddDynamic(this, &ThisClass::UInv_SpatialInventory::ShowEquippable);
+	Button_Equippable->OnClicked.AddDynamic(this, &ThisClass::UInv_SpatialInventory::ShowEquippables);
 	Button_Consumable->OnClicked.AddDynamic(this, &ThisClass::UInv_SpatialInventory::ShowConsumable);
-	Button_Craftable->OnClicked.AddDynamic(this, &ThisClass::UInv_SpatialInventory::ShowCraftable);
+	Button_Craftable->OnClicked.AddDynamic(this, &ThisClass::UInv_SpatialInventory::ShowCraftables);
 
 	Grid_Equippable->SetOwningCanvas(CanvasPanel);
 	Grid_Consumable->SetOwningCanvas(CanvasPanel);
 	Grid_Craftable->SetOwningCanvas(CanvasPanel);
 
-	ShowEquippable();
+	ShowEquippables();
+
+	WidgetTree->ForEachWidget([this](UWidget* Widget)//131讲
+	{
+		UInv_EquippedGridSlot* EquippedGridSlot = Cast<UInv_EquippedGridSlot>(Widget);
+		if (IsValid(EquippedGridSlot))
+		{
+			EquippedGridSlots.Add(EquippedGridSlot);
+			EquippedGridSlot->EquippedGridSlotClicked.AddDynamic(this, &ThisClass::UInv_SpatialInventory::EquippedGridSlotClicked);
+		}
+	});
+}
+
+void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag)
+{
+	
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -135,7 +152,7 @@ UInv_ItemDescription* UInv_SpatialInventory::GetItemDescription()
 	return ItemDescription;
 }
 
-void UInv_SpatialInventory::ShowEquippable()
+void UInv_SpatialInventory::ShowEquippables()
 {
 	SetActiveGrid(Grid_Equippable, Button_Equippable);
 }
@@ -145,7 +162,7 @@ void UInv_SpatialInventory::ShowConsumable()
 	SetActiveGrid(Grid_Consumable, Button_Consumable);
 }
 
-void UInv_SpatialInventory::ShowCraftable()
+void UInv_SpatialInventory::ShowCraftables()
 {
 	SetActiveGrid(Grid_Craftable, Button_Craftable);
 }

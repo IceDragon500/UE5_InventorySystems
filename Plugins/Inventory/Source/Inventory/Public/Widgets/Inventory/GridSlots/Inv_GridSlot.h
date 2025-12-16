@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Inv_GridSlot.generated.h"
 
+class UInv_InventoryItem;
 class UInv_ItemPopUp;
 class UImage;
 
