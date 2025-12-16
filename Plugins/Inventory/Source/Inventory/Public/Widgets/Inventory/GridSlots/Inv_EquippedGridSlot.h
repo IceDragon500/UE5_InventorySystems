@@ -38,6 +38,6 @@ protected:
 private:
 
 	//装备类型的Tag
-	UPROPERTY(EditAnywhere, Category="属性设置")
+	UPROPERTY(EditAnywhere, Category="属性设置", meta = (Categories = "GameItems.Equipment"))
 	FGameplayTag EquipmentTypeTag;
 };

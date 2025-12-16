@@ -309,7 +309,7 @@
 
 ✅132. Hover Functionality 悬停功能
 
-133. Equipped Grid Slot Blueprints 装备网格槽位蓝图
+✅133. Equipped Grid Slot Blueprints 装备网格槽位蓝图
 
 134. Grayed Out Icon 灰显图标
 
