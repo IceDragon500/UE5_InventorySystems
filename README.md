@@ -307,7 +307,7 @@
 
 ✅131. Equipped Grid Slots 装备网格槽位
 
-132. Hover Functionality 悬停功能
+✅132. Hover Functionality 悬停功能
 
 133. Equipped Grid Slot Blueprints 装备网格槽位蓝图
 

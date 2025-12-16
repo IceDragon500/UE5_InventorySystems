@@ -58,36 +58,38 @@ public:
 
 	virtual bool HasHoverItem() const override;
 
+	virtual UInv_HoverItem* GetHoverItem() const override;
+
 protected:
 
 private:
 
 	UPROPERTY()
-	TArray<TObjectPtr<UInv_EquippedGridSlot>> EquippedGridSlots;
+	TArray<TObjectPtr<UInv_EquippedGridSlot>> EquippedGridSlots;//装备栏数组
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UCanvasPanel> CanvasPanel;
+	TObjectPtr<UCanvasPanel> CanvasPanel;//画布
 	
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UWidgetSwitcher> Switcher;
+	TObjectPtr<UWidgetSwitcher> Switcher;//切换器
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UInv_InventoryGrid> Grid_Equippable;
+	TObjectPtr<UInv_InventoryGrid> Grid_Equippable;//装备栏
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UInv_InventoryGrid> Grid_Consumable;
+	TObjectPtr<UInv_InventoryGrid> Grid_Consumable;//消耗品栏
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UInv_InventoryGrid> Grid_Craftable;
+	TObjectPtr<UInv_InventoryGrid> Grid_Craftable;//材料栏
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_Equippable;
+	TObjectPtr<UButton> Button_Equippable;//装备栏按钮
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_Consumable;
+	TObjectPtr<UButton> Button_Consumable;//消耗品栏按钮
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_Craftable;
+	TObjectPtr<UButton> Button_Craftable;//材料栏按钮
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UInv_ItemDescription> ItemDescriptionClass;

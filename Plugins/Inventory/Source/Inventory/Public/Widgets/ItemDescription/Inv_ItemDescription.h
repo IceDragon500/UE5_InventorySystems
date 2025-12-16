@@ -8,7 +8,7 @@
 
 class USizeBox;
 /**
- * 
+ * 显示鼠标指向道具弹出的提示窗口
  */
 UCLASS()
 class INVENTORY_API UInv_ItemDescription : public UInv_Composite

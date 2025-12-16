@@ -7,6 +7,7 @@
 #include "Types/Inv_GridTypes.h"
 #include "Inv_InventoryBase.generated.h"
 
+class UInv_HoverItem;
 class UInv_ItemComponent;
 /**
  * 子类：UInv_SpatialInventory
@@ -28,6 +29,8 @@ public:
 	virtual void OnItemUnHovered() {} //鼠标移动开了
 
 	virtual bool HasHoverItem() const { return false; }
+
+	virtual UInv_HoverItem* GetHoverItem() const { return nullptr; }
 
 protected:
 

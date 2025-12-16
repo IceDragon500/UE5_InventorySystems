@@ -10,6 +10,7 @@
 
 /**
  * 复合组件的基类
+ * 用来实现一个信息窗口上，各种内容的显示
  */
 UCLASS()
 class INVENTORY_API UInv_CompositeBase : public UUserWidget
@@ -31,6 +32,6 @@ protected:
 private:
 
 	UPROPERTY(EditAnywhere, Category="Inventory")
-	FGameplayTag FragmentTag;
+	FGameplayTag FragmentTag;//给每个功能贴上对应的标签，用来对应道具上Fragments上对应的信息
 	
 };
