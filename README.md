@@ -313,7 +313,7 @@
 
 ✅134. Grayed Out Icon 灰显图标
 
-135. Adding Equipped Grid Slots 添加装备网格槽位
+✅135. Adding Equipped Grid Slots 添加装备网格槽位
 
 136. Creating an Equippable Item 创建可装备物品
 
