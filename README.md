@@ -311,7 +311,7 @@
 
 ✅133. Equipped Grid Slot Blueprints 装备网格槽位蓝图
 
-134. Grayed Out Icon 灰显图标
+✅134. Grayed Out Icon 灰显图标
 
 135. Adding Equipped Grid Slots 添加装备网格槽位
 

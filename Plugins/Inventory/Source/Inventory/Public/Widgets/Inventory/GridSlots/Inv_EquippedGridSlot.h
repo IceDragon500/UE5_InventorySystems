@@ -40,4 +40,7 @@ private:
 	//装备类型的Tag
 	UPROPERTY(EditAnywhere, Category="属性设置", meta = (Categories = "GameItems.Equipment"))
 	FGameplayTag EquipmentTypeTag;
+
+	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UImage> Image_GrayedOutIcon;
 };
