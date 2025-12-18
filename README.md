@@ -315,7 +315,7 @@
 
 ✅135. Adding Equipped Grid Slots 添加装备网格槽位
 
-136. Creating an Equippable Item 创建可装备物品
+✅136. Creating an Equippable Item 创建可装备物品
 
 137. Equipment Fragment 装备片段
 
