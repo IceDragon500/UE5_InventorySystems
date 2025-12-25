@@ -3,7 +3,11 @@
 
 #include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
 
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/Image.h"
+#include "Components/Overlay.h"
+#include "Components/OverlaySlot.h"
+#include "Dataflow/DataflowOverlay.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
 #include "Items/Inv_InventoryItem.h"
 #include "Items/Fragments/Inv_FragmentTags.h"
@@ -72,10 +76,28 @@ UInv_EquippedSlottedItem* UInv_EquippedGridSlot::OnItemEquipped(UInv_InventoryIt
 	SetInventoryItem(Item);
 
 	//设置装备槽位物品上的图像画刷
+	const FInv_ImageFragment* ImageFragment = GetFragment<FInv_ImageFragment>(Item, FragmentTags::IconFragment);
+	if (!ImageFragment) return nullptr;
 
-	//创建并设置好所有这些装饰性元素后，把槽位物品作为子项添加到此小部件的覆盖层中
+	FSlateBrush Brush;
+	Brush.SetResourceObject(ImageFragment->GetIcon());
+	Brush.DrawAs = ESlateBrushDrawType::Image;
+	Brush.ImageSize = DrawSize;
+	
+	EquippedSlottedItem->SetImageBrush(Brush);
+
+	//创建并设置好所有这些装饰性元素后，把槽位物品作为子项添加到此小部件的覆盖层中 //142讲
+	Overlay_Root->AddChildToOverlay(EquippedSlottedItem);
+	FGeometry OverlayGeometry = Overlay_Root->GetCachedGeometry();
+	auto OverlayPos = OverlayGeometry.Position;
+	auto OverlaySize = OverlayGeometry.Size;
+
+	const float LeftPadding = OverlaySize.X / 2.f - DrawSize.X / 2.f;
+	const float TopPadding = OverlaySize.Y / 2.f - DrawSize.Y / 2.f;
+
+	UOverlaySlot* OverlaySlot = UWidgetLayoutLibrary::SlotAsOverlaySlot(EquippedSlottedItem);
+	OverlaySlot->SetPadding(FMargin(LeftPadding, TopPadding));
 
 	//最后，我们将返回已装备的插槽物品控件
-
-	return nullptr;
+	return EquippedSlottedItem;
 }

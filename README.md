@@ -327,7 +327,7 @@
 
 ✅141. Creating the Slotted Item Widget 创建槽位物品控件
 
-142. Finishing OnItemEquipped 完成物品装备事件
+✅142. Finishing OnItemEquipped 完成物品装备事件
 
 143. Creating the Equipped Slotted Item 创建已装备槽位物品
 
