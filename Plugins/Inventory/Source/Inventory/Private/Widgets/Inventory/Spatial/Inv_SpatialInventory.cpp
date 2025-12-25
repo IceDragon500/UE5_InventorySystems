@@ -12,6 +12,7 @@
 #include "Components/WidgetSwitcher.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
 #include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
+#include "Widgets/Inventory/HoverItem/Inv_HoverItem.h"
 #include "Widgets/ItemDescription/Inv_ItemDescription.h"
 
 
@@ -47,7 +48,16 @@ void UInv_SpatialInventory::NativeOnInitialized()
 
 void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag)
 {
-	
+	//检查是否能够装备悬停物品,如果我们通过了这一步，那么我们就知道可以装备悬停物品
+	if (!CanEquipHoverItem(EquippedGridSlot, EquipmentTypeTag)) return;
+
+	//创建一个已装备的槽位物品并将其添加到装备网格槽中
+
+	//清除鼠标上的悬停物品hoverItem
+
+	//通知服务器我们已经装备了一件物品，其他客户端会看到外观的变化(如果已经有装备在身上了，还涉及卸下一件物品)
+
+	//
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -63,7 +73,7 @@ void UInv_SpatialInventory::NativeTick(const FGeometry& MyGeometry, float InDelt
 
 	if (!IsValid(ItemDescription)) return;
 
-	SetItemDescriptionSizeAndPostion(ItemDescription, CanvasPanel);
+	SetItemDescriptionSizeAndPosition(ItemDescription, CanvasPanel);
 
 	//const FVector2D MousePosition = UWidgetLayoutLibrary::GetMousePositionOnViewport(GetOwningPlayer());
 
@@ -71,7 +81,7 @@ void UInv_SpatialInventory::NativeTick(const FGeometry& MyGeometry, float InDelt
 	
 }
 
-void UInv_SpatialInventory::SetItemDescriptionSizeAndPostion(UInv_ItemDescription* Description, UCanvasPanel* Canvas) const
+void UInv_SpatialInventory::SetItemDescriptionSizeAndPosition(UInv_ItemDescription* Description, UCanvasPanel* Canvas) const
 {
 	UCanvasPanelSlot* ItemDescriptionCPS = UWidgetLayoutLibrary::SlotAsCanvasSlot(Description);
 	if (!IsValid(ItemDescriptionCPS)) return;
@@ -85,6 +95,21 @@ void UInv_SpatialInventory::SetItemDescriptionSizeAndPostion(UInv_ItemDescriptio
 		UWidgetLayoutLibrary::GetMousePositionOnViewport(GetOwningPlayer()));
 
 	ItemDescriptionCPS->SetPosition(ClampedPosition);
+}
+
+bool UInv_SpatialInventory::CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag) const
+{
+	if (!IsValid(EquippedGridSlot) || EquippedGridSlot->GetInventoryItem().IsValid()) return false;
+
+	UInv_HoverItem* HoverItem = GetHoverItem();
+	if (!IsValid(HoverItem)) return false;
+
+	UInv_InventoryItem* HeloItem = HoverItem->GetInventoryItem();
+
+	return HasHoverItem() && IsValid(HeloItem) && !HoverItem->IsStackable()
+	&& HeloItem->GetItemManifest().GetItemCategory() == EInv_ItemCategory::Equippable
+	&& HeloItem->GetItemManifest().GetItemTypeTag().MatchesTag(EquipmentTypeTag);
+	
 }
 
 FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const

@@ -319,7 +319,7 @@
 
 ✅137. Equipment Fragment 装备片段
 
-138. Can Equip Hover Item 能否装备悬停物品
+✅138. Can Equip Hover Item 能否装备悬停物品
 
 139. Equipped Slotted Item 已装备槽位物品（UI元素）
 
