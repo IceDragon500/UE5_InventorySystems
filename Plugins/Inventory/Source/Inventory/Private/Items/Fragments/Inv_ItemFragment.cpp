@@ -30,7 +30,6 @@ void FInv_ImageFragment::Assimilate(UInv_CompositeBase* Composite) const
 	Image->SetImage(IconTexture);
 	Image->SetBoxSize(IconDimensions);
 	Image->SetImageSize(IconDimensions);
-	
 }
 
 void FInv_TextFragment::Assimilate(UInv_CompositeBase* Composite) const
@@ -42,6 +41,24 @@ void FInv_TextFragment::Assimilate(UInv_CompositeBase* Composite) const
 	if (!IsValid(LeafText)) return;
 
 	LeafText->SetText(FragmentText);
+}
+
+void FInv_StrengthModifier::OnEquip(APlayerController* PC)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Red,
+		FString::Printf(TEXT(" %f 点力量值生效了! "), GetValue()));
+}
+
+void FInv_StrengthModifier::OnUnEquip(APlayerController* PC)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Red,
+		FString::Printf(TEXT(" %f 点力量值失效了! "), GetValue()));
 }
 
 void FInv_LabeledNumberFragment::Assimilate(UInv_CompositeBase* Composite) const
@@ -57,23 +74,20 @@ void FInv_LabeledNumberFragment::Assimilate(UInv_CompositeBase* Composite) const
 	FNumberFormattingOptions Options;
 	Options.MinimumFractionalDigits = MinFractionalDigits;
 	Options.MaximumFractionalDigits = MaxFractionalDigits;
-	
+
 	LabeledValue->SetValueText(FText::AsNumber(Value, &Options), bCollapseValue);
-	
-	
 }
 
 void FInv_LabeledNumberFragment::Manifest()
 {
 	FInv_InventoryItemFragment::Manifest();
-	
+
 	if (bRandomizeOnManifest)
 	{
 		Value = FMath::RandRange(ValueMin, ValueMax);
 	}
 
 	bRandomizeOnManifest = false;
-	
 }
 
 void FInv_ConsumableFragment::OnConsume(APlayerController* PC)
@@ -114,11 +128,50 @@ void FInv_HealthPotionFragment::OnConsume(APlayerController* PC)
 
 	//放置一个能力或调用接口函数来实现治疗
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT(" %f Health Potion Used! "), GetValue()));
-	
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Green,
+		FString::Printf(TEXT(" %f 点生命值被添加了! "),GetValue()));
 }
 
 void FInv_ManaPotionFragment::OnConsume(APlayerController* PC)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT(" %f Mana Potion Used! "), GetValue()));
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Blue,
+		FString::Printf(TEXT(" %f 点法力值被添加了! "), GetValue()));
+}
+
+void FInv_EquipmentFragment::OnEquip(APlayerController* PC)
+{
+	if (bEquipped) return;
+	bEquipped = true;
+	for (auto& Modifier : EquipModifiers)
+	{
+		auto& ModRef = Modifier.GetMutable();
+		ModRef.OnEquip(PC);
+	}
+}
+
+void FInv_EquipmentFragment::OnUnEquip(APlayerController* PC)
+{
+	if (!bEquipped) return;
+	bEquipped = false;
+	for (auto& Modifier : EquipModifiers)
+	{
+		auto& ModRef = Modifier.GetMutable();
+		ModRef.OnUnEquip(PC);
+	}
+}
+
+void FInv_EquipmentFragment::Assimilate(UInv_CompositeBase* Composite) const
+{
+	FInv_InventoryItemFragment::Assimilate(Composite);
+	for (const auto& Modifier : EquipModifiers)
+	{
+		const auto& ModRef = Modifier.Get();
+		ModRef.Assimilate(Composite);
+	}
 }

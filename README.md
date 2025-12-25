@@ -317,7 +317,7 @@
 
 ✅136. Creating an Equippable Item 创建可装备物品
 
-137. Equipment Fragment 装备片段
+✅137. Equipment Fragment 装备片段
 
 138. Can Equip Hover Item 能否装备悬停物品
 
