@@ -323,7 +323,7 @@
 
 ✅139. Equipped Slotted Item 已装备槽位物品
 
-140. Slotted Item Draw Size 槽位物品绘制尺寸
+✅140. Slotted Item Draw Size 槽位物品绘制尺寸
 
 141. Creating the Slotted Item Widget 创建槽位物品控件
 
