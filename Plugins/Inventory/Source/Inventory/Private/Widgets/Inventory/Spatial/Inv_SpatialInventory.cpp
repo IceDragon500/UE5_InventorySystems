@@ -51,7 +51,8 @@ void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* Equip
 	//检查是否能够装备悬停物品,如果我们通过了这一步，那么我们就知道可以装备悬停物品
 	if (!CanEquipHoverItem(EquippedGridSlot, EquipmentTypeTag)) return;
 
-	//创建一个已装备的槽位物品并将其添加到装备网格槽中
+	//创建一个已装备的槽位物品并将其添加到装备网格槽中(这里我们需要调用 EquippedGridSlot->OnItemEquipped() )
+	
 
 	//清除鼠标上的悬停物品hoverItem
 

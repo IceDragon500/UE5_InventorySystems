@@ -321,7 +321,7 @@
 
 ✅138. Can Equip Hover Item 能否装备悬停物品
 
-139. Equipped Slotted Item 已装备槽位物品（UI元素）
+✅139. Equipped Slotted Item 已装备槽位物品
 
 140. Slotted Item Draw Size 槽位物品绘制尺寸
 

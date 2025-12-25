@@ -38,3 +38,30 @@ FReply UInv_EquippedGridSlot::NativeOnMouseButtonDown(const FGeometry& InGeometr
 	EquippedGridSlotClicked.Broadcast(this, EquipmentTypeTag);
 	return FReply::Handled();
 }
+
+UInv_EquippedSlottedItem* UInv_EquippedGridSlot::OnItemEquipped(UInv_InventoryItem* Item, const FGameplayTag& EquipmentTag, float TileSize)
+{
+	// 检查装备类型标签
+
+	//由于我们需要设置这个物品的尺寸，因此需要获取网格的维度
+
+	//一旦有了网格维度，我们就需要计算已装备槽位物品的绘制尺寸
+
+	//创建已装备槽位物品的小部件 EquippedSlottedItem Widget
+
+	//有一些需要设置的属性
+
+	//设置已装备物品的装备类型标签
+
+	//需要为已装备物品隐藏堆叠数量显示,隐藏已装备槽位物品上的堆叠数量小部件
+
+	//将在这个类上设置库存物品，即装备槽位
+
+	//设置装备槽位物品上的图像画刷
+
+	//创建并设置好所有这些装饰性元素后，把槽位物品作为子项添加到此小部件的覆盖层中
+
+	//最后，我们将返回已装备的插槽物品控件
+
+	return nullptr;
+}

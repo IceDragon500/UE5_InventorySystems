@@ -115,6 +115,11 @@ private:
 	UFUNCTION()
 	void ShowCraftables();
 
+	/**
+	 * 装备栏被点击之后触发的事件
+	 * @param EquippedGridSlot 
+	 * @param EquipmentTypeTag 
+	 */
 	UFUNCTION()
 	void EquippedGridSlotClicked(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag);
 
@@ -129,8 +134,19 @@ private:
 	 */
 	void SetActiveGrid(UInv_InventoryGrid* Grid, UButton* Button);
 
+	/**
+	 * 设置提示消息框的位置和大小
+	 * @param Description 
+	 * @param Canvas 
+	 */
 	void SetItemDescriptionSizeAndPosition(UInv_ItemDescription* Description, UCanvasPanel* Canvas) const;
 
+	/**
+	 * 检查被点击的装备栏是否可以放置鼠标上的道具
+	 * @param EquippedGridSlot 被点击的装备栏
+	 * @param EquipmentTypeTag 道具类型
+	 * @return 
+	 */
 	bool CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag) const;
 
 	TWeakObjectPtr<UInv_InventoryGrid> ActiveGrid;
