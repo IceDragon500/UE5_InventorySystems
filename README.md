@@ -325,7 +325,7 @@
 
 ✅140. Slotted Item Draw Size 槽位物品绘制尺寸
 
-141. Creating the Slotted Item Widget 创建槽位物品控件
+✅141. Creating the Slotted Item Widget 创建槽位物品控件
 
 142. Finishing OnItemEquipped 完成物品装备事件
 

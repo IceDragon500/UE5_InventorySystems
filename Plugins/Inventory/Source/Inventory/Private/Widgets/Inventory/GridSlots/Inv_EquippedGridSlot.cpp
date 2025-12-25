@@ -50,23 +50,26 @@ UInv_EquippedSlottedItem* UInv_EquippedGridSlot::OnItemEquipped(UInv_InventoryIt
 	//由于我们需要设置这个物品的尺寸，因此需要获取网格的维度
 	const FInv_GridFragment* GridFragment = GetFragment<FInv_GridFragment>(Item, FragmentTags::GridFragment);
 	if (!GridFragment) return nullptr;
-
 	const FIntPoint GridDimensions = GridFragment->GetGridSize();
 
+	//一旦有了网格维度，我们就需要计算已装备槽位物品的绘制尺寸
 	const float IconTileWidth = TileSize - GridFragment->GetGridPadding() * 2;
 	const FVector2D DrawSize = GridDimensions * IconTileWidth;
-
-	//一旦有了网格维度，我们就需要计算已装备槽位物品的绘制尺寸
-
+	
 	//创建已装备槽位物品的小部件 EquippedSlottedItem Widget
+	EquippedSlottedItem = CreateWidget<UInv_EquippedSlottedItem>(GetOwningPlayer(), EquippedSlottedItemClass);
 
 	//有一些需要设置的属性
+	EquippedSlottedItem->SetInventoryItem(Item);
 
 	//设置已装备物品的装备类型标签
+	EquippedSlottedItem->SetEquipmentTypeTag(EquipmentTag);
 
 	//需要为已装备物品隐藏堆叠数量显示,隐藏已装备槽位物品上的堆叠数量小部件
+	EquippedSlottedItem->UpdateStackCount(0);
 
 	//将在这个类上设置库存物品，即装备槽位
+	SetInventoryItem(Item);
 
 	//设置装备槽位物品上的图像画刷
 
