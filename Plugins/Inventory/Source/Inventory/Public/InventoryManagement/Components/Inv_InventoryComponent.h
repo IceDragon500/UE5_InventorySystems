@@ -15,6 +15,7 @@ class UInv_InventoryItem;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FinventoryItemChange, UInv_InventoryItem*, Item);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNoRoomInInventory);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStackChange, const FInv_SlotAvailabilityResult&, Result);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemEquipStatusChanged, UInv_InventoryItem*, Item);
 
 
 /**
@@ -70,6 +71,14 @@ public:
 	UFUNCTION(Server, Reliable)
 	void Server_ConsumeItem(UInv_InventoryItem* Item);
 
+	UFUNCTION(Server, Reliable)
+	void Server_EquipSlotClicked(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_EquipSlotClicked(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip);
+
+	
+
 	//切换库存菜单
 	void ToggleInventoryMenu();
 
@@ -84,6 +93,8 @@ public:
 	FinventoryItemChange OnItemRemoved;//在道具被删除的时候进行一个广播
 	FNoRoomInInventory NoRoomInInventory;//添加道具失败的时候进行一个广播
 	FStackChange OnStackChange;//背包中道具堆叠数量改变的时候进行一个广播，让界面那边知道需要更新数据
+	FItemEquipStatusChanged OnItemEquipped;
+	FItemEquipStatusChanged OnItemUnEquipped;
 
 protected:
 

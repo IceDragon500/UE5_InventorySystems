@@ -1,13 +1,11 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
-
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/Image.h"
 #include "Components/Overlay.h"
 #include "Components/OverlaySlot.h"
-#include "Dataflow/DataflowOverlay.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
 #include "Items/Inv_InventoryItem.h"
 #include "Items/Fragments/Inv_FragmentTags.h"
@@ -61,6 +59,11 @@ UInv_EquippedSlottedItem* UInv_EquippedGridSlot::OnItemEquipped(UInv_InventoryIt
 	const FVector2D DrawSize = GridDimensions * IconTileWidth;
 	
 	//创建已装备槽位物品的小部件 EquippedSlottedItem Widget
+	if (!EquippedSlottedItemClass)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EquippedSlottedItemClass is null, cannot create widget 需要检查EquippedSlottedItemClass是否在已设置"));
+		return nullptr;
+	}
 	EquippedSlottedItem = CreateWidget<UInv_EquippedSlottedItem>(GetOwningPlayer(), EquippedSlottedItemClass);
 
 	//有一些需要设置的属性

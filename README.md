@@ -331,7 +331,7 @@
 
 ✅143. Creating the Equipped Slotted Item 创建已装备槽位物品
 
-144. Equipping the Cloak 装备斗篷
+✅144. Equipping the Cloak 装备斗篷
 
 145. Planning EquippedSlottedItemClicked 规划已装备槽位物品点击事件
 

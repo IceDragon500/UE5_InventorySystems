@@ -2,10 +2,13 @@
 
 
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
+
+#include "InventoryManagement/Utils/Inv_InventoryStatics.h"
 #include "Items/Inv_InventoryItem.h"
 #include "Items/Components/Inv_ItemComponent.h"
 #include "Items/Fragments/Inv_ItemFragment.h"
 #include "Net/UnrealNetwork.h"
+#include "Widgets/Inventory/HoverItem/Inv_HoverItem.h"
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 
 
@@ -172,6 +175,18 @@ void UInv_InventoryComponent::Server_ConsumeItem_Implementation(UInv_InventoryIt
 	}
 }
 
+void UInv_InventoryComponent::Server_EquipSlotClicked_Implementation(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip)
+{
+	Multicast_EquipSlotClicked(ItemToEquip, ItemToUnEquip);
+}
+
+void UInv_InventoryComponent::Multicast_EquipSlotClicked_Implementation(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip)
+{
+	//装备组件将会监听这些委托
+	OnItemEquipped.Broadcast(ItemToEquip);
+	OnItemUnEquipped.Broadcast(ItemToUnEquip);
+}
+
 void UInv_InventoryComponent::ToggleInventoryMenu()
 {
 	if (bInventoryMenuOpen)
@@ -253,4 +268,16 @@ void UInv_InventoryComponent::CloseInventoryMenu()
 	FInputModeGameOnly InputMode;
 	OwningController->SetInputMode(InputMode);
 	OwningController->SetShowMouseCursor(false);
+
+	//当鼠标上有道具时，点击关闭窗口，这里需要将鼠标上的道具扔在地上，并且清理掉鼠标上的道具
+	UInv_HoverItem* HoverItem = GetInventoryMenu()->GetHoverItem();
+	if (!IsValid(HoverItem)) return;
+	Server_DropItem(HoverItem->GetInventoryItem(), 1);
+	HoverItem->SetInventoryItem(nullptr);
+	HoverItem->SetIsStackable(false);
+	HoverItem->SetPreviousGridIndex(INDEX_NONE);
+	HoverItem->UpdateStackCount(0);
+	HoverItem->SetImageBrush(FSlateNoResource());
+	HoverItem->RemoveFromParent();
+	HoverItem = nullptr;
 }

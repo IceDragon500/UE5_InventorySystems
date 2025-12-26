@@ -72,6 +72,8 @@ public:
 	bool HasHoverItem() const;
 	UInv_HoverItem* GetHoverItem() const;
 
+	void ClearHoverItem();
+
 	float GetTileSize() const { return TileSize; }
 
 protected:
@@ -422,8 +424,6 @@ private:
 	void ChangeHoverType(const int32 Index, const FIntPoint& Dimensions, EInv_GridSlotState GridSlotState);
 
 	void PutDownOnIndex(const int32 Index);
-
-	void ClearHoverItem();
 
 	UUserWidget* GetVisibleCursorWidget();
 	UUserWidget* GetHiddenCurosrWidget();

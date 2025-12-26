@@ -39,6 +39,8 @@ public:
 	UInv_InventoryItem* GetInventoryItem() const;
 	void SetInventoryItem(UInv_InventoryItem* Item);
 
+	void ClearHoverItem();
+
 protected:
 
 	

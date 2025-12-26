@@ -10,6 +10,7 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/WidgetSwitcher.h"
+#include "InventoryManagement/Components/Inv_InventoryComponent.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
 #include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
 #include "Widgets/Inventory/HoverItem/Inv_HoverItem.h"
@@ -60,11 +61,27 @@ void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* Equip
 		TileSize
 		);
 
+	if (!EquippedSlottedItem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("创建失败"));
+		return;
+	}
 	EquippedSlottedItem->OnEquippedSlottedItemClicked.AddDynamic(this, &UInv_SpatialInventory::EquippedSlottedItemClicked);
 
 	//清除鼠标上的悬停物品hoverItem
+	Grid_Equippable->ClearHoverItem();
 
 	//通知服务器我们已经装备了一件物品，其他客户端会看到外观的变化(如果已经有装备在身上了，还涉及卸下一件物品)
+
+	UInv_InventoryComponent* IC = UInv_InventoryStatics::GetInventoryComponent(GetOwningPlayer());
+	check(IsValid(IC));
+
+	IC->Server_EquipSlotClicked(HoverItem->GetInventoryItem(), nullptr);
+
+	if (GetOwningPlayer()->GetNetMode() != NM_DedicatedServer)//如果不是专用服务器，144讲
+	{
+		IC->OnItemEquipped.Broadcast(HoverItem->GetInventoryItem());
+	}
 
 	//
 }
@@ -119,9 +136,13 @@ bool UInv_SpatialInventory::CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGri
 
 	UInv_InventoryItem* HeloItem = HoverItem->GetInventoryItem();
 
-	return HasHoverItem() && IsValid(HeloItem) && !HoverItem->IsStackable()
-	&& HeloItem->GetItemManifest().GetItemCategory() == EInv_ItemCategory::Equippable
-	&& HeloItem->GetItemManifest().GetItemTypeTag().MatchesTag(EquipmentTypeTag);
+	bool bIsCanEquip = HasHoverItem();
+	bool bIsCanEquip1 = IsValid(HeloItem);
+	//bool bIsCanEquip2 = !HoverItem->IsStackable();
+	bool bIsCanEquip3 = HeloItem->GetItemManifest().GetItemCategory() == EInv_ItemCategory::Equippable;
+	bool bIsCanEquip4 = HeloItem->GetItemManifest().GetItemTypeTag().MatchesTag(EquipmentTypeTag);
+
+	return bIsCanEquip && bIsCanEquip1 && bIsCanEquip3 && bIsCanEquip4 ;
 	
 }
 
