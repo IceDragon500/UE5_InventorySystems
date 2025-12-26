@@ -345,7 +345,7 @@
 
 ✅150. Edge Case - Swapping with Valid Items 边界情况 - 与有效物品交换
 
-151. Edge Case - Switching Categories 边界情况 - 切换类别
+✅151. Edge Case - Switching Categories 边界情况 - 切换类别
 
 
 ### 第16节 装备组件 (Equipment Component)

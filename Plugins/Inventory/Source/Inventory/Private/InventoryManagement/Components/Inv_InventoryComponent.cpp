@@ -198,6 +198,7 @@ void UInv_InventoryComponent::ToggleInventoryMenu()
 	{
 		OpenInventoryMenu();
 	}
+	OnInventoryMenuToggled.Broadcast(bInventoryMenuOpen);
 }
 
 void UInv_InventoryComponent::AddRepSubObj(UObject* SubObj)
@@ -270,7 +271,9 @@ void UInv_InventoryComponent::CloseInventoryMenu()
 	OwningController->SetInputMode(InputMode);
 	OwningController->SetShowMouseCursor(false);
 
-	//当鼠标上有道具时，点击关闭窗口，这里需要将鼠标上的道具扔在地上，并且清理掉鼠标上的道具
+	/* 这里是我自己的做法，教程在151讲后半段提到了解决的办法
+	 * 
+	当鼠标上有道具时，点击关闭窗口，这里需要将鼠标上的道具扔在地上，并且清理掉鼠标上的道具
 	UInv_HoverItem* HoverItem = GetInventoryMenu()->GetHoverItem();
 	if (!IsValid(HoverItem)) return;
 	Server_DropItem(HoverItem->GetInventoryItem(), 1);
@@ -281,4 +284,5 @@ void UInv_InventoryComponent::CloseInventoryMenu()
 	HoverItem->SetImageBrush(FSlateNoResource());
 	HoverItem->RemoveFromParent();
 	HoverItem = nullptr;
+	*/
 }

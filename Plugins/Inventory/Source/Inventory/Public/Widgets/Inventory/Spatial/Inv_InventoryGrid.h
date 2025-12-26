@@ -62,24 +62,21 @@ public:
 
 	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_ItemComponent* ItemComponent);
 
-	UFUNCTION()
-	void AddItem(UInv_InventoryItem* Item);
-
 	void ShowCursor();
 	void HideCursor();
 	void SetOwningCanvas(UCanvasPanel* OwningCanvas);
 	void DropItem();
+	
 	bool HasHoverItem() const;
 	UInv_HoverItem* GetHoverItem() const;
-
 	void ClearHoverItem();
 
 	float GetTileSize() const { return TileSize; }
 
 	/**
- * 创建被鼠标点击并且“悬浮”在鼠标上的道具
- * @param InventoryItem 被鼠标点击的道具
- */
+	 * 创建被鼠标点击并且“悬浮”在鼠标上的道具
+	 * @param InventoryItem 被鼠标点击的道具
+	 */
 	void AssignHoverItem(UInv_InventoryItem* InventoryItem);
 
 	/**
@@ -91,6 +88,11 @@ public:
 	 */
 	void AssignHoverItem(UInv_InventoryItem* InventoryItem, const int32 GridIndex, const int32 PreviousGridIndex);
 
+	void OnHide();
+
+	UFUNCTION()
+	void AddItem(UInv_InventoryItem* Item);
+	
 protected:
 
 private:
@@ -110,7 +112,7 @@ private:
 	 * @param Item 需要检查的物品组件
 	 * @return 返回槽位可用性结果，包含是否可放置以及放置位置信息
 	 */
-	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* Item);
+	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* Item, const int32 StackAmountOverride = -1);
 
 	/**
 	 * 检查是否有足够空间放置指定的物品清单
@@ -118,7 +120,7 @@ private:
 	 * @param ItemManifest 物品清单信息
 	 * @return 返回槽位可用性结果，包含是否可放置以及放置位置信息
 	 */
-	FInv_SlotAvailabilityResult HasRoomForItem(const FInv_ItemManifest& ItemManifest);
+	FInv_SlotAvailabilityResult HasRoomForItem(const FInv_ItemManifest& ItemManifest, const int32 StackAmountOverride = -1);
 
 	/**
 	 * 将物品添加到指定的网格索引位置
@@ -449,6 +451,8 @@ private:
 
 	void CreateItemPopUp(const int32 GridIndex);
 
+	void PutHoverItemBack();
+
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UInv_ItemPopUp> ItemPopUpClass;
@@ -496,6 +500,9 @@ private:
 
 	UFUNCTION()
 	void OnPopUpMenuConsume(int32 Index);
+
+	UFUNCTION()
+	void OnInventoryMenuToggled(bool bOpen);
 
 	//道具栏的类型
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category="属性设置")
