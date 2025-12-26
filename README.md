@@ -335,7 +335,7 @@
 
 ✅145. Planning EquippedSlottedItemClicked 规划已装备槽位物品点击事件
 
-146. Items to Equip and Unequip 需要装备和卸下的物品
+✅146. Items to Equip and Unequip 需要装备和卸下的物品
 
 147. Remove Equipped Slotted Item 移除已装备槽位物品
 

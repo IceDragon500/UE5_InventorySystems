@@ -90,10 +90,16 @@ void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem*
 {
 	//如果我们鼠标上是空的，点击有装备的装备栏，应该是如下逻辑：
 	//如果存在物品描述的小窗口，我们需要将其移除
-
+	UInv_InventoryStatics::ItemUnHovered(GetOwningPlayer());
+	
+	if (IsValid(GetHoverItem()) && GetHoverItem()->IsStackable()) return;
+	
+	//获取要装备的物品和获取要卸下的物品
 	//需要获取持有此特定物品的已装备网格槽位
-			//获取要装备的物品和获取要卸下的物品
+	UInv_InventoryItem* ItemToEquip = IsValid(GetHoverItem()) ? GetHoverItem()->GetInventoryItem() : nullptr;
+	UInv_InventoryItem* ItemToUnEquip = SlottedItem->GetInventoryItem();
 
+	UInv_EquippedGridSlot* EquippedGridSlot = FindSlotWithEquippedItem(ItemToUnEquip);
 	//清空该物品的槽位，清空该物品的已装备网格槽位(将其库存物品设为空值)
 
 	//需要从已装备网格槽位中移除已装备的槽位物品(涉及诸如解除点击委托绑定等操作 OnEquippedSlottedItemClicked)
@@ -163,6 +169,15 @@ bool UInv_SpatialInventory::CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGri
 
 	return bIsCanEquip && bIsCanEquip1 && bIsCanEquip3 && bIsCanEquip4 ;
 	
+}
+
+UInv_EquippedGridSlot* UInv_SpatialInventory::FindSlotWithEquippedItem(UInv_InventoryItem* EquippedItem) const
+{
+	auto* FoundEquippedGridSlot = EquippedGridSlots.FindByPredicate([EquippedItem](const UInv_EquippedGridSlot* GridSlot)
+	{
+		return GridSlot->GetInventoryItem() == EquippedItem;
+	});
+	return FoundEquippedGridSlot ? *FoundEquippedGridSlot : nullptr;
 }
 
 FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const

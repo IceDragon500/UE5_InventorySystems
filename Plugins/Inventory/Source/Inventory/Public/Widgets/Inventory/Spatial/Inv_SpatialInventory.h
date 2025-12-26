@@ -155,6 +155,8 @@ private:
 	 */
 	bool CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag) const;
 
+	UInv_EquippedGridSlot* FindSlotWithEquippedItem(UInv_InventoryItem* EquippedItem) const;
+
 	TWeakObjectPtr<UInv_InventoryGrid> ActiveGrid;
 	
 };
