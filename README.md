@@ -329,7 +329,7 @@
 
 ✅142. Finishing OnItemEquipped 完成物品装备事件
 
-143. Creating the Equipped Slotted Item 创建已装备槽位物品
+✅143. Creating the Equipped Slotted Item 创建已装备槽位物品
 
 144. Equipping the Cloak 装备斗篷
 

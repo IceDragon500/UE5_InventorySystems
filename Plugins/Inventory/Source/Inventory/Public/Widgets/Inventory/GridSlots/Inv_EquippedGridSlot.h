@@ -34,6 +34,13 @@ public:
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
+	/**
+	 * 在点击对应的装备栏之后，将鼠标上的装备传入这个方法，通过这个方法创建一个UInv_EquippedSlottedItem 绑定在自身这个widget上
+	 * @param Item 来自鼠标上的道具指针
+	 * @param EquipmentTag 装备类型
+	 * @param TileSize 尺寸
+	 * @return 返回创建好的UInv_EquippedSlottedItem对象指针
+	 */
 	UInv_EquippedSlottedItem* OnItemEquipped(UInv_InventoryItem* Item, const FGameplayTag& EquipmentTag, float TileSize);
 
 	FEquippedGridSlotClicked EquippedGridSlotClicked;

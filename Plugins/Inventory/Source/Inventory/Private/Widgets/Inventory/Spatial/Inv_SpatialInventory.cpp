@@ -52,13 +52,25 @@ void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* Equip
 	if (!CanEquipHoverItem(EquippedGridSlot, EquipmentTypeTag)) return;
 
 	//创建一个已装备的槽位物品并将其添加到装备网格槽中(这里我们需要调用 EquippedGridSlot->OnItemEquipped() )
-	
+	UInv_HoverItem* HoverItem = GetHoverItem();
+	const float TileSize = UInv_InventoryStatics::GetInventoryWidget(GetOwningPlayer())->GetTileSize();
+	UInv_EquippedSlottedItem* EquippedSlottedItem = EquippedGridSlot->OnItemEquipped(
+		HoverItem->GetInventoryItem(),
+		EquipmentTypeTag,
+		TileSize
+		);
+
+	EquippedSlottedItem->OnEquippedSlottedItemClicked.AddDynamic(this, &UInv_SpatialInventory::EquippedSlottedItemClicked);
 
 	//清除鼠标上的悬停物品hoverItem
 
 	//通知服务器我们已经装备了一件物品，其他客户端会看到外观的变化(如果已经有装备在身上了，还涉及卸下一件物品)
 
 	//
+}
+
+void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem* SlottedItem)
+{
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -173,6 +185,11 @@ UInv_HoverItem* UInv_SpatialInventory::GetHoverItem() const
 	if (!ActiveGrid.IsValid()) return nullptr;
 
 	return ActiveGrid->GetHoverItem();
+}
+
+float UInv_SpatialInventory::GetTileSize() const
+{
+	return Grid_Equippable->GetTileSize();
 }
 
 UInv_ItemDescription* UInv_SpatialInventory::GetItemDescription()

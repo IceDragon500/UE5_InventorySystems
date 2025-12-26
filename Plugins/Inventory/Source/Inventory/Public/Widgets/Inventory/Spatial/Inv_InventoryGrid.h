@@ -72,6 +72,8 @@ public:
 	bool HasHoverItem() const;
 	UInv_HoverItem* GetHoverItem() const;
 
+	float GetTileSize() const { return TileSize; }
+
 protected:
 
 private:
