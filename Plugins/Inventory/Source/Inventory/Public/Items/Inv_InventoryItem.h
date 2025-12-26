@@ -7,7 +7,6 @@
 #include "Manifest/Inv_ItemManifest.h"
 #include "Inv_InventoryItem.generated.h"
 
-struct FInstancedStruct;
 /**
  * 作为道具的父类
  * 每一个道具分类，都可以从这里进行继承
@@ -17,9 +16,9 @@ class INVENTORY_API UInv_InventoryItem : public UObject
 {
 	GENERATED_BODY()
 public:
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	virtual bool IsSupportedForNetworking() const override;
+	virtual bool IsSupportedForNetworking() const override { return true; }
 
 	void SetItemManifest(const FInv_ItemManifest& Manifest);
 

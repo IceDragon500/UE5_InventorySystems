@@ -341,7 +341,7 @@
 
 ✅148. Make Equipped Slotted Item 创建已装备槽位物品
 
-149. Broadcast Slot Clicked Delegates 广播槽位点击委托
+✅149. Broadcast Slot Clicked Delegates 广播槽位点击委托
 
 150. Edge Case - Swapping with Valid Items 边界情况 - 与有效物品交换
 

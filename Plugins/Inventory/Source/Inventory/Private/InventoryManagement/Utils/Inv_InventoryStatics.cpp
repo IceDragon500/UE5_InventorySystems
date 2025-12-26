@@ -59,7 +59,7 @@ UInv_HoverItem* UInv_InventoryStatics::GetHoverItem(APlayerController* PC)
 UInv_InventoryBase* UInv_InventoryStatics::GetInventoryWidget(APlayerController* PC)
 {
 	UInv_InventoryComponent* IC = GetInventoryComponent(PC);
-	if (!IsValid(PC)) return nullptr;
+	if (!IsValid(IC)) return nullptr;
 
 	return IC->GetInventoryMenu();
 }

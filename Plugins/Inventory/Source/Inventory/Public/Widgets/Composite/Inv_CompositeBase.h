@@ -24,8 +24,8 @@ public:
 	virtual void Collapse();//用于折叠复合组件，将其设置为不可见状态
 	void Expand();//用于展开复合组件，使其变为可见状态
 
-	using FUncType = TFunction<void(UInv_CompositeBase*)>;
-	virtual void ApplyFunction(FUncType Function) {}
+	using FuncType = TFunction<void(UInv_CompositeBase*)>;
+	virtual void ApplyFunction(FuncType Function) {}
 
 protected:
 

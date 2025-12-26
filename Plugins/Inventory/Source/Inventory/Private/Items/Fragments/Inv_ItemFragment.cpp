@@ -43,24 +43,6 @@ void FInv_TextFragment::Assimilate(UInv_CompositeBase* Composite) const
 	LeafText->SetText(FragmentText);
 }
 
-void FInv_StrengthModifier::OnEquip(APlayerController* PC)
-{
-	GEngine->AddOnScreenDebugMessage(
-		-1,
-		5.f,
-		FColor::Red,
-		FString::Printf(TEXT(" %f 点力量值生效了! "), GetValue()));
-}
-
-void FInv_StrengthModifier::OnUnEquip(APlayerController* PC)
-{
-	GEngine->AddOnScreenDebugMessage(
-		-1,
-		5.f,
-		FColor::Red,
-		FString::Printf(TEXT(" %f 点力量值失效了! "), GetValue()));
-}
-
 void FInv_LabeledNumberFragment::Assimilate(UInv_CompositeBase* Composite) const
 {
 	FInv_InventoryItemFragment::Assimilate(Composite);
@@ -84,7 +66,7 @@ void FInv_LabeledNumberFragment::Manifest()
 
 	if (bRandomizeOnManifest)
 	{
-		Value = FMath::RandRange(ValueMin, ValueMax);
+		Value = FMath::FRandRange(ValueMin, ValueMax);
 	}
 
 	bRandomizeOnManifest = false;
@@ -142,6 +124,24 @@ void FInv_ManaPotionFragment::OnConsume(APlayerController* PC)
 		5.f,
 		FColor::Blue,
 		FString::Printf(TEXT(" %f 点法力值被添加了! "), GetValue()));
+}
+
+void FInv_StrengthModifier::OnEquip(APlayerController* PC)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Red,
+		FString::Printf(TEXT(" %f 点力量值生效了! "), GetValue()));
+}
+
+void FInv_StrengthModifier::OnUnEquip(APlayerController* PC)
+{
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Red,
+		FString::Printf(TEXT(" %f 点力量值失效了! "), GetValue()));
 }
 
 void FInv_EquipmentFragment::OnEquip(APlayerController* PC)

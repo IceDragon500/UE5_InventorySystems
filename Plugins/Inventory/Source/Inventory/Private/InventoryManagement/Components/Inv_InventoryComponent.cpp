@@ -21,7 +21,7 @@ UInv_InventoryComponent::UInv_InventoryComponent() : InventoryList(this)
 
 }
 
-void UInv_InventoryComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+void UInv_InventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -38,6 +38,7 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 	if (Result.TotalRoomToFill == 0)
 	{
 		NoRoomInInventory.Broadcast();
+		return;
 	}
 
 	/**
@@ -126,7 +127,7 @@ void UInv_InventoryComponent::Server_DropItem_Implementation(UInv_InventoryItem*
 	if (NewStackCount <= 0)
 	{
 		//如果当前被丢弃的数量与当前这个道具堆叠数量相同，则表示需要从InventoryList移除这个道具
-		InventoryList.RemoveItem(DropItem);
+		InventoryList.RemoveEntry(DropItem);
 	}
 	else
 	{
@@ -161,7 +162,7 @@ void UInv_InventoryComponent::Server_ConsumeItem_Implementation(UInv_InventoryIt
 	const int32 NewStackCount = Item->GetTotalStackCount() - 1;
 	if (NewStackCount <=0 )
 	{
-		InventoryList.RemoveItem(Item);
+		InventoryList.RemoveEntry(Item);
 	}
 	else
 	{

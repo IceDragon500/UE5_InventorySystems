@@ -72,7 +72,7 @@ public:
 
 	UInv_InventoryItem* AddEntry(UInv_ItemComponent* InItemComponent);
 	UInv_InventoryItem* AddEntry(UInv_InventoryItem* InItem);
-	void RemoveItem(UInv_InventoryItem* InItem);//删除列表里面的道具 教程里面是RemoveEntry删除条目
+	void RemoveEntry(UInv_InventoryItem* InItem);//删除列表里面的道具 教程里面是RemoveEntry删除条目
 	UInv_InventoryItem* FindFirstItemByType(const FGameplayTag& ItemType);
 
 private:

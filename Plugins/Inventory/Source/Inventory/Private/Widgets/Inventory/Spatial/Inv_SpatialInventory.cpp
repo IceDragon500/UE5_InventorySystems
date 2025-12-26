@@ -116,6 +116,8 @@ void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem*
 	MakeEquippedSlottedItem(EquippedSlottedItem, EquippedGridSlot, ItemToEquip);
 
 	//最后，在流程结束时，我们应该广播装备物品和卸下物品的委托事件
+	BroadcastSlotClickedDelegates(ItemToEquip, ItemToUnEquip);
+	
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -162,15 +164,14 @@ bool UInv_SpatialInventory::CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGri
 	UInv_HoverItem* HoverItem = GetHoverItem();
 	if (!IsValid(HoverItem)) return false;
 
-	UInv_InventoryItem* HeloItem = HoverItem->GetInventoryItem();
+	UInv_InventoryItem* HeldItem = HoverItem->GetInventoryItem();
 
-	bool bIsCanEquip = HasHoverItem();
-	bool bIsCanEquip1 = IsValid(HeloItem);
-	//bool bIsCanEquip2 = !HoverItem->IsStackable();
-	bool bIsCanEquip3 = HeloItem->GetItemManifest().GetItemCategory() == EInv_ItemCategory::Equippable;
-	bool bIsCanEquip4 = HeloItem->GetItemManifest().GetItemTypeTag().MatchesTag(EquipmentTypeTag);
+	bool bIsCanEquip = HasHoverItem() && IsValid(HeldItem);
+	bool bIsCanEquip2 = !HoverItem->IsStackable();
+	bool bIsCanEquip3 = HeldItem->GetItemManifest().GetItemCategory() == EInv_ItemCategory::Equippable;
+	bool bIsCanEquip4 = HeldItem->GetItemManifest().GetItemTypeTag().MatchesTag(EquipmentTypeTag);
 
-	return bIsCanEquip && bIsCanEquip1 && bIsCanEquip3 && bIsCanEquip4 ;
+	return bIsCanEquip && bIsCanEquip3 && bIsCanEquip4 && bIsCanEquip2;
 	
 }
 
@@ -220,8 +221,21 @@ void UInv_SpatialInventory::MakeEquippedSlottedItem(UInv_EquippedSlottedItem* Eq
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("创建失败 221"));
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("MakeEquippedSlottedItem 创建失败 224"));
+	}
+}
+
+void UInv_SpatialInventory::BroadcastSlotClickedDelegates(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip) const
+{
+	UInv_InventoryComponent* IC = UInv_InventoryStatics::GetInventoryComponent(GetOwningPlayer());
+	if (!IsValid(IC)) return;
+
+	IC->Server_EquipSlotClicked(ItemToEquip, ItemToUnEquip);
+
+	if (GetOwningPlayer()->GetNetMode() != NM_DedicatedServer) //149讲
+	{
+		IC->OnItemEquipped.Broadcast(ItemToEquip);
+		IC->OnItemUnEquipped.Broadcast(ItemToUnEquip);
 	}
 }
 

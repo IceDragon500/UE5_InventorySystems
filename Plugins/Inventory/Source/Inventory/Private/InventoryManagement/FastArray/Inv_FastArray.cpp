@@ -11,7 +11,7 @@ TArray<UInv_InventoryItem*> FInv_InventoryFastArray::GetAllItems() const
 {
 	TArray<UInv_InventoryItem*> Results;
 	Results.Reserve(Entries.Num());
-	for (const FInv_InventoryEntry& Entry : Entries)
+	for (const auto& Entry : Entries)
 	{
 		if (!IsValid(Entry.Item)) continue;
 		Results.Add(Entry.Item);
@@ -70,8 +70,8 @@ UInv_InventoryItem* FInv_InventoryFastArray::AddEntry(UInv_ItemComponent* InItem
 UInv_InventoryItem* FInv_InventoryFastArray::AddEntry(UInv_InventoryItem* InItem)
 {
 	check(OwnerComponent);
-	AActor* OwnerActor = OwnerComponent->GetOwner();
-	check(OwnerActor->HasAuthority());
+	AActor* OwningActor = OwnerComponent->GetOwner();
+	check(OwningActor->HasAuthority());
 
 	FInv_InventoryEntry& NewEntry = Entries.AddDefaulted_GetRef();
 	NewEntry.Item = InItem;
@@ -81,17 +81,7 @@ UInv_InventoryItem* FInv_InventoryFastArray::AddEntry(UInv_InventoryItem* InItem
 	
 }
 
-UInv_InventoryItem* FInv_InventoryFastArray::FindFirstItemByType(const FGameplayTag& ItemType)
-{
-	auto* FoundItem =Entries.FindByPredicate([ItemType = ItemType](const FInv_InventoryEntry& Entry)
-	{
-		return IsValid(Entry.Item) && Entry.Item->GetItemManifest().GetItemTypeTag().MatchesTagExact(ItemType);
-	});
-
-	return FoundItem ? FoundItem->Item : nullptr;
-}
-
-void FInv_InventoryFastArray::RemoveItem(UInv_InventoryItem* InItem)
+void FInv_InventoryFastArray::RemoveEntry(UInv_InventoryItem* InItem)
 {
 	for (auto EntryItem = Entries.CreateIterator(); EntryItem; ++EntryItem)
 	{
@@ -102,4 +92,14 @@ void FInv_InventoryFastArray::RemoveItem(UInv_InventoryItem* InItem)
 			MarkArrayDirty();
 		}
 	}
+}
+
+UInv_InventoryItem* FInv_InventoryFastArray::FindFirstItemByType(const FGameplayTag& ItemType)
+{
+	auto* FoundItem =Entries.FindByPredicate([ItemType = ItemType](const FInv_InventoryEntry& Entry)
+	{
+		return IsValid(Entry.Item) && Entry.Item->GetItemManifest().GetItemTypeTag().MatchesTagExact(ItemType);
+	});
+
+	return FoundItem ? FoundItem->Item : nullptr;
 }
