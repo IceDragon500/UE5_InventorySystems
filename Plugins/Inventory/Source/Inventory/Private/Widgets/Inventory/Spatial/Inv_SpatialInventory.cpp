@@ -88,6 +88,25 @@ void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* Equip
 
 void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem* SlottedItem)
 {
+	//如果我们鼠标上是空的，点击有装备的装备栏，应该是如下逻辑：
+	//如果存在物品描述的小窗口，我们需要将其移除
+
+	//需要获取持有此特定物品的已装备网格槽位
+			//获取要装备的物品和获取要卸下的物品
+
+	//清空该物品的槽位，清空该物品的已装备网格槽位(将其库存物品设为空值)
+
+	//需要从已装备网格槽位中移除已装备的槽位物品(涉及诸如解除点击委托绑定等操作 OnEquippedSlottedItemClicked)
+
+	//从父级移除已装备的槽位物品，即从其所属容器中移除
+
+	//如果我们正在卸载一个装备，应该将其指定为悬停物品，也就是将装备栏上这个道具转到鼠标指针上
+
+
+	//如果我们鼠标上有一个装备，点击有装备的装备栏，我们会将这两个装备进行比较，然后进行交换，逻辑如下
+	//为悬停物品中持有的物品创建一个新的已装备槽位物品，因此我们需要知道要装备的物品是什么，要卸下的物品又是什么
+
+	//最后，在流程结束时，我们应该广播装备物品和卸下物品的委托事件
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)

@@ -333,7 +333,7 @@
 
 ✅144. Equipping the Cloak 装备斗篷
 
-145. Planning EquippedSlottedItemClicked 规划已装备槽位物品点击事件
+✅145. Planning EquippedSlottedItemClicked 规划已装备槽位物品点击事件
 
 146. Items to Equip and Unequip 需要装备和卸下的物品
 
