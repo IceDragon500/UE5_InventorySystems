@@ -631,8 +631,14 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 		}
 	}
 
-	//如果我们在最后没有提前返回，就应该与悬停物品交换
-	SwapWithHoverItem(ClickedInventoryItem, GridIndex);
+	//确保可以与有效物品进行交换，避免两个小物品放在一起时，如果用一个大图标物品放置，会导致一个小物品被放在了大物品图标里面
+	if (CurrentQueryResult.ValidItem.IsValid())
+	{
+		//如果我们在最后没有提前返回，就应该与悬停物品交换
+		SwapWithHoverItem(ClickedInventoryItem, GridIndex);
+	}
+
+	
 }
 
 void UInv_InventoryGrid::DropItem()
