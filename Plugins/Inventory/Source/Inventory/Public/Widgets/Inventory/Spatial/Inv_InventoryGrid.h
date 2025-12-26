@@ -76,6 +76,21 @@ public:
 
 	float GetTileSize() const { return TileSize; }
 
+	/**
+ * 创建被鼠标点击并且“悬浮”在鼠标上的道具
+ * @param InventoryItem 被鼠标点击的道具
+ */
+	void AssignHoverItem(UInv_InventoryItem* InventoryItem);
+
+	/**
+	 * 创建被鼠标点击并且“悬浮”在鼠标上的道具
+	 * 如果我们仅有一个网格索引而没有前一个索引，比如拾取物品时的情况，那么我采取的做法是直接将网格索引和前一个网格索引都赋值为同一索引
+	 * @param InventoryItem 被鼠标点击的道具
+	 * @param GridIndex 被点击道具的网格索引
+	 * @param PreviousGridIndex 被点击道具前一个的索引
+	 */
+	void AssignHoverItem(UInv_InventoryItem* InventoryItem, const int32 GridIndex, const int32 PreviousGridIndex);
+
 protected:
 
 private:
@@ -137,8 +152,8 @@ private:
 	 * @param ImageFragment 图像片段信息
 	 */
 	void SetSlottedItemImage(const UInv_SlottedItem* SlottedItem,
-							const FInv_GridFragment* GridFragment,
-							const FInv_ImageFragment* ImageFragment) const;
+	                         const FInv_GridFragment* GridFragment,
+	                         const FInv_ImageFragment* ImageFragment) const;
 
 	/**
 	 * 在指定索引位置添加物品
@@ -319,20 +334,6 @@ private:
 	 */
 	void PickUp(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex);
 
-	/**
-	 * 创建被鼠标点击并且“悬浮”在鼠标上的道具
-	 * @param InventoryItem 被鼠标点击的道具
-	 */
-	void AssignHoverItem(UInv_InventoryItem* InventoryItem);
-
-	/**
-	 * 创建被鼠标点击并且“悬浮”在鼠标上的道具
-	 * 如果我们仅有一个网格索引而没有前一个索引，比如拾取物品时的情况，那么我采取的做法是直接将网格索引和前一个网格索引都赋值为同一索引
-	 * @param InventoryItem 被鼠标点击的道具
-	 * @param GridIndex 被点击道具的网格索引
-	 * @param PreviousGridIndex 被点击道具前一个的索引
-	 */
-	void AssignHoverItem(UInv_InventoryItem* InventoryItem, const int32 GridIndex, const int32 PreviousGridIndex);
 
 	void RemoveItemFromGrid(UInv_InventoryItem* InventoryItem, const int32 GridIndex);
 
@@ -352,7 +353,7 @@ private:
 	 * @return 鼠标悬停的网格坐标
 	 */
 	FIntPoint CalculateHoveredCoordinates(const FVector2D& CanvasPosition, const FVector2D& MousePosition) const;
-	
+
 	/**
 	 * 计算鼠标在网格格子中的象限位置
 	 * 
@@ -377,7 +378,8 @@ private:
 	 * @param Quadrant 象限位置
 	 * @return 计算出的起始坐标
 	 */
-	FIntPoint CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions, EInv_TileQuadrant Quadrant) const;
+	FIntPoint CalculateStartingCoordinate(const FIntPoint& Coordinate, const FIntPoint& Dimensions,
+	                                      EInv_TileQuadrant Quadrant) const;
 
 	/**
 	 * 检查悬停位置是否有足够空间放置物品
@@ -405,7 +407,7 @@ private:
 	 * @param Dimensions 物品占用的网格尺寸
 	 */
 	void HighlightSlots(const int32 Index, const FIntPoint& Dimensions);
-	
+
 	/**
 	 * 取消高亮显示指定区域的网格格子
 	 * 
@@ -432,7 +434,8 @@ private:
 
 	void SwapWithHoverItem(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex);
 
-	bool ShouldSwapStackCounts(const int32 RoomInClickedSlot, const int32 HoveredStackCount, const int32 MaxStackSize) const;
+	bool ShouldSwapStackCounts(const int32 RoomInClickedSlot, const int32 HoveredStackCount,
+	                           const int32 MaxStackSize) const;
 
 	void SwapStackCounts(const int32 ClickedStackCount, const int32 HoveredStackCount, const int32 Index);
 
@@ -446,14 +449,13 @@ private:
 
 	void CreateItemPopUp(const int32 GridIndex);
 
-	
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UInv_ItemPopUp> ItemPopUpClass;
 
 	UPROPERTY()
 	TObjectPtr<UInv_ItemPopUp> ItemPopUp;
-	
+
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	TSubclassOf<UUserWidget> VisibleCursorWidgetClass;
 
@@ -533,7 +535,7 @@ private:
 	TObjectPtr<UInv_HoverItem> HoverItem; //被创建的鼠标悬停的Widget组件
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	FVector2D ItemPopUpOffset{0,0}; //用来设置右键菜单与鼠标之间的距离
+	FVector2D ItemPopUpOffset{0, 0}; //用来设置右键菜单与鼠标之间的距离
 
 	//保存当前帧下，鼠标指向道具格子的信息
 	FInv_TileParameters TileParameters;
@@ -542,10 +544,10 @@ private:
 	FInv_TileParameters LastTileParameters;
 
 	//当我们在有效位置点击网格时物品将被放置的位置
-	int32 ItemDropIndex{INDEX_NONE};//这个变量用于跟踪当用户在有效位置点击网格时，物品将被放置的网格索引位置。
-	FInv_SpaceQueryResult CurrentQueryResult;//存储当前的空间查询结果，用于记录当前鼠标位置下网格空间的可用性信息。
-	bool bMouseWithinCanvas{false};//用于标识鼠标当前是否在画布范围内，帮助处理鼠标进入/离开画布的逻辑。
-	bool bLastMouseWithinCanvas{false};//存储上一帧中鼠标是否在画布范围内的状态，通过与当前状态比较可以检测鼠标进入/离开事件。
-	int32 LastHighlightedIndex{INDEX_NONE};//记录上一次高亮显示的网格索引
-	FIntPoint LastHighlightedDimensions{-1, -1};//存储上一次高亮显示的网格区域尺寸（宽×高）
+	int32 ItemDropIndex{INDEX_NONE}; //这个变量用于跟踪当用户在有效位置点击网格时，物品将被放置的网格索引位置。
+	FInv_SpaceQueryResult CurrentQueryResult; //存储当前的空间查询结果，用于记录当前鼠标位置下网格空间的可用性信息。
+	bool bMouseWithinCanvas{false}; //用于标识鼠标当前是否在画布范围内，帮助处理鼠标进入/离开画布的逻辑。
+	bool bLastMouseWithinCanvas{false}; //存储上一帧中鼠标是否在画布范围内的状态，通过与当前状态比较可以检测鼠标进入/离开事件。
+	int32 LastHighlightedIndex{INDEX_NONE}; //记录上一次高亮显示的网格索引
+	FIntPoint LastHighlightedDimensions{-1, -1}; //存储上一次高亮显示的网格区域尺寸（宽×高）
 };

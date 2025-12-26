@@ -100,13 +100,15 @@ void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem*
 	UInv_InventoryItem* ItemToUnEquip = SlottedItem->GetInventoryItem();
 
 	UInv_EquippedGridSlot* EquippedGridSlot = FindSlotWithEquippedItem(ItemToUnEquip);
+	
 	//清空该物品的槽位，清空该物品的已装备网格槽位(将其库存物品设为空值)
+	ClearSlotOfItem(EquippedGridSlot);
 
 	//需要从已装备网格槽位中移除已装备的槽位物品(涉及诸如解除点击委托绑定等操作 OnEquippedSlottedItemClicked)
-
-	//从父级移除已装备的槽位物品，即从其所属容器中移除
-
+	RemoveEquippedSlottedItem(SlottedItem);
+	
 	//如果我们正在卸载一个装备，应该将其指定为悬停物品，也就是将装备栏上这个道具转到鼠标指针上
+	Grid_Equippable->AssignHoverItem(ItemToUnEquip);
 
 
 	//如果我们鼠标上有一个装备，点击有装备的装备栏，我们会将这两个装备进行比较，然后进行交换，逻辑如下
@@ -178,6 +180,27 @@ UInv_EquippedGridSlot* UInv_SpatialInventory::FindSlotWithEquippedItem(UInv_Inve
 		return GridSlot->GetInventoryItem() == EquippedItem;
 	});
 	return FoundEquippedGridSlot ? *FoundEquippedGridSlot : nullptr;
+}
+
+void UInv_SpatialInventory::ClearSlotOfItem(UInv_EquippedGridSlot* EquippedGridSlot)
+{
+	if (IsValid(EquippedGridSlot))
+	{
+		EquippedGridSlot->SetEquippedSlottedItem(nullptr);
+		EquippedGridSlot->SetInventoryItem(nullptr);
+	}
+}
+
+void UInv_SpatialInventory::RemoveEquippedSlottedItem(UInv_EquippedSlottedItem* EquippedSlottedItem)
+{
+	if (!IsValid(EquippedSlottedItem)) return;
+
+	if (EquippedSlottedItem->OnEquippedSlottedItemClicked.IsAlreadyBound(this, &ThisClass::EquippedSlottedItemClicked))
+	{
+		EquippedSlottedItem->OnEquippedSlottedItemClicked.RemoveDynamic(this, &ThisClass::EquippedSlottedItemClicked);
+	}
+	//从父级移除已装备的槽位物品，即从其所属容器中移除
+	EquippedSlottedItem->RemoveFromParent();
 }
 
 FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const
