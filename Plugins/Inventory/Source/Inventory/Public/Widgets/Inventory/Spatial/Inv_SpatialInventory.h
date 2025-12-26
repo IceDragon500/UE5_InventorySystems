@@ -127,7 +127,7 @@ private:
 	void EquippedGridSlotClicked(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag);
 
 	UFUNCTION()
-	void EquippedSlottedItemClicked(UInv_EquippedSlottedItem* SlottedItem);
+	void EquippedSlottedItemClicked(UInv_EquippedSlottedItem* EquippedSlottedItem);
 
 	
 	//指定的按钮设置为禁用状态
@@ -160,6 +160,8 @@ private:
 	void ClearSlotOfItem(UInv_EquippedGridSlot* EquippedGridSlot);
 
 	void RemoveEquippedSlottedItem(UInv_EquippedSlottedItem* EquippedSlottedItem);
+
+	void MakeEquippedSlottedItem(UInv_EquippedSlottedItem* EquippedSlottedItem, UInv_EquippedGridSlot* EquippedGridSlot, UInv_InventoryItem* ItemToEquip);
 
 	TWeakObjectPtr<UInv_InventoryGrid> ActiveGrid;
 	

@@ -339,7 +339,7 @@
 
 ✅147. Remove Equipped Slotted Item 移除已装备槽位物品
 
-148. Make Equipped Slotted Item 创建已装备槽位物品
+✅148. Make Equipped Slotted Item 创建已装备槽位物品
 
 149. Broadcast Slot Clicked Delegates 广播槽位点击委托
 
