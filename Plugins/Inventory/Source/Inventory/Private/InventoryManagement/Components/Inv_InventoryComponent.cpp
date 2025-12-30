@@ -183,7 +183,7 @@ void UInv_InventoryComponent::Server_EquipSlotClicked_Implementation(UInv_Invent
 
 void UInv_InventoryComponent::Multicast_EquipSlotClicked_Implementation(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip)
 {
-	//装备组件将会监听这些委托
+	//Equipment Component装备组件将会监听这些委托
 	OnItemEquipped.Broadcast(ItemToEquip);
 	OnItemUnEquipped.Broadcast(ItemToUnEquip);
 }

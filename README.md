@@ -350,7 +350,7 @@
 
 ### 第16节 装备组件 (Equipment Component)
 
-152. Equipment Component 装备组件
+✅152. Equipment Component 装备组件
 
 153. Calling Equip Functions 调用装备函数
 
