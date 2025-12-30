@@ -8,6 +8,7 @@
 #include "Widgets/Composite/Inv_CompositeBase.h"
 #include "Inv_ItemFragment.generated.h"
 
+class AInv_EquipActor;
 class UTextBlock;
 class UInv_CompositeBase;
 /**
@@ -299,9 +300,22 @@ struct FInv_EquipmentFragment : public FInv_InventoryItemFragment
 	void OnUnEquip(APlayerController* PC);
 	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
 	virtual void Manifest() override;
+
+	AInv_EquipActor* SpawnAttachedActor(USkeletalMeshComponent* AttachMesh) const;
+	void DestroyAttachedActor() const;
+	
 private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置", meta=(ExcludeBaseStruct))
 	TArray<TInstancedStruct<FInv_EquipModifier>> EquipModifiers;
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<AInv_EquipActor> EquipActorClass{nullptr};//设置装备的Actor类蓝图
+
+	UPROPERTY()
+	TWeakObjectPtr<AInv_EquipActor> EquippedActor{nullptr};
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FName SocketAttachPoint{NAME_None};//装备需要绑定到对应的骨骼Socket名称
 	
 };

@@ -354,7 +354,7 @@
 
 ✅153. Calling Equip Functions 调用装备函数
 
-154. Equip Actor 装备Actor
+✅154. Equip Actor 装备Actor
 
 155. Spawning the Equip Actor 生成装备Actor
 
