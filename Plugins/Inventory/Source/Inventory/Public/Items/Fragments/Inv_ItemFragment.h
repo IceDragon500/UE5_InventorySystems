@@ -303,6 +303,9 @@ struct FInv_EquipmentFragment : public FInv_InventoryItemFragment
 
 	AInv_EquipActor* SpawnAttachedActor(USkeletalMeshComponent* AttachMesh) const;
 	void DestroyAttachedActor() const;
+	FGameplayTag GetEquipmentTag() const { return EquipmentTag; }
+	void SetEquipmentTag(FGameplayTag Tag) { EquipmentTag = Tag; }
+	void SetEquippedActor(AInv_EquipActor* EquipActor);
 	
 private:
 
@@ -313,9 +316,12 @@ private:
 	TSubclassOf<AInv_EquipActor> EquipActorClass{nullptr};//设置装备的Actor类蓝图
 
 	UPROPERTY()
-	TWeakObjectPtr<AInv_EquipActor> EquippedActor{nullptr};
+	TWeakObjectPtr<AInv_EquipActor> EquippedActor{nullptr};//生成的装备Actor
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	FName SocketAttachPoint{NAME_None};//装备需要绑定到对应的骨骼Socket名称
+
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	FGameplayTag EquipmentTag = FGameplayTag::EmptyTag;
 	
 };

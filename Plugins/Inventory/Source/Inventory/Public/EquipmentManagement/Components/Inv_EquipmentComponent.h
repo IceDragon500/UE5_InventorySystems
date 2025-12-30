@@ -7,6 +7,9 @@
 #include "Inv_EquipmentComponent.generated.h"
 
 
+struct FInv_ItemManifest;
+struct FInv_EquipmentFragment;
+class AInv_EquipActor;
 class UInv_InventoryItem;
 class UInv_InventoryComponent;
 
@@ -32,6 +35,9 @@ public:
 	
 	TWeakObjectPtr<USkeletalMeshComponent> OwningSkeletalMesh;
 
+	UPROPERTY()
+	TArray<TObjectPtr<AInv_EquipActor>> EquippedActors;
+
 	UFUNCTION()
 	void OnItemEquipped(UInv_InventoryItem* EquippedItem);
 
@@ -39,6 +45,8 @@ public:
 	void OnItemUnEquipped(UInv_InventoryItem* UnEquippedItem);
 
 	void InitInventoryComponent();
+
+	AInv_EquipActor* SpawnEquippedActor(FInv_EquipmentFragment* EquipmentFragment, const FInv_ItemManifest& Manifest, USkeletalMeshComponent* AttachMesh);
 
 
 };

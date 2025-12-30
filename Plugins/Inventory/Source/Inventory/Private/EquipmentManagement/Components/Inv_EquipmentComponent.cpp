@@ -3,6 +3,7 @@
 
 #include "EquipmentManagement/Components/Inv_EquipmentComponent.h"
 
+#include "EquipmentManagement/EquipActor/Inv_EquipActor.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PlayerController.h"
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
@@ -63,17 +64,34 @@ void UInv_EquipmentComponent::InitInventoryComponent()
 	}
 }
 
+AInv_EquipActor* UInv_EquipmentComponent::SpawnEquippedActor(FInv_EquipmentFragment* EquipmentFragment,
+	const FInv_ItemManifest& Manifest, USkeletalMeshComponent* AttachMesh)
+{
+	AInv_EquipActor* SpawnEquipActor = EquipmentFragment->SpawnAttachedActor(AttachMesh);
+	SpawnEquipActor->SetEquipmentTag(EquipmentFragment->GetEquipmentTag());
+	SpawnEquipActor->SetOwner(GetOwner());
+	EquipmentFragment->SetEquippedActor(SpawnEquipActor);
+
+	return SpawnEquipActor;	
+}
+
 void UInv_EquipmentComponent::OnItemEquipped(UInv_InventoryItem* EquippedItem)
 {
 	if (!IsValid(EquippedItem)) return;
 	if (!OwningPlayerController->HasAuthority()) return; //不需要检查有效性 除非我们拥有有效的玩家控制器，否则不会执行任何这些操作 但我们确实需要检查的是权限是否具备
+	if (!OwningSkeletalMesh.IsValid()) return;
 
 	FInv_ItemManifest& ItemManifest = EquippedItem->GetItemManifestMutable();
 	FInv_EquipmentFragment* EquipmentFragment = ItemManifest.GetFragmentOfTypeMutable<FInv_EquipmentFragment>();
 	if (!EquipmentFragment) return;
 
 	EquipmentFragment->OnEquip(OwningPlayerController.Get());
+
+	AInv_EquipActor* SpawnedEquipActor = SpawnEquippedActor(EquipmentFragment, ItemManifest, OwningSkeletalMesh.Get());
+
+	EquippedActors.Add(SpawnedEquipActor);
 }
+
 
 void UInv_EquipmentComponent::OnItemUnEquipped(UInv_InventoryItem* UnEquippedItem)
 {

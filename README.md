@@ -356,7 +356,7 @@
 
 ✅154. Equip Actor 装备Actor
 
-155. Spawning the Equip Actor 生成装备Actor
+✅155. Spawning the Equip Actor 生成装备Actor
 
 156. Destroying the Equip Actor 销毁装备Actor
 
