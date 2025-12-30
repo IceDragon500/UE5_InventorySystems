@@ -7,6 +7,8 @@
 #include "GameFramework/PlayerController.h"
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
+#include "Items/Inv_InventoryItem.h"
+#include "Items/Fragments/Inv_ItemFragment.h"
 
 /* Sets default values for this component's properties
 UInv_EquipmentComponent::UInv_EquipmentComponent()
@@ -63,10 +65,26 @@ void UInv_EquipmentComponent::InitInventoryComponent()
 
 void UInv_EquipmentComponent::OnItemEquipped(UInv_InventoryItem* EquippedItem)
 {
+	if (!IsValid(EquippedItem)) return;
+	if (!OwningPlayerController->HasAuthority()) return; //不需要检查有效性 除非我们拥有有效的玩家控制器，否则不会执行任何这些操作 但我们确实需要检查的是权限是否具备
+
+	FInv_ItemManifest& ItemManifest = EquippedItem->GetItemManifestMutable();
+	FInv_EquipmentFragment* EquipmentFragment = ItemManifest.GetFragmentOfTypeMutable<FInv_EquipmentFragment>();
+	if (!EquipmentFragment) return;
+
+	EquipmentFragment->OnEquip(OwningPlayerController.Get());
 }
 
-void UInv_EquipmentComponent::OnItemUnEquipped(UInv_InventoryItem* EquippedItem)
+void UInv_EquipmentComponent::OnItemUnEquipped(UInv_InventoryItem* UnEquippedItem)
 {
+	if (!IsValid(UnEquippedItem)) return;
+	if (!OwningPlayerController->HasAuthority()) return; //不需要检查有效性 除非我们拥有有效的玩家控制器，否则不会执行任何这些操作 但我们确实需要检查的是权限是否具备
+
+	FInv_ItemManifest& ItemManifest = UnEquippedItem->GetItemManifestMutable();
+	FInv_EquipmentFragment* EquipmentFragment = ItemManifest.GetFragmentOfTypeMutable<FInv_EquipmentFragment>();
+	if (!EquipmentFragment) return;
+
+	EquipmentFragment->OnUnEquip(OwningPlayerController.Get());
 }
 
 

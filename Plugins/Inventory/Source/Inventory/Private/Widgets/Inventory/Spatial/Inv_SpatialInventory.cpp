@@ -67,10 +67,7 @@ void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* Equip
 		return;
 	}
 	EquippedSlottedItem->OnEquippedSlottedItemClicked.AddDynamic(this, &UInv_SpatialInventory::EquippedSlottedItemClicked);
-
-	//清除鼠标上的悬停物品hoverItem
-	Grid_Equippable->ClearHoverItem();
-
+	
 	//通知服务器我们已经装备了一件物品，其他客户端会看到外观的变化(如果已经有装备在身上了，还涉及卸下一件物品)
 
 	UInv_InventoryComponent* IC = UInv_InventoryStatics::GetInventoryComponent(GetOwningPlayer());
@@ -83,7 +80,8 @@ void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* Equip
 		IC->OnItemEquipped.Broadcast(HoverItem->GetInventoryItem());
 	}
 
-	//
+	//清除鼠标上的悬停物品hoverItem
+	Grid_Equippable->ClearHoverItem();
 }
 
 void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem* EquippedSlottedItem)

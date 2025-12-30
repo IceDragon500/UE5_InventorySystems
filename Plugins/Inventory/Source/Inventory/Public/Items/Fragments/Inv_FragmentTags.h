@@ -14,6 +14,7 @@ namespace FragmentTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(IconFragment) //道具图标片段
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(StackableFragment) //道具堆叠数量片段
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(ConsumableFragment) //消耗品使用片段
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(EquipmentFragment) //装备使用片段
 
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(ItemNameFragment) //道具名称文字片段
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(PrimaryStatFragment) //主要属性文字片段

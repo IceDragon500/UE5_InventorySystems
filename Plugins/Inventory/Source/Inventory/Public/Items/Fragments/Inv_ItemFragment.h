@@ -298,6 +298,7 @@ struct FInv_EquipmentFragment : public FInv_InventoryItemFragment
 	void OnEquip(APlayerController* PC);
 	void OnUnEquip(APlayerController* PC);
 	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+	virtual void Manifest() override;
 private:
 
 	UPROPERTY(EditAnywhere, Category="属性设置", meta=(ExcludeBaseStruct))

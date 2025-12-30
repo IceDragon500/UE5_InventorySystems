@@ -352,7 +352,7 @@
 
 ✅152. Equipment Component 装备组件
 
-153. Calling Equip Functions 调用装备函数
+✅153. Calling Equip Functions 调用装备函数
 
 154. Equip Actor 装备Actor
 

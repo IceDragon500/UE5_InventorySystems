@@ -22,9 +22,9 @@ public:
 
 	void SetItemManifest(const FInv_ItemManifest& Manifest);
 
-	const FInv_ItemManifest& GetItemManifest() const { return ItemManifest.Get<FInv_ItemManifest>(); }
+	const FInv_ItemManifest& GetItemManifest() const { return ItemManifest.Get<FInv_ItemManifest>(); }//读访问，不能修改返回的 FInv_ItemManifest 对象
 
-	FInv_ItemManifest& GetItemManifestMutable() { return ItemManifest.GetMutable<FInv_ItemManifest>(); }
+	FInv_ItemManifest& GetItemManifestMutable() { return ItemManifest.GetMutable<FInv_ItemManifest>(); }//可读可写访问，可以修改返回的 FInv_ItemManifest 对象
 
 	bool IsStackable() const;
 	bool IsConsumable() const;
