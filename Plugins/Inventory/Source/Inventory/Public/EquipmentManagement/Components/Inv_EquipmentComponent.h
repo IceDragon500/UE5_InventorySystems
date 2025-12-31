@@ -54,5 +54,9 @@ public:
 
 	void RemoveEquippedActor(const FGameplayTag& EquipmentTypeTag);
 
+	void InitPlayerController();
+
+	UFUNCTION()
+	void OnPossessedPawnChange(APawn* OldPawn, APawn* NewPawn);
 
 };

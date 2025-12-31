@@ -34,18 +34,47 @@ void UInv_EquipmentComponent::BeginPlay()
 	Super::BeginPlay();
 
 	//如果我们拥有一个所有者角色，那么我们将设置该骨骼网格并调用初始化库存组件，在其中绑定（如果尚未绑定）
+
+	/**
+	 * 157讲
+	 * 因为装备组件本身被放置在玩家控制器上
+	 * 因此我们知道至少会获得一个有效的玩家控制器
+	 * 我们只是还不确定它是否是一个角色
+	 * 这就是为什么我们需要将一个委托绑定到我们的玩家控制器上，当它发生变化时，该委托将被广播
+	 * 设置其pawn为我们默认的——在我们的游戏模式中设定
+	 */
+
+	InitPlayerController();
 	
-	OwningPlayerController = Cast<APlayerController>(GetOwner());
-	if (OwningPlayerController.IsValid())
+	
+}
+
+void UInv_EquipmentComponent::InitPlayerController()
+{
+	//我们正在将所有者转换为玩家控制器，并在执行操作前检查该所有者是否有效
+	if (OwningPlayerController = Cast<APlayerController>(GetOwner()); OwningPlayerController.IsValid())
 	{
-		ACharacter* OwnerCharacter = Cast<ACharacter>(OwningPlayerController->GetPawn());
-		if (IsValid(OwnerCharacter))
+		//现在我们要检查该玩家控制器所拥有的 Pawn 是否可以转换为角色类
+		if (ACharacter* OwnerCharacter = Cast<ACharacter>(OwningPlayerController->GetPawn()); IsValid(OwnerCharacter))
 		{
-			OwningSkeletalMesh = OwnerCharacter->GetMesh();
+			OnPossessedPawnChange(nullptr, OwnerCharacter);
 		}
-		InitInventoryComponent();
+		else //如果失败，那么我将需要获取该玩家控制器并绑定到其上的一个委托
+		{
+			OwningPlayerController->OnPossessedPawnChanged.AddDynamic(this, &ThisClass::OnPossessedPawnChange);
+		}
 	}
-	
+}
+
+void UInv_EquipmentComponent::OnPossessedPawnChange(APawn* OldPawn, APawn* NewPawn)
+{
+	//我们在这里再检查一次
+	if (ACharacter* OwnerCharacter = Cast<ACharacter>(OwningPlayerController->GetPawn()); IsValid(OwnerCharacter))
+	{
+		OwningSkeletalMesh = OwnerCharacter->GetMesh();
+	}
+
+	InitInventoryComponent();
 }
 
 void UInv_EquipmentComponent::InitInventoryComponent()
