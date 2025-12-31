@@ -75,6 +75,25 @@ AInv_EquipActor* UInv_EquipmentComponent::SpawnEquippedActor(FInv_EquipmentFragm
 	return SpawnEquipActor;	
 }
 
+AInv_EquipActor* UInv_EquipmentComponent::FindEquippedActor(const FGameplayTag& EquipmentTypeTag)
+{
+	auto FoundActor = EquippedActors.FindByPredicate([&EquipmentTypeTag](const AInv_EquipActor* EquippedActor)
+	{
+		return EquippedActor->GetEquipmentTypeTag().MatchesTagExact(EquipmentTypeTag);
+	});
+
+	return FoundActor ? *FoundActor : nullptr ;
+}
+
+void UInv_EquipmentComponent::RemoveEquippedActor(const FGameplayTag& EquipmentTypeTag)
+{
+	if (AInv_EquipActor* EquipActor = FindEquippedActor(EquipmentTypeTag); IsValid(EquipActor))
+	{
+		EquippedActors.Remove(EquipActor);
+		EquipActor->Destroy();
+	}
+}
+
 void UInv_EquipmentComponent::OnItemEquipped(UInv_InventoryItem* EquippedItem)
 {
 	if (!IsValid(EquippedItem)) return;
@@ -103,6 +122,10 @@ void UInv_EquipmentComponent::OnItemUnEquipped(UInv_InventoryItem* UnEquippedIte
 	if (!EquipmentFragment) return;
 
 	EquipmentFragment->OnUnEquip(OwningPlayerController.Get());
+
+	RemoveEquippedActor(EquipmentFragment->GetEquipmentTag());
+
+	
 }
 
 

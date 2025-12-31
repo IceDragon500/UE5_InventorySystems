@@ -358,7 +358,7 @@
 
 ✅155. Spawning the Equip Actor 生成装备Actor
 
-156. Destroying the Equip Actor 销毁装备Actor
+✅156. Destroying the Equip Actor 销毁装备Actor
 
 157. Timing Actor Lifecycles Actor生命周期时机
 

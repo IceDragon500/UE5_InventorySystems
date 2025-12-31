@@ -16,7 +16,7 @@ class INVENTORY_API AInv_EquipActor : public AActor
 public:
 
 	AInv_EquipActor();
-	FGameplayTag GetEquipmentTag() const { return EquipmentType; }
+	FGameplayTag GetEquipmentTypeTag() const { return EquipmentType; }
 	void SetEquipmentTag(FGameplayTag Type) { EquipmentType = Type; }
 
 protected:
