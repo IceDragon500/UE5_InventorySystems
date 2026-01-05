@@ -26,6 +26,8 @@ public:
 
 	void SetIsProxy(bool bProxy) { bIsProxy = bProxy; }
 
+	void InitializeOwner(APlayerController* PlayerController);
+
 	//UInv_EquipmentComponent(); 152讲 去掉了这个构造函数
 	//virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 

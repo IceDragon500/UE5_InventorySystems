@@ -33,5 +33,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> Mesh;
 
+	FTimerHandle TimerForNextTick;
+	void DelayedInitialzeOwner();//将的回调函数是该计时器
+	void DelayedInitialzation();//实际设置计时器的函数
 	
 };
