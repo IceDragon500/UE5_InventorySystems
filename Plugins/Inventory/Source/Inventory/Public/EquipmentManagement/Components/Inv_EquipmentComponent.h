@@ -22,6 +22,10 @@ class INVENTORY_API UInv_EquipmentComponent : public UActorComponent
 
 public:
 
+	void SetOwningSkeletalMesh(USkeletalMeshComponent* OwningMesh);
+
+	void SetIsProxy(bool bProxy) { bIsProxy = bProxy; }
+
 	//UInv_EquipmentComponent(); 152讲 去掉了这个构造函数
 	//virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -29,7 +33,11 @@ protected:
 
 	virtual void BeginPlay() override;
 
-public:
+private:
+
+	void InitPlayerController();
+	
+	void InitInventoryComponent();
 
 	TWeakObjectPtr<UInv_InventoryComponent> InventoryComponent;
 
@@ -45,18 +53,16 @@ public:
 
 	UFUNCTION()
 	void OnItemUnEquipped(UInv_InventoryItem* UnEquippedItem);
-
-	void InitInventoryComponent();
-
+	
 	AInv_EquipActor* SpawnEquippedActor(FInv_EquipmentFragment* EquipmentFragment, const FInv_ItemManifest& Manifest, USkeletalMeshComponent* AttachMesh);
 
 	AInv_EquipActor* FindEquippedActor(const FGameplayTag& EquipmentTypeTag);
 
 	void RemoveEquippedActor(const FGameplayTag& EquipmentTypeTag);
 
-	void InitPlayerController();
-
 	UFUNCTION()
 	void OnPossessedPawnChange(APawn* OldPawn, APawn* NewPawn);
+
+	bool bIsProxy{false};
 
 };
