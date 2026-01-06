@@ -90,6 +90,8 @@ public:
 
 	UInv_InventoryBase* GetInventoryMenu() const { return InventoryMenu; }
 
+	bool IsMenuOpen() const { return bInventoryMenuOpen; }
+
 	FinventoryItemChange OnItemAdded;//在道具被添加的时候进行一个广播
 	FinventoryItemChange OnItemRemoved;//在道具被删除的时候进行一个广播
 	FNoRoomInInventory NoRoomInInventory;//添加道具失败的时候进行一个广播
