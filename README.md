@@ -370,7 +370,7 @@
 
 ✅161. Character Display 角色展示
 
-162. Character Display Blueprint 角色展示蓝图
+✅162. Character Display Blueprint 角色展示蓝图
 
 163. Hiding the Dot 隐藏原点（或标记点）
 
