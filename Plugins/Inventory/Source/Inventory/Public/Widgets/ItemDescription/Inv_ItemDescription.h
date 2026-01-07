@@ -19,6 +19,7 @@ public:
 
 	FVector2D GetBoxSize() const;
 	void SetBoxSize(FVector2D BoxSize);
+	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 
 protected:
 

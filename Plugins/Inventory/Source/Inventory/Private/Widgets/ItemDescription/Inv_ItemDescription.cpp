@@ -14,3 +14,12 @@ void UInv_ItemDescription::SetBoxSize(FVector2D BoxSize)
 {
 	
 }
+
+void UInv_ItemDescription::SetVisibility(ESlateVisibility InVisibility)
+{
+	for (auto Child : GetChildren())
+	{
+		Child->Collapse();
+	}
+	Super::SetVisibility(InVisibility);
+}

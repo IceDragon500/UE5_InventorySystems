@@ -267,10 +267,10 @@ void UInv_SpatialInventory::OnItemHovered(UInv_InventoryItem* Item)
 	FTimerDelegate DescriptionTimerDelegate;
 	DescriptionTimerDelegate.BindLambda([this, &Manifest, DescriptionWidget]()
 	{
+		GetItemDescription()->SetVisibility(ESlateVisibility::HitTestInvisible);
+		
 		//需要在此处将清单数据整合到物品描述控件内部
 		Manifest.AssimilateInventoryFragments(DescriptionWidget);
-		
-		GetItemDescription()->SetVisibility(ESlateVisibility::HitTestInvisible);
 		
 	});
 

@@ -30,10 +30,11 @@ void UInv_EquippedGridSlot::NativeOnMouseEnter(const FGeometry& InGeometry, cons
 void UInv_EquippedGridSlot::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 {
 	if (!IsAvailable()) return;
-	if (IsValid(EquippedSlottedItem)) return;
+	if (IsValid(EquippedSlottedItem)) return;//164讲 添加修复问题
 	
 	UInv_HoverItem* HoverItem = UInv_InventoryStatics::GetHoverItem(GetOwningPlayer());
 	if (!IsValid(HoverItem)) return;
+	
 
 	if (HoverItem->GetItemType().MatchesTag(EquipmentTypeTag))
 	{

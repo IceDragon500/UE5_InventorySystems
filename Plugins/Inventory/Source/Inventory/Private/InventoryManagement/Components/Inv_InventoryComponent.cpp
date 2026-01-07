@@ -68,13 +68,13 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 		//这个项目类型不在库存中，创建一个新的并更新所有相关的插槽
 		//This item type doesn't in the inventory, Create a new one and update all pertinent slots
 
-		Server_AddNewItem(ItemComponent, Result.bStackable ? Result.TotalRoomToFill : 0);
+		Server_AddNewItem(ItemComponent, Result.bStackable ? Result.TotalRoomToFill : 0, Result.Remainder);
 		//Result.bStackable ? Result.TotalRoomToFill : 0
 		//如果是可以堆叠的，这里就是TotalRoomToFill，如果不是，那这里就是0
 	}
 }
 
-void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount)
+void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder)
 {
 	//创建一个新的库存道具
 	UInv_InventoryItem* NewItem = InventoryList.AddEntry(ItemComponent);
@@ -91,8 +91,17 @@ void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponen
 		OnItemAdded.Broadcast(NewItem);
 	}
 
-	//TODO: 让物品组件销毁其所属的 Actor
-	ItemComponent->PickedUp();
+	// 通知所有客户端拾取操作已完成
+
+	if (Remainder == 0)
+	{
+		// 通知所有客户端拾取操作已完成
+		ItemComponent->PickedUp();
+	}
+	else if (FInv_StackableFragment* StackableFragment = ItemComponent->GetItemManifestMutable().GetFragmentOfTypeMutable<FInv_StackableFragment>())//否则的话,更新地面上那个物品拾取物的堆叠数量
+	{
+		StackableFragment->SetStackCount(Remainder);
+	}
 }
 
 void UInv_InventoryComponent::Server_AddStacksToItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder)
@@ -111,9 +120,10 @@ void UInv_InventoryComponent::Server_AddStacksToItem_Implementation(UInv_ItemCom
 	//TODO: 如果余数为零则销毁该物品
 	if (Remainder == 0)
 	{
+		// 通知所有客户端拾取操作已完成
 		ItemComponent->PickedUp();
 	}
-	else if (FInv_StackableFragment* StackableFragment = ItemComponent->GetItemManifest().GetFragmentOfTypeMutable<FInv_StackableFragment>())//否则的话,更新地面上那个物品拾取物的堆叠数量
+	else if (FInv_StackableFragment* StackableFragment = ItemComponent->GetItemManifestMutable().GetFragmentOfTypeMutable<FInv_StackableFragment>())//否则的话,更新地面上那个物品拾取物的堆叠数量
 	{
 		StackableFragment->SetStackCount(Remainder);
 	}
@@ -286,3 +296,13 @@ void UInv_InventoryComponent::CloseInventoryMenu()
 	HoverItem = nullptr;
 	*/
 }
+
+/*
+void UInv_InventoryComponent::Multicast_PickedUp_Implementation(UInv_ItemComponent* ItemComponent)
+{
+	if (ItemComponent)
+	{
+		ItemComponent->PickedUp();
+	}
+}
+*/

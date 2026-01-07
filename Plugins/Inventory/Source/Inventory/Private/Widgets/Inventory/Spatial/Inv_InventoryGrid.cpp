@@ -831,6 +831,8 @@ void UInv_InventoryGrid::OnGridSlotClicked(int32 GridIndex, const FPointerEvent&
 		return;
 	}
 
+	if (!IsInGridBounds(ItemDropIndex, HoverItem->GetGridDimensions())) return;//164讲修复问题
+	
 	//如果没有有效的物品，则说明这里是个空位置，我们需要将物品放置在此索引位置
 	auto GridSlot = GridSlots[ItemDropIndex];
 	if (!GridSlot->GetInventoryItem().IsValid())

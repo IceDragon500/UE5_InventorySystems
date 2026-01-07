@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -53,7 +53,7 @@ public:
 	 * @param StackCount 添加的数量
 	 */
 	UFUNCTION(Server, Reliable)
-	void Server_AddNewItem(UInv_ItemComponent* ItemComponent, int32 StackCount);
+	void Server_AddNewItem(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder);
 
 	/**
 	 * 从服务器端，添加一个已存在的道具到物品栏
@@ -77,6 +77,11 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_EquipSlotClicked(UInv_InventoryItem* ItemToEquip, UInv_InventoryItem* ItemToUnEquip);
+
+	/* AI 给出了一个修复方法 但是并没有解决问题
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PickedUp(UInv_ItemComponent* ItemComponent);
+	*/
 
 	
 
