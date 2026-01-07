@@ -21,12 +21,18 @@ namespace GameItems
 		namespace Cloaks
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(RedCloak)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BlueCloak)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(GreenCloak)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(YellowCloak)
 		}
 
 		//面具
 		namespace Masks
 		{
-			UE_DECLARE_GAMEPLAY_TAG_EXTERN(SteelMask)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(BlueMask)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(GreenMask)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(RedMask)
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(YellowMask)
 		}
 	}
 

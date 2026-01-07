@@ -21,12 +21,18 @@ namespace GameItems
 		namespace Cloaks
 		{
 			UE_DEFINE_GAMEPLAY_TAG(RedCloak, "GameItems.Equipment.Cloaks.RedCloak")
+			UE_DEFINE_GAMEPLAY_TAG(BlueCloak, "GameItems.Equipment.Cloaks.BlueCloak")
+			UE_DEFINE_GAMEPLAY_TAG(GreenCloak, "GameItems.Equipment.Cloaks.GreenCloak")
+			UE_DEFINE_GAMEPLAY_TAG(YellowCloak, "GameItems.Equipment.Cloaks.YellowCloak")
 		}
 
 		//面具
 		namespace Masks
 		{
-			UE_DEFINE_GAMEPLAY_TAG(SteelMask, "GameItems.Equipment.Masks.SteelMask")
+			UE_DEFINE_GAMEPLAY_TAG(BlueMask, "GameItems.Equipment.Masks.BlueMask")
+			UE_DEFINE_GAMEPLAY_TAG(GreenMask, "GameItems.Equipment.Masks.GreenMask")
+			UE_DEFINE_GAMEPLAY_TAG(RedMask, "GameItems.Equipment.Masks.RedMask")
+			UE_DEFINE_GAMEPLAY_TAG(YellowMask, "GameItems.Equipment.Masks.YellowMask")
 		}
 	}
 
