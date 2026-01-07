@@ -46,9 +46,15 @@ void AInv_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!IsLocalController()) return;
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	ULocalPlayer* LP = GetLocalPlayer();
+	if (!LP) return;
 
+
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = LP->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	
 	if (IsValid(Subsystem))
 	{
 		for (UInputMappingContext* CurrentContext : DefaultIMCs)
