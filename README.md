@@ -376,7 +376,7 @@
 
 ✅164. Character Mesh Collision 角色网格体碰撞
 
-165. Equipped Item Description 已装备物品描述
+✅165. Equipped Item Description 已装备物品描述
 
 166. Creating More Items 创建更多物品
 

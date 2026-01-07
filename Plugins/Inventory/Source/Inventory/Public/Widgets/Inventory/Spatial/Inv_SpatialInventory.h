@@ -96,18 +96,34 @@ private:
 	TObjectPtr<UButton> Button_Craftable;//材料栏按钮
 
 	UPROPERTY(EditAnywhere, Category="属性设置")
-	TSubclassOf<UInv_ItemDescription> ItemDescriptionClass;
+	TSubclassOf<UInv_ItemDescription> ItemDescriptionClass;//鼠标指向道具后，弹出的tips窗口类
 
 	UPROPERTY()
 	TObjectPtr<UInv_ItemDescription> ItemDescription;
 
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	TSubclassOf<UInv_ItemDescription> EquippedItemDescriptionClass;//鼠标指向道具后，如果我们已经装备了同类装备，用这个类来显示已装备的道具Tips
+
+	UPROPERTY()
+	TObjectPtr<UInv_ItemDescription> EquippedItemDescription;
+
 	FTimerHandle DescriptionTimer;
+
+	FTimerHandle EquippedDescriptionTimer;
+
+	void ShowEquippedItemDescription(UInv_InventoryItem* Item);
 
 	//设置道具描述控件的显示延迟时间
 	UPROPERTY(EditAnywhere, Category="属性设置")
 	float DescriptionTimerDelta{.5f};
 
+	//设置一装备的道具描述控件的显示延迟时间
+	UPROPERTY(EditAnywhere, Category="属性设置")
+	float EquippedDescriptionTimerDelta{.5f};
+
 	UInv_ItemDescription* GetItemDescription();
+	
+	UInv_ItemDescription* GetEquippedItemDescription();
 
 	UFUNCTION()
 	void ShowEquippables();
@@ -146,6 +162,8 @@ private:
 	 * @param Canvas 
 	 */
 	void SetItemDescriptionSizeAndPosition(UInv_ItemDescription* Description, UCanvasPanel* Canvas) const;
+
+	void SetEquippedItemDescriptionSizeAndPosition(UInv_ItemDescription* Description, UInv_ItemDescription* EquippedDescription, UCanvasPanel* Canvas) const;
 
 	/**
 	 * 检查被点击的装备栏是否可以放置鼠标上的道具
